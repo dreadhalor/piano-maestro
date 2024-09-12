@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { getRandomNote } from "@/utils/chord-utils";
 import { useMIDI } from "@/hooks/use-midi";
-import { useSettings } from "@/providers/settings-provider"; // Import the settings hook to access the range
+import { useSettings } from "@/providers/settings-provider";
 
 export const useSingleNotePractice = () => {
-  const { lowKey, highKey } = useSettings(); // Access the user-defined range from settings
+  const { lowKey, highKey } = useSettings(); // Access the user-defined range from context
   const [currentNote, setCurrentNote] = useState<number>(
     getRandomNote(lowKey, highKey),
   );

@@ -4,6 +4,9 @@ import { ChordPractice } from "@/components/modes/chord-practice/chord-practice"
 import { NotePractice } from "@/components/modes/note-practice/note-practice";
 import { Playground } from "@/components/modes/playground/playground";
 import { PianoRoll } from "./components/piano-roll";
+import { FaGear } from "react-icons/fa6";
+import { SettingsDialog } from "./components/settings-dialog";
+import { Button } from "@ui/button";
 
 const App = () => {
   const { mode } = useAppContext(); // Get mode from context
@@ -24,13 +27,19 @@ const App = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100 p-8">
-      {" "}
-      {/* Changed background to light gray */}
-      <PracticeSidebar /> {/* Sidebar remains fixed to the left */}
+      <PracticeSidebar />
       <div className="flex flex-1 flex-col items-center justify-center py-[100px]">
         {/* Header */}
-        <h1 className="mb-6 text-5xl font-extrabold text-blue-600">
+        <h1 className="relative mb-6 w-full text-center text-5xl font-extrabold text-blue-600">
           Piano Maestro
+          <SettingsDialog>
+            <Button
+              variant="ghost"
+              className="absolute right-[200px] top-0 p-0 text-4xl text-gray-400 hover:text-gray-600"
+            >
+              <FaGear />
+            </Button>
+          </SettingsDialog>
         </h1>
 
         {/* Main Content Area with Distinct Background */}

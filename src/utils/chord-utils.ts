@@ -50,20 +50,25 @@ export const notesMatchWithExactIntervals = (
   return true;
 };
 
-// Function to get a random note from a single octave (e.g., C4 to B4)
-const getTrueRandomNote = (): number => {
-  // Random octave between 2 and 5 (C2 to B5)
-  const octave = Math.floor(Math.random() * 4) + 2;
-  const randomNote = Math.floor(Math.random() * 12); // Random number between 0 and 11
-  return 12 * (octave + 1) + randomNote; // Calculate MIDI note number for the given octave
+// Generate a random note within a specified MIDI range
+const getTrueRandomNoteInRange = (lowKey: number, highKey: number): number => {
+  const rangeSize = highKey - lowKey + 1; // Calculate the size of the range
+  return lowKey + Math.floor(Math.random() * rangeSize); // Generate a random note within the range
 };
 
-export const getRandomNote = (note?: number): number => {
-  let newNote = getTrueRandomNote();
-  if (!note) return newNote;
+// Modified function to get a random note within a user-defined range
+export const getRandomNote = (
+  lowKey: number,
+  highKey: number,
+  currentNote?: number,
+): number => {
+  console.log("lowKey", lowKey);
+  console.log("highKey", highKey);
+  let newNote = getTrueRandomNoteInRange(lowKey, highKey); // Generate a random note within the range
+  if (!currentNote || lowKey === highKey) return newNote;
 
-  while (newNote === note) {
-    newNote = getTrueRandomNote();
+  while (newNote === currentNote) {
+    newNote = getTrueRandomNoteInRange(lowKey, highKey); // Ensure a new random note is selected
   }
   return newNote;
 };
