@@ -15,7 +15,7 @@ export const useChordPractice = () => {
   ) => {
     if (isChordComplete && allKeysReleased && awaitingKeyRelease) {
       // If chord is complete and keys are released, allow to advance
-      setCurrentChord(getRandomChord());
+      setCurrentChord((prev) => getRandomChord(prev));
       setFeedback("");
       setIsChordComplete(false);
       setAwaitingKeyRelease(false);
@@ -45,7 +45,7 @@ export const useChordPractice = () => {
   };
 
   useMIDI({
-    onChordPlayed: handleChordPlayed, // Hook is used specifically for chord practice
+    onNotesChange: handleChordPlayed, // Hook is used specifically for chord practice
   });
 
   return {

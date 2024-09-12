@@ -16,7 +16,7 @@ export const usePlaygroundMode = () => {
   };
 
   useMIDI({
-    onChordPlayed: (notes) => handleNotesPlayed(notes), // Pass handler to update notes
+    onNotesChange: (notes) => handleNotesPlayed(notes), // Pass handler to update notes
   });
 
   return {

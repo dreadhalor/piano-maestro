@@ -11,7 +11,7 @@ export const NotePractice: React.FC = () => {
     <div className="flex flex-col items-center justify-center">
       <h2 className="mb-4 text-2xl font-bold">Note Practice Mode</h2>
       <KeyDisplay note={currentNote} />
-      <MidiInput onChordPlayed={() => {}} /> {/* No need to pass handlers */}
+      <MidiInput />
       <Feedback message={feedback} />
     </div>
   );

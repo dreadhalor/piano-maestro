@@ -11,7 +11,7 @@ export const ChordPractice: React.FC = () => {
     <div className="flex flex-col items-center justify-center">
       <h2 className="mb-4 text-2xl font-bold">Chord Practice Mode</h2>
       <ChordDisplay chord={currentChord} />
-      <MidiInput onChordPlayed={() => {}} /> {/* No need to pass handlers */}
+      <MidiInput />
       <Feedback message={feedback} />
     </div>
   );

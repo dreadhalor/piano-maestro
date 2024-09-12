@@ -14,7 +14,7 @@ export const useSingleNotePractice = () => {
   ) => {
     if (isNoteComplete && allKeysReleased && awaitingKeyRelease) {
       // If note is complete and keys are released, allow to advance
-      setCurrentNote(getRandomNote());
+      setCurrentNote((prev) => getRandomNote(prev));
       setFeedback("");
       setIsNoteComplete(false);
       setAwaitingKeyRelease(false);
@@ -40,7 +40,7 @@ export const useSingleNotePractice = () => {
   };
 
   useMIDI({
-    onChordPlayed: handleNotePlayed, // Hook is used specifically for note practice
+    onNotesChange: handleNotePlayed, // Hook is used specifically for note practice
   });
 
   return {

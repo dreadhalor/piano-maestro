@@ -18,7 +18,7 @@ export const useAppContext = () => {
 };
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [mode, setMode] = useState<PracticeMode>("chord");
+  const [mode, setMode] = useState<PracticeMode>("playground");
 
   return (
     <AppContext.Provider value={{ mode, setMode }}>

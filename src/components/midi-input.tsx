@@ -2,12 +2,10 @@ import React from "react";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { useMIDI } from "@/hooks/use-midi";
 
-interface MidiInputProps {
-  onChordPlayed: (notes: number[], allKeysReleased: boolean) => void;
-}
-
-export const MidiInput: React.FC<MidiInputProps> = ({ onChordPlayed }) => {
-  const { pressedNotes, isMIDIDeviceConnected } = useMIDI({ onChordPlayed }); // Use the hook
+export const MidiInput: React.FC = () => {
+  const { pressedNotes, isMIDIDeviceConnected } = useMIDI({
+    onNotesChange: () => {}, // No-op function for the hook
+  }); // Use the hook
 
   return (
     <div>

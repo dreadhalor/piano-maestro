@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
 export interface UseMIDIOptions {
-  onChordPlayed: (notes: number[], allKeysReleased: boolean) => void;
+  onNotesChange: (notes: number[], allKeysReleased: boolean) => void;
 }
 
-export const useMIDI = ({ onChordPlayed }: UseMIDIOptions) => {
+export const useMIDI = ({ onNotesChange }: UseMIDIOptions) => {
   const [pressedNotes, setPressedNotes] = useState<number[]>([]);
   const [allKeysReleased, setAllKeysReleased] = useState<boolean>(true); // State for all keys released
   const [isMIDIDeviceConnected, setIsMIDIDeviceConnected] =
@@ -83,8 +83,8 @@ export const useMIDI = ({ onChordPlayed }: UseMIDIOptions) => {
 
   useEffect(() => {
     // Only trigger the callback when the exact number of notes are pressed
-    onChordPlayed(pressedNotes, allKeysReleased);
-  }, [pressedNotes, allKeysReleased, onChordPlayed]);
+    onNotesChange(pressedNotes, allKeysReleased);
+  }, [pressedNotes, allKeysReleased, onNotesChange]);
 
   return { pressedNotes, allKeysReleased, isMIDIDeviceConnected }; // Return the new state
 };
