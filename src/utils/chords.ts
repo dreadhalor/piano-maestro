@@ -6,7 +6,7 @@ export interface Chord {
 }
 
 // Function to generate MIDI notes for chords
-const noteOffsets = {
+const noteOffsets: { [key: string]: number } = {
   C: 0,
   "C#": 1,
   D: 2,
@@ -53,7 +53,7 @@ export const CHORDS: Chord[] = [
   { name: "Bb Major", notes: generateChordNotes("Bb", major) },
   { name: "B Major", notes: generateChordNotes("B", major) },
 
-  // // Minor Chords
+  // Minor Chords
   { name: "C Minor", notes: generateChordNotes("C", minor) },
   { name: "C# Minor", notes: generateChordNotes("C#", minor) },
   { name: "D Minor", notes: generateChordNotes("D", minor) },
@@ -166,7 +166,17 @@ export const CHORDS: Chord[] = [
   { name: "B Suspended 4", notes: generateChordNotes("B", suspended4) },
 ];
 
-export const getRandomChord = (): Chord => {
+export const getTrueRandomChord = (): Chord => {
   const randomIndex = Math.floor(Math.random() * CHORDS.length);
   return CHORDS[randomIndex];
+};
+
+// get random chord but not the same as the current chord
+export const getRandomChord = (currentChord?: Chord): Chord => {
+  let randomChord = getTrueRandomChord();
+  if (!currentChord) return randomChord;
+  while (randomChord.name === currentChord.name) {
+    randomChord = getTrueRandomChord();
+  }
+  return randomChord;
 };

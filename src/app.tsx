@@ -1,4 +1,3 @@
-import React from "react";
 import MidiInput from "./components/midi-input";
 import ChordDisplay from "./components/chord-display";
 import Feedback from "./components/feedback";
@@ -8,7 +7,7 @@ import { useAppContext } from "./providers/app-provider";
 import { PracticeSidebar } from "./components/practice-sidebar";
 import { useGameLogic } from "./hooks/use-game-logic";
 
-const App: React.FC = () => {
+const App = () => {
   const { mode } = useAppContext(); // Get mode from context
   const { currentChord, currentNote, feedback } = useGameLogic({ mode }); // Use the hook
 

@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getRandomChord, Chord } from "../utils/chords";
-import { getRandomNote } from "../utils/chord-utils";
+import {
+  getRandomNote,
+  notesMatchWithExactIntervals,
+} from "../utils/chord-utils";
 import { useMIDI } from "./use-midi";
 import { PracticeMode } from "@/providers/app-provider";
 
@@ -14,12 +17,21 @@ export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
   const [feedback, setFeedback] = useState<string>("");
   const [isChordComplete, setIsChordComplete] = useState<boolean>(false);
   const [isNoteComplete, setIsNoteComplete] = useState<boolean>(false);
-  const [awaitingKeyRelease, setAwaitingKeyRelease] = useState<boolean>(false); // New state to wait for key release
+  const [awaitingKeyRelease, setAwaitingKeyRelease] = useState<boolean>(false);
 
   const handleChordPlayed = (
     playedNotes: number[],
     allKeysReleased: boolean,
   ) => {
+    if (isChordComplete && allKeysReleased && awaitingKeyRelease) {
+      // If chord is complete and keys are released, allow to advance
+      setCurrentChord((prev) => getRandomChord(prev));
+      setFeedback("");
+      setIsChordComplete(false);
+      setAwaitingKeyRelease(false);
+      return;
+    }
+
     if (isChordComplete) {
       if (allKeysReleased) {
         setAwaitingKeyRelease(true); // Set awaiting release to switch question
@@ -28,12 +40,14 @@ export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
     }
 
     if (playedNotes.length === currentChord.notes.length) {
-      // Only check when the number of pressed notes matches the chord length
-      const playedCorrectly =
-        playedNotes.sort().toString() === currentChord.notes.sort().toString();
+      const playedCorrectly = notesMatchWithExactIntervals(
+        playedNotes,
+        currentChord.notes,
+      );
       if (playedCorrectly) {
         setFeedback("Correct!");
-        setIsChordComplete(true); // Wait for user to release keys
+        setIsChordComplete(true);
+        setAwaitingKeyRelease(false); // Wait for user to release keys
       } else {
         setFeedback("Try Again!");
       }
@@ -44,6 +58,15 @@ export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
     playedNotes: number[],
     allKeysReleased: boolean,
   ) => {
+    if (isNoteComplete && allKeysReleased && awaitingKeyRelease) {
+      // If note is complete and keys are released, allow to advance
+      setCurrentNote((prev) => getRandomNote(prev));
+      setFeedback("");
+      setIsNoteComplete(false);
+      setAwaitingKeyRelease(false);
+      return;
+    }
+
     if (isNoteComplete) {
       if (allKeysReleased) {
         setAwaitingKeyRelease(true); // Set awaiting release to switch question
@@ -52,35 +75,15 @@ export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
     }
 
     if (playedNotes.length === 1) {
-      // Only check when exactly one note is pressed
       if (playedNotes.includes(currentNote)) {
         setFeedback("Correct!");
-        setIsNoteComplete(true); // Wait for user to release the key
+        setIsNoteComplete(true);
+        setAwaitingKeyRelease(false); // Wait for user to release the key
       } else {
         setFeedback("Try Again!");
       }
     }
   };
-
-  useEffect(() => {
-    if (isChordComplete && awaitingKeyRelease) {
-      // Once the keys are released after completing the chord, generate a new question
-      setCurrentChord(getRandomChord());
-      setFeedback("");
-      setIsChordComplete(false);
-      setAwaitingKeyRelease(false);
-    }
-  }, [isChordComplete, awaitingKeyRelease]);
-
-  useEffect(() => {
-    if (isNoteComplete && awaitingKeyRelease) {
-      // Once the keys are released after completing the note, generate a new question
-      setCurrentNote(getRandomNote());
-      setFeedback("");
-      setIsNoteComplete(false);
-      setAwaitingKeyRelease(false);
-    }
-  }, [isNoteComplete, awaitingKeyRelease]);
 
   // Use the useMIDI hook and pass the correct handler based on the mode
   useMIDI({
