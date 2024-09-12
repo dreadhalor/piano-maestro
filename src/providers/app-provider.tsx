@@ -21,8 +21,6 @@ export const useAppContext = () => {
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<PracticeMode>("playground");
 
-  useSynthSound();
-
   return (
     <AppContext.Provider value={{ mode, setMode }}>
       {children}
