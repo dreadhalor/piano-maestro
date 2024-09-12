@@ -11,9 +11,10 @@ export const KeyDisplay: React.FC<KeyDisplayProps> = ({ note }) => {
   }
 
   return (
-    <div className="text-center">
-      <h2 className="mb-4 text-2xl font-bold text-gray-800">
-        Press this key: {midiToNoteName(note)}
+    <div className="mb-6 w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
+      <h2 className="text-xl font-bold text-gray-800">
+        Press this key:{" "}
+        <span className="text-green-500">{midiToNoteName(note)}</span>
       </h2>
     </div>
   );

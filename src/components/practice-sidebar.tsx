@@ -1,32 +1,48 @@
 import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
 import { Label } from "@ui/label";
 import { PracticeMode, useAppContext } from "@/providers/app-provider";
+import { cn } from "@/lib/utils"; // Import utility for conditional classes
+
+const tabColors: Record<string, string> = {
+  note: "hover:bg-green-100 text-green-700 border-green-300",
+  chord: "hover:bg-blue-100 text-blue-700 border-blue-300",
+  playground: "hover:bg-purple-100 text-purple-700 border-purple-300",
+};
 
 export const PracticeSidebar = () => {
   const { mode, setMode } = useAppContext();
 
   return (
-    <div className="flex w-[200px] flex-col gap-4 border-2">
-      <h2 className="text-center text-xl font-bold text-gray-800">
+    <div className="flex w-[250px] flex-col gap-6 rounded-lg bg-white p-6 shadow-md">
+      <h2 className="mb-4 text-center text-2xl font-bold text-gray-800">
         Practice Mode
       </h2>
       <RadioGroup
         value={mode}
         onValueChange={(value) => setMode(value as PracticeMode)}
-        className="gap-4"
+        className="flex flex-col gap-2"
       >
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="note" id="note" />
-          <Label htmlFor="note">Note</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="chord" id="chord" />
-          <Label htmlFor="chord">Chord</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem value="playground" id="playground" />
-          <Label htmlFor="playground">Playground</Label>
-        </div>
+        {["note", "chord", "playground"].map((value) => (
+          <Label
+            key={value}
+            htmlFor={value}
+            className={cn(
+              "flex cursor-pointer items-center justify-center rounded-lg border-2 p-3 text-lg font-medium transition-colors duration-200",
+              tabColors[value], // Add color based on value
+              mode === value
+                ? "border-current bg-white shadow-md"
+                : "bg-gray-50 hover:shadow-sm",
+            )}
+          >
+            <RadioGroupItem
+              value={value}
+              id={value}
+              className="sr-only" // Hide the actual radio button
+            />
+            {/* Capitalize first letter */}
+            {value.charAt(0).toUpperCase() + value.slice(1)}{" "}
+          </Label>
+        ))}
       </RadioGroup>
     </div>
   );

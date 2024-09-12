@@ -5,5 +5,13 @@ interface FeedbackProps {
 }
 
 export const Feedback: React.FC<FeedbackProps> = ({ message }) => {
-  return <h3>{message}</h3>;
+  if (!message) return null;
+
+  return (
+    <h3
+      className={`mt-4 text-xl font-bold ${message === "Correct!" ? "text-green-600" : "text-red-600"}`}
+    >
+      {message}
+    </h3>
+  );
 };

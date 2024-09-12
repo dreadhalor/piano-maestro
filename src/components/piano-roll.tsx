@@ -1,8 +1,7 @@
 import { useSynthSound } from "@/hooks/use-synth-sound";
 import { cn } from "@/lib/utils";
-import React from "react";
 
-export const PianoRoll: React.FC = () => {
+export const PianoRoll = () => {
   const { pressedNotes } = useSynthSound(); // Get pressed notes from hook
 
   // Define the keys for the piano roll
@@ -88,38 +87,40 @@ export const PianoRoll: React.FC = () => {
   const isKeyPressed = (key: string) => pressedNoteNames.includes(key);
 
   return (
-    <div className="mt-4 flex flex-col items-center justify-center">
+    <div className="mt-8 flex flex-col items-center justify-center">
       {/* White Keys */}
       <div className="relative flex">
         {whiteKeys.map((key) => (
           <div
             key={key}
             className={cn(
-              "relative h-40 w-12 border border-gray-400 bg-white",
+              "relative flex h-40 w-12 items-end justify-center border border-gray-400 bg-white",
+              "shadow-md hover:bg-gray-200 active:bg-blue-200",
               isKeyPressed(key) && "bg-blue-300",
             )}
-          />
+          >
+            <span className="mb-2 text-sm font-semibold text-gray-700">
+              {key[0]}
+            </span>
+          </div>
         ))}
         {/* Black Keys */}
         <div
-          className="absolute inset-0 grid"
+          className="pointer-events-none absolute inset-0 grid"
           style={{ gridTemplateColumns: "repeat(29, 1fr)" }}
         >
-          {blackKeys.map(({ note, position }) => {
-            const isPressed = isKeyPressed(note);
-            return (
-              <div
-                key={note}
-                className={cn(
-                  "h-24 w-6 translate-x-[150%] bg-black",
-                  isPressed && "bg-blue-700",
-                )}
-                style={{
-                  gridColumnStart: position,
-                }}
-              />
-            );
-          })}
+          {blackKeys.map(({ note, position }) => (
+            <div
+              key={note}
+              className={cn(
+                "pointer-events-auto relative h-24 w-8 translate-x-full transform bg-black shadow-lg",
+                isKeyPressed(note) && "bg-blue-700",
+              )}
+              style={{
+                gridColumnStart: position,
+              }}
+            />
+          ))}
         </div>
       </div>
     </div>

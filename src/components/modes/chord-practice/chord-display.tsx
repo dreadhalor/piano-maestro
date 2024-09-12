@@ -12,12 +12,15 @@ export const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
   }
 
   return (
-    <div>
-      <h2 className="mb-4 text-2xl font-bold text-gray-800">
-        Play this chord: {chord.name}
+    <div className="mb-6 w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
+      <h2 className="mb-4 text-xl font-bold text-gray-800">
+        Play this chord: <span className="text-blue-500">{chord.name}</span>
       </h2>
       <p className="text-lg text-gray-600">
-        Notes: {chord.notes.map(midiToNoteNameWithoutOctave).join(", ")}
+        Notes:{" "}
+        <span className="font-semibold">
+          {chord.notes.map(midiToNoteNameWithoutOctave).join(", ")}
+        </span>
       </p>
     </div>
   );
