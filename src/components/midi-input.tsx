@@ -3,7 +3,7 @@ import { midiToNoteName } from "../utils/chord-utils";
 import { useMIDI } from "../hooks/use-midi";
 
 interface MidiInputProps {
-  onChordPlayed: (notes: number[]) => void;
+  onChordPlayed: (notes: number[], allKeysReleased: boolean) => void;
 }
 
 const MidiInput: React.FC<MidiInputProps> = ({ onChordPlayed }) => {

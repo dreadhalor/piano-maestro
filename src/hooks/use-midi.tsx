@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
 export interface UseMIDIOptions {
-  onChordPlayed: (notes: number[]) => void;
+  onChordPlayed: (notes: number[], allKeysReleased: boolean) => void;
 }
 
 export const useMIDI = ({ onChordPlayed }: UseMIDIOptions) => {
   const [pressedNotes, setPressedNotes] = useState<number[]>([]);
+  const [allKeysReleased, setAllKeysReleased] = useState<boolean>(true); // State for all keys released
 
   useEffect(() => {
     const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
@@ -29,6 +30,7 @@ export const useMIDI = ({ onChordPlayed }: UseMIDIOptions) => {
             setPressedNotes((prevNotes) =>
               prevNotes.includes(note) ? prevNotes : [...prevNotes, note],
             );
+            setAllKeysReleased(false); // Keys are pressed
           } else {
             // Remove note if "Note On" with zero velocity is received
             setPressedNotes((prevNotes) => prevNotes.filter((n) => n !== note));
@@ -36,7 +38,13 @@ export const useMIDI = ({ onChordPlayed }: UseMIDIOptions) => {
           break;
         case 128: // Note off
           // Remove note when "Note Off" message is received
-          setPressedNotes((prevNotes) => prevNotes.filter((n) => n !== note));
+          setPressedNotes((prevNotes) => {
+            const newNotes = prevNotes.filter((n) => n !== note);
+            if (newNotes.length === 0) {
+              setAllKeysReleased(true); // All keys are released
+            }
+            return newNotes;
+          });
           break;
         default:
           break;
@@ -52,13 +60,14 @@ export const useMIDI = ({ onChordPlayed }: UseMIDIOptions) => {
     return () => {
       // Clean up MIDI message handlers when the component is unmounted
       setPressedNotes([]);
+      setAllKeysReleased(true); // Reset keys released state on cleanup
     };
   }, []);
 
   useEffect(() => {
-    // Call the callback when pressed notes change
-    onChordPlayed(pressedNotes);
-  }, [pressedNotes, onChordPlayed]);
+    // Only trigger the callback when the exact number of notes are pressed
+    onChordPlayed(pressedNotes, allKeysReleased);
+  }, [pressedNotes, allKeysReleased, onChordPlayed]);
 
-  return { pressedNotes };
+  return { pressedNotes, allKeysReleased }; // Return the new state
 };
