@@ -1,4 +1,4 @@
-// use-single-note-practice.tsx
+// hooks/modes/use-single-note-practice.tsx
 import { useState } from "react";
 import { getRandomNote } from "@/utils/chord-utils";
 import { useMIDI } from "@/hooks/use-midi";
@@ -18,11 +18,7 @@ export const useSingleNotePractice = () => {
     allKeysReleased: boolean,
   ) => {
     if (isNoteComplete && allKeysReleased && awaitingKeyRelease) {
-      // If note is complete and keys are released, allow to advance
-      setCurrentNote((prev) => getRandomNote(lowKey, highKey, prev)); // Use range for random note generation
-      setFeedback("");
-      setIsNoteComplete(false);
-      setAwaitingKeyRelease(false);
+      skipNote(); // Use skipNote function to skip to next note
       return;
     }
 
@@ -44,6 +40,13 @@ export const useSingleNotePractice = () => {
     }
   };
 
+  const skipNote = () => {
+    setCurrentNote((prev) => getRandomNote(lowKey, highKey, prev));
+    setFeedback("");
+    setIsNoteComplete(false);
+    setAwaitingKeyRelease(false);
+  };
+
   useMIDI({
     onNotesChange: handleNotePlayed, // Hook is used specifically for note practice
   });
@@ -51,5 +54,6 @@ export const useSingleNotePractice = () => {
   return {
     currentNote,
     feedback,
+    skipNote, // Return skipNote function
   };
 };

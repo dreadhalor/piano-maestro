@@ -1,10 +1,12 @@
+// chord-practice.tsx
 import { ChordDisplay } from "./chord-display";
 import { Feedback } from "../../feedback";
 import { MidiInput } from "../../midi-input";
 import { useGameLogic } from "@/hooks/use-game-logic"; // Import useGameLogic hook
+import { Button } from "@ui/button";
 
 export const ChordPractice = () => {
-  const { currentChord, feedback } = useGameLogic({ mode: "chord" });
+  const { currentChord, feedback, skipChord } = useGameLogic({ mode: "chord" });
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
@@ -14,6 +16,10 @@ export const ChordPractice = () => {
       <ChordDisplay chord={currentChord} />
       <MidiInput />
       <Feedback message={feedback} />
+      {/* Add Skip Button */}
+      <Button className="mt-4" onClick={skipChord}>
+        Skip
+      </Button>
     </div>
   );
 };

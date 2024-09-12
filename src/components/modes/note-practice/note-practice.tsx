@@ -1,10 +1,12 @@
+// note-practice.tsx
 import { KeyDisplay } from "./key-display";
 import { Feedback } from "../../feedback";
 import { MidiInput } from "../../midi-input";
 import { useGameLogic } from "@/hooks/use-game-logic"; // Import useGameLogic hook
+import { Button } from "@ui/button";
 
 export const NotePractice = () => {
-  const { currentNote, feedback } = useGameLogic({ mode: "note" });
+  const { currentNote, feedback, skipNote } = useGameLogic({ mode: "note" });
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
@@ -14,6 +16,10 @@ export const NotePractice = () => {
       <KeyDisplay note={currentNote} />
       <MidiInput />
       <Feedback message={feedback} />
+      {/* Add Skip Button */}
+      <Button className="mt-4" onClick={skipNote}>
+        Skip
+      </Button>
     </div>
   );
 };

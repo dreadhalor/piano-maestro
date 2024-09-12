@@ -1,10 +1,27 @@
+// hooks/modes/use-chord-practice.tsx
 import { useState } from "react";
-import { getRandomChord, Chord } from "@/utils/chords";
+import { CHORDS, Chord } from "@/utils/chords";
 import { notesMatchWithExactIntervals } from "@/utils/chord-utils";
 import { useMIDI } from "@/hooks/use-midi";
+import { useSettings } from "@/providers/settings-provider";
 
 export const useChordPractice = () => {
-  const [currentChord, setCurrentChord] = useState<Chord>(getRandomChord());
+  const { enabledChordTypes } = useSettings(); // Use the enabled chord types from settings
+
+  // Filter chords by enabled types using exact key matching
+  const filteredChords = CHORDS.filter((chord) =>
+    enabledChordTypes.has(chord.type),
+  );
+
+  const getRandomChordFromEnabled = (): Chord => {
+    const randomIndex = Math.floor(Math.random() * filteredChords.length);
+    return filteredChords[randomIndex];
+  };
+
+  const [currentChord, setCurrentChord] = useState<Chord>(
+    getRandomChordFromEnabled(),
+  );
+
   const [feedback, setFeedback] = useState<string>("");
   const [isChordComplete, setIsChordComplete] = useState<boolean>(false);
   const [awaitingKeyRelease, setAwaitingKeyRelease] = useState<boolean>(false);
@@ -15,7 +32,7 @@ export const useChordPractice = () => {
   ) => {
     if (isChordComplete && allKeysReleased && awaitingKeyRelease) {
       // If chord is complete and keys are released, allow to advance
-      setCurrentChord((prev) => getRandomChord(prev));
+      setCurrentChord(getRandomChordFromEnabled());
       setFeedback("");
       setIsChordComplete(false);
       setAwaitingKeyRelease(false);
@@ -48,8 +65,16 @@ export const useChordPractice = () => {
     onNotesChange: handleChordPlayed, // Hook is used specifically for chord practice
   });
 
+  const skipChord = () => {
+    setCurrentChord(getRandomChordFromEnabled());
+    setFeedback(""); // Reset feedback on skip
+    setIsChordComplete(false);
+    setAwaitingKeyRelease(false);
+  };
+
   return {
     currentChord,
     feedback,
+    skipChord, // Include the skipChord function to be used in the UI
   };
 };

@@ -1,7 +1,7 @@
-// hooks/settings-provider.tsx
 import React, { createContext, useContext, useState } from "react";
 import { useMIDI } from "@/hooks/use-midi";
 import { useSettingsStore } from "@/hooks/use-settings-store";
+import { ChordTypeKey } from "@/utils/chords";
 
 interface SettingsContextType {
   lowKey: number;
@@ -13,6 +13,8 @@ interface SettingsContextType {
   startSetLowKey: () => void;
   startSetHighKey: () => void;
   cancelSetKey: () => void;
+  enabledChordTypes: Set<ChordTypeKey>; // Use ChordTypeKey for enabledChordTypes
+  toggleChordType: (type: ChordTypeKey) => void; // Update type to use ChordTypeKey
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -27,6 +29,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     highKey,
     setLowKey: storeSetLowKey,
     setHighKey: storeSetHighKey,
+    enabledChordTypes,
+    toggleChordType,
   } = useSettingsStore(); // Use Zustand store
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
   const [isSettingHighKey, setIsSettingHighKey] = useState<boolean>(false);
@@ -96,6 +100,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         startSetLowKey,
         startSetHighKey,
         cancelSetKey,
+        enabledChordTypes,
+        toggleChordType,
       }}
     >
       {children}

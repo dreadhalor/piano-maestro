@@ -1,4 +1,3 @@
-// settings-dialog.tsx
 import {
   Dialog,
   DialogContent,
@@ -9,6 +8,7 @@ import {
 } from "@ui/dialog";
 import { Button } from "@ui/button";
 import { useSettings } from "@/providers/settings-provider";
+import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
 import { midiToNoteName } from "@/utils/chord-utils";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
@@ -22,6 +22,8 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
     startSetLowKey,
     startSetHighKey,
     cancelSetKey,
+    enabledChordTypes,
+    toggleChordType,
   } = useSettings();
 
   return (
@@ -60,6 +62,28 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
                 >
                   {isSettingHighKey ? "Press a key..." : "Set Highest Key"}
                 </Button>
+              </div>
+            </div>
+
+            {/* Chord Type Selection */}
+            <div className="col-span-4 mt-4">
+              <h3 className="text-lg font-bold">
+                Select Chord Types for Practice
+              </h3>
+              <div className="grid grid-cols-2 gap-2">
+                {Object.entries(CHORD_TYPES).map(([key, label]) => (
+                  <label key={key} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={
+                        enabledChordTypes &&
+                        enabledChordTypes.has(key as ChordTypeKey)
+                      } // Ensure correct type
+                      onChange={() => toggleChordType(key as ChordTypeKey)} // Use key for toggling
+                    />
+                    {label}
+                  </label>
+                ))}
               </div>
             </div>
           </div>

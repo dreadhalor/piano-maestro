@@ -1,3 +1,4 @@
+// use-game-logic.tsx
 import { useSingleNotePractice } from "./modes/use-single-note-practice";
 import { useChordPractice } from "./modes/use-chord-practice";
 import { usePlaygroundMode } from "./modes/use-playground-mode";
@@ -17,12 +18,14 @@ export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
       return {
         currentNote: notePractice.currentNote,
         feedback: notePractice.feedback,
+        skipNote: notePractice.skipNote,
         mode,
       };
     case "chord":
       return {
         currentChord: chordPractice.currentChord,
         feedback: chordPractice.feedback,
+        skipChord: chordPractice.skipChord,
         mode,
       };
     case "playground":
