@@ -1,3 +1,4 @@
+// settings-dialog.tsx
 import {
   Dialog,
   DialogContent,
@@ -20,10 +21,15 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
     startSetLowKey,
     startSetHighKey,
     midiToNoteName,
+    cancelSetKey, // Add a function to cancel key setting
   } = useSettings();
 
   return (
-    <Dialog>
+    <Dialog
+      onOpenChange={(isOpen) => {
+        if (!isOpen) cancelSetKey(); // Reset state when dialog is closed
+      }}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="pb-3 sm:max-w-[425px]">
         <DialogHeader>
@@ -43,14 +49,14 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
               </p>
               <div className="mt-2 flex gap-4">
                 <Button
-                  className={`flex-1 ${isSettingLowKey ? "bg-green-500 text-white" : ""}`}
-                  onClick={startSetLowKey}
+                  className="flex-1"
+                  onClick={isSettingLowKey ? cancelSetKey : startSetLowKey} // Toggle action
                 >
                   {isSettingLowKey ? "Press a key..." : "Set Lowest Key"}
                 </Button>
                 <Button
-                  className={`flex-1 ${isSettingHighKey ? "bg-blue-500 text-white" : ""}`}
-                  onClick={startSetHighKey}
+                  className="flex-1"
+                  onClick={isSettingHighKey ? cancelSetKey : startSetHighKey} // Toggle action
                 >
                   {isSettingHighKey ? "Press a key..." : "Set Highest Key"}
                 </Button>

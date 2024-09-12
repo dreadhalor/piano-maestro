@@ -1,8 +1,8 @@
 // settings-context.tsx
 import React, { createContext, useContext, useState } from "react";
 import { useMIDI } from "@/hooks/use-midi";
+import { useSettingsStore } from "@/hooks/use-settings-store";
 
-// Define the type for the context value
 interface SettingsContextType {
   lowKey: number;
   highKey: number;
@@ -12,20 +12,23 @@ interface SettingsContextType {
   isSettingHighKey: boolean;
   startSetLowKey: () => void;
   startSetHighKey: () => void;
+  cancelSetKey: () => void;
   midiToNoteName: (midiNumber: number) => string;
 }
 
-// Create the context
 const SettingsContext = createContext<SettingsContextType | undefined>(
   undefined,
 );
 
-// Provide the context
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [lowKey, setLowKey] = useState<number>(36); // MIDI for C2
-  const [highKey, setHighKey] = useState<number>(84); // MIDI for C6
+  const {
+    lowKey,
+    highKey,
+    setLowKey: storeSetLowKey,
+    setHighKey: storeSetHighKey,
+  } = useSettingsStore(); // Use Zustand store
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
   const [isSettingHighKey, setIsSettingHighKey] = useState<boolean>(false);
 
@@ -48,7 +51,18 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     return `${note}${octave}`;
   };
 
-  // Use the MIDI hook to detect key presses
+  const setLowKey = (value: number) => {
+    if (value !== lowKey) {
+      storeSetLowKey(value);
+    }
+  };
+
+  const setHighKey = (value: number) => {
+    if (value !== highKey) {
+      storeSetHighKey(value);
+    }
+  };
+
   useMIDI({
     onNotesChange: (notes) => {
       if (notes.length === 0) return;
@@ -57,7 +71,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (isSettingLowKey) {
         if (midiValue > highKey) {
-          setLowKey(highKey);
+          setLowKey(highKey); // Swap if necessary
           setHighKey(midiValue);
         } else {
           setLowKey(midiValue);
@@ -65,7 +79,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsSettingLowKey(false);
       } else if (isSettingHighKey) {
         if (midiValue < lowKey) {
-          setHighKey(lowKey);
+          setHighKey(lowKey); // Swap if necessary
           setLowKey(midiValue);
         } else {
           setHighKey(midiValue);
@@ -85,6 +99,11 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsSettingLowKey(false);
   };
 
+  const cancelSetKey = () => {
+    setIsSettingLowKey(false);
+    setIsSettingHighKey(false);
+  };
+
   return (
     <SettingsContext.Provider
       value={{
@@ -96,6 +115,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         isSettingHighKey,
         startSetLowKey,
         startSetHighKey,
+        cancelSetKey,
         midiToNoteName,
       }}
     >
@@ -104,7 +124,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-// Custom hook to use the Settings context
 export const useSettings = () => {
   const context = useContext(SettingsContext);
   if (!context) {
