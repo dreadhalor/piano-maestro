@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
 
 // Zustand store for settings
@@ -35,23 +35,19 @@ export const useSettingsStore = create<SettingsState>()(
     }),
     {
       name: "piano-maestro-settings",
-      // Custom serialize and deserialize functions to handle Sets properly
-      serialize: (state) =>
-        JSON.stringify({
-          ...state,
-          state: {
-            ...state.state,
-            enabledChordTypes: Array.from(state.state.enabledChordTypes), // Serialize Set to array
-          },
-        }),
-      deserialize: (str) => {
-        const data = JSON.parse(str);
+      storage: createJSONStorage(() => localStorage),
+      // Customize serialization and deserialization
+      partialize: (state) => ({
+        lowKey: state.lowKey,
+        highKey: state.highKey,
+        enabledChordTypes: Array.from(state.enabledChordTypes), // Serialize Set to array
+      }),
+      merge: (persistedState, currentState) => {
+        const persisted = persistedState as Partial<SettingsState>; // Cast persistedState to partial
         return {
-          ...data,
-          state: {
-            ...data.state,
-            enabledChordTypes: new Set(data.state.enabledChordTypes), // Deserialize array back to Set
-          },
+          ...currentState,
+          ...persisted,
+          enabledChordTypes: new Set(persisted.enabledChordTypes || []), // Deserialize array back to Set
         };
       },
     },
