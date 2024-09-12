@@ -16,12 +16,16 @@ export const PracticeSidebar = () => {
         className="gap-4"
       >
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="1-key" id="1-key" />
-          <Label htmlFor="1-key">Single Key</Label>
+          <RadioGroupItem value="note" id="note" />
+          <Label htmlFor="note">Note</Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="chord" id="chord" />
           <Label htmlFor="chord">Chord</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="playground" id="playground" />
+          <Label htmlFor="playground">Playground</Label>
         </div>
       </RadioGroup>
     </div>

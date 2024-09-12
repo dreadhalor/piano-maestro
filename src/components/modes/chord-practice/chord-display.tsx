@@ -1,12 +1,16 @@
 import React from "react";
-import { Chord } from "../utils/chords";
-import { midiToNoteNameWithoutOctave } from "../utils/chord-utils"; // Import the utility function
+import { Chord } from "@/utils/chords";
+import { midiToNoteNameWithoutOctave } from "@/utils/chord-utils"; // Import the utility function
 
 interface ChordDisplayProps {
-  chord: Chord;
+  chord?: Chord;
 }
 
-const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
+export const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
+  if (!chord) {
+    return null;
+  }
+
   return (
     <div>
       <h2 className="mb-4 text-2xl font-bold text-gray-800">
@@ -18,5 +22,3 @@ const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
     </div>
   );
 };
-
-export default ChordDisplay;

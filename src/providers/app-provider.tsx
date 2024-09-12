@@ -1,9 +1,8 @@
 import { createContext, useContext, useState } from "react";
 
-export type PracticeMode = "chord" | "basic";
+export type PracticeMode = "chord" | "note" | "playground";
 
 type AppContextType = {
-  // const [mode, setMode] = useState<"chord" | "basic">("chord"); // Mode state
   mode: PracticeMode;
   setMode: (mode: PracticeMode) => void;
 };

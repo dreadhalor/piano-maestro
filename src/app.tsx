@@ -1,15 +1,25 @@
-import MidiInput from "./components/midi-input";
-import ChordDisplay from "./components/chord-display";
-import Feedback from "./components/feedback";
-import KeyDisplay from "./components/key-display";
-
+import React from "react";
 import { useAppContext } from "./providers/app-provider";
 import { PracticeSidebar } from "./components/practice-sidebar";
-import { useGameLogic } from "./hooks/use-game-logic";
+import { ChordPractice } from "@/components/modes/chord-practice/chord-practice";
+import { NotePractice } from "@/components/modes/note-practice/note-practice";
+import { Playground } from "@/components/modes/playground/playground";
 
-const App = () => {
+const App: React.FC = () => {
   const { mode } = useAppContext(); // Get mode from context
-  const { currentChord, currentNote, feedback } = useGameLogic({ mode }); // Use the hook
+
+  const renderModeComponent = () => {
+    switch (mode) {
+      case "chord":
+        return <ChordPractice />;
+      case "note":
+        return <NotePractice />;
+      case "playground":
+        return <Playground />;
+      default:
+        return <div>Please select a mode from the sidebar.</div>;
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-gray-100 p-4">
@@ -18,21 +28,7 @@ const App = () => {
         <h1 className="mb-6 text-4xl font-bold text-blue-600">
           Piano Learning Game
         </h1>
-
-        {mode === "chord" ? (
-          <>
-            <ChordDisplay chord={currentChord} />
-            <MidiInput onChordPlayed={() => {}} />{" "}
-            {/* No longer need to pass handlers here */}
-          </>
-        ) : (
-          <>
-            <KeyDisplay note={currentNote} />
-            <MidiInput onChordPlayed={() => {}} />{" "}
-            {/* No longer need to pass handlers here */}
-          </>
-        )}
-        <Feedback message={feedback} />
+        {renderModeComponent()} {/* Render the component based on the mode */}
       </div>
     </div>
   );
