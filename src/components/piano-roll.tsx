@@ -1,17 +1,18 @@
 import { useSynthSound } from "@/hooks/use-synth-sound";
 import { useSettings } from "@/providers/settings-provider";
+import { midiToNoteName } from "@/utils/chord-utils";
 import { cn } from "@/lib/utils";
 
 export const PianoRoll = () => {
   const { pressedNotes } = useSynthSound(); // Get pressed notes from hook
-  const { lowKey, highKey, midiToNoteName } = useSettings(); // Access range from settings
+  const { lowKey, highKey } = useSettings(); // Access range from settings
 
   // Define white and black keys dynamically based on the user-defined range
   const whiteKeys: { note: string; midiNumber: number }[] = [];
   const blackKeys = [];
 
   // MIDI notes that are black keys
-  const blackKeyNotes = ["C#", "D#", "F#", "G#", "A#"];
+  const blackKeyNotes = ["C#", "Eb", "F#", "G#", "Bb"];
 
   for (let i = lowKey; i <= highKey; i++) {
     const noteName = midiToNoteName(i);

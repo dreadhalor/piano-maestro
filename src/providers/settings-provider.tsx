@@ -1,4 +1,4 @@
-// settings-context.tsx
+// hooks/settings-provider.tsx
 import React, { createContext, useContext, useState } from "react";
 import { useMIDI } from "@/hooks/use-midi";
 import { useSettingsStore } from "@/hooks/use-settings-store";
@@ -13,7 +13,6 @@ interface SettingsContextType {
   startSetLowKey: () => void;
   startSetHighKey: () => void;
   cancelSetKey: () => void;
-  midiToNoteName: (midiNumber: number) => string;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -31,25 +30,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   } = useSettingsStore(); // Use Zustand store
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
   const [isSettingHighKey, setIsSettingHighKey] = useState<boolean>(false);
-
-  const midiToNoteName = (midiNumber: number): string => {
-    const note = [
-      "C",
-      "C#",
-      "D",
-      "D#",
-      "E",
-      "F",
-      "F#",
-      "G",
-      "G#",
-      "A",
-      "A#",
-      "B",
-    ][midiNumber % 12];
-    const octave = Math.floor(midiNumber / 12) - 1; // MIDI note 0 is C-1
-    return `${note}${octave}`;
-  };
 
   const setLowKey = (value: number) => {
     if (value !== lowKey) {
@@ -116,7 +96,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         startSetLowKey,
         startSetHighKey,
         cancelSetKey,
-        midiToNoteName,
       }}
     >
       {children}

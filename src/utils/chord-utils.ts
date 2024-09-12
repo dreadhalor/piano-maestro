@@ -62,8 +62,6 @@ export const getRandomNote = (
   highKey: number,
   currentNote?: number,
 ): number => {
-  console.log("lowKey", lowKey);
-  console.log("highKey", highKey);
   let newNote = getTrueRandomNoteInRange(lowKey, highKey); // Generate a random note within the range
   if (!currentNote || lowKey === highKey) return newNote;
 

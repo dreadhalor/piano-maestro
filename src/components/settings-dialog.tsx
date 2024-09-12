@@ -9,6 +9,7 @@ import {
 } from "@ui/dialog";
 import { Button } from "@ui/button";
 import { useSettings } from "@/providers/settings-provider";
+import { midiToNoteName } from "@/utils/chord-utils";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -20,8 +21,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
     isSettingHighKey,
     startSetLowKey,
     startSetHighKey,
-    midiToNoteName,
-    cancelSetKey, // Add a function to cancel key setting
+    cancelSetKey,
   } = useSettings();
 
   return (
