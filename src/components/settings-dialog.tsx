@@ -10,6 +10,8 @@ import { Button } from "@ui/button";
 import { useSettings } from "@/providers/settings-provider";
 import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
 import { midiToNoteName } from "@/utils/chord-utils";
+import { Checkbox } from "@ui/checkbox";
+import { Label } from "@ui/label";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -40,7 +42,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
             Edit your exercise preferences here.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="flex flex-col gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             {/* Display current range */}
             <div className="col-span-4">
@@ -67,22 +69,26 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
 
             {/* Chord Type Selection */}
             <div className="col-span-4 mt-4">
-              <h3 className="text-lg font-bold">
+              <h3 className="mb-4 text-lg font-bold">
                 Select Chord Types for Practice
               </h3>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-3">
                 {Object.entries(CHORD_TYPES).map(([key, label]) => (
-                  <label key={key} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
+                  <div className="flex items-center space-x-2" key={key}>
+                    <Checkbox
+                      id={key}
                       checked={
                         enabledChordTypes &&
                         enabledChordTypes.has(key as ChordTypeKey)
-                      } // Ensure correct type
-                      onChange={() => toggleChordType(key as ChordTypeKey)} // Use key for toggling
+                      }
+                      onCheckedChange={() =>
+                        toggleChordType(key as ChordTypeKey)
+                      }
                     />
-                    {label}
-                  </label>
+                    <Label htmlFor={key} className="flex items-center gap-2">
+                      {label}
+                    </Label>
+                  </div>
                 ))}
               </div>
             </div>
