@@ -6,13 +6,16 @@ import { getRandomChord, Chord } from "./utils/chords"; // Import from chords.ts
 import { getRandomNote } from "./utils/chord-utils"; // Import utility for random note
 import KeyDisplay from "./components/key-display"; // New component for basic mode
 
+import { useAppContext } from "./providers/app-provider";
+import { PracticeSidebar } from "./components/practice-sidebar";
+
 const App: React.FC = () => {
   const [currentChord, setCurrentChord] = useState<Chord>(getRandomChord());
   const [currentNote, setCurrentNote] = useState<number>(getRandomNote());
   const [feedback, setFeedback] = useState<string>("");
   const [isChordComplete, setIsChordComplete] = useState<boolean>(false);
   const [isNoteComplete, setIsNoteComplete] = useState<boolean>(false);
-  const [mode, setMode] = useState<"chord" | "basic">("chord"); // Mode state
+  const { mode } = useAppContext();
 
   useEffect(() => {
     if (isChordComplete) {
@@ -60,35 +63,27 @@ const App: React.FC = () => {
     }
   };
 
-  const switchMode = () => {
-    setMode((prevMode) => (prevMode === "chord" ? "basic" : "chord"));
-    setFeedback(""); // Reset feedback when switching modes
-  };
-
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 p-4">
-      <h1 className="mb-6 text-4xl font-bold text-blue-600">
-        Piano Learning Game
-      </h1>
-      <button
-        onClick={switchMode}
-        className="mb-4 rounded bg-blue-500 px-4 py-2 text-white transition hover:bg-blue-600"
-      >
-        Switch to{" "}
-        {mode === "chord" ? "Basic Key Learning Mode" : "Chord Learning Mode"}
-      </button>
-      {mode === "chord" ? (
-        <>
-          <ChordDisplay chord={currentChord} />
-          <MidiInput onChordPlayed={handleChordPlayed} />
-        </>
-      ) : (
-        <>
-          <KeyDisplay note={currentNote} />
-          <MidiInput onChordPlayed={handleNotePlayed} />
-        </>
-      )}
-      <Feedback message={feedback} />
+    <div className="flex min-h-screen bg-gray-100 p-4">
+      <PracticeSidebar />
+      <div className="flex flex-1 flex-col items-center justify-center border-4 border-red-400">
+        <h1 className="mb-6 text-4xl font-bold text-blue-600">
+          Piano Learning Game
+        </h1>
+
+        {mode === "chord" ? (
+          <>
+            <ChordDisplay chord={currentChord} />
+            <MidiInput onChordPlayed={handleChordPlayed} />
+          </>
+        ) : (
+          <>
+            <KeyDisplay note={currentNote} />
+            <MidiInput onChordPlayed={handleNotePlayed} />
+          </>
+        )}
+        <Feedback message={feedback} />
+      </div>
     </div>
   );
 };

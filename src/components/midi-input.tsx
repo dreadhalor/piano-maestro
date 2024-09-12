@@ -1,3 +1,5 @@
+// components/midi-input.tsx
+
 import React, { useEffect, useState } from "react";
 import { midiToNoteName } from "../utils/chord-utils";
 

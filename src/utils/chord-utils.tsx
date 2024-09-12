@@ -1,4 +1,4 @@
-// utils/chordUtils.ts
+// utils/chord-utils.ts
 
 export interface Chord {
   name: string;
