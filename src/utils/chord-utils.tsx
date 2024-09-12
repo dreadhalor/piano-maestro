@@ -52,7 +52,8 @@ export const notesMatchWithExactIntervals = (
 
 // Function to get a random note from a single octave (e.g., C4 to B4)
 const getTrueRandomNote = (): number => {
-  const octave = 4; // Specify the octave you want to use
+  // Random octave between 2 and 5 (C2 to B5)
+  const octave = Math.floor(Math.random() * 4) + 2;
   const randomNote = Math.floor(Math.random() * 12); // Random number between 0 and 11
   return 12 * (octave + 1) + randomNote; // Calculate MIDI note number for the given octave
 };

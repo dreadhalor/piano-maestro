@@ -94,8 +94,7 @@ export const PianoRoll = () => {
           <div
             key={key}
             className={cn(
-              "relative flex h-40 w-12 items-end justify-center border border-gray-400 bg-white",
-              "shadow-md hover:bg-gray-200 active:bg-blue-200",
+              "relative flex h-40 w-12 items-end justify-center border border-gray-400 bg-white shadow-md",
               isKeyPressed(key) && "bg-blue-300",
             )}
           >
