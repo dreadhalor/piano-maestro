@@ -1,3 +1,4 @@
+import { useSynthSound } from "@/hooks/use-synth-sound";
 import { createContext, useContext, useState } from "react";
 
 export type PracticeMode = "chord" | "note" | "playground";
@@ -19,6 +20,8 @@ export const useAppContext = () => {
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<PracticeMode>("playground");
+
+  useSynthSound();
 
   return (
     <AppContext.Provider value={{ mode, setMode }}>
