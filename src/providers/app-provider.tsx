@@ -1,4 +1,3 @@
-import { useSynthSound } from "@/hooks/use-synth-sound";
 import { createContext, useContext, useState } from "react";
 
 export type PracticeMode = "chord" | "note" | "playground";
