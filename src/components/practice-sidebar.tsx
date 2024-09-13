@@ -23,7 +23,7 @@ export const PracticeSidebar = () => {
         onValueChange={(value) => setMode(value as PracticeMode)}
         className="flex flex-col gap-2"
       >
-        {["note", "chord", "playground"].map((value) => (
+        {Object.keys(tabColors).map((value) => (
           <Label
             key={value}
             htmlFor={value}
