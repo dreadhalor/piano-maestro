@@ -1,10 +1,10 @@
-import { useSynthSound } from "@/hooks/use-synth-sound";
-import { useSettings } from "@/providers/settings-provider";
+import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi"; // Use processed MIDI hook
+import { useSettings } from "@/hooks/use-settings";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { cn } from "@/lib/utils";
 
 export const PianoRoll = () => {
-  const { pressedNotes } = useSynthSound(); // Get pressed notes from hook
+  const { pressedNotes } = useProcessedMIDI(); // Get processed notes from hook
   const { lowKey, highKey } = useSettings(); // Access range from settings
 
   // Define white and black keys dynamically based on the user-defined range

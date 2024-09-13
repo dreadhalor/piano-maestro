@@ -5,15 +5,18 @@ import { AppProvider } from "@/providers/app-provider.tsx";
 import { SettingsProvider } from "@/providers/settings-provider.tsx";
 import { SoundProvider } from "./providers/sound-provider.tsx";
 import "./index.css";
+import { MIDIProvider } from "./providers/midi-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <SoundProvider>
-      <AppProvider>
-        <SettingsProvider>
-          <App />
-        </SettingsProvider>
-      </AppProvider>
-    </SoundProvider>
+    <MIDIProvider>
+      <SoundProvider>
+        <AppProvider>
+          <SettingsProvider>
+            <App />
+          </SettingsProvider>
+        </AppProvider>
+      </SoundProvider>
+    </MIDIProvider>
   </StrictMode>,
 );

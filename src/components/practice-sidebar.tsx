@@ -1,7 +1,8 @@
 import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
 import { Label } from "@ui/label";
-import { PracticeMode, useAppContext } from "@/providers/app-provider";
-import { cn } from "@/lib/utils"; // Import utility for conditional classes
+import { PracticeMode } from "@/providers/app-provider";
+import { useAppContext } from "@/hooks/use-app-context";
+import { cn } from "@/lib/utils";
 
 const tabColors: Record<string, string> = {
   note: "hover:bg-green-100 text-green-700 border-green-300",

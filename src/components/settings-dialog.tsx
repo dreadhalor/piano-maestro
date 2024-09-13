@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "@ui/dialog";
 import { Button } from "@ui/button";
-import { useSettings } from "@/providers/settings-provider";
+import { useSettings } from "@/hooks/use-settings";
 import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { Checkbox } from "@ui/checkbox";

@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import * as Tone from "tone"; // Import Tone.js for audio synthesis
-import { useMIDI } from "./use-midi"; // Import the base MIDI hook
+import { useRawMIDI } from "@/hooks/use-midi/use-raw-midi";
 
 export const useSynthSound = () => {
   // Ref to manage the Sampler instance
@@ -75,43 +75,51 @@ export const useSynthSound = () => {
     };
   }, []);
 
-  // Handle MIDI notes changes and play sound
-  const handleNotesChange = (notes: number[], allKeysReleased: boolean) => {
+  // Handle raw MIDI messages
+  const handleMIDIMessage = useCallback((message: WebMidi.MIDIMessageEvent) => {
     if (!sampler.current || !isSynthInitialized.current) return; // Ensure the sampler is initialized and not disposed
 
-    if (allKeysReleased) {
-      // If all keys are released, stop all sounds
-      sampler.current.releaseAll();
-      activeNotes.current.clear(); // Clear all active notes
-      return;
+    const [command, note, velocity] = message.data;
+    const noteName = midiToToneNote(note);
+
+    switch (command) {
+      case 144: // Note on
+        if (velocity > 0) {
+          if (!activeNotes.current.has(noteName)) {
+            sampler.current?.triggerAttack(noteName, undefined, velocity / 127); // Use velocity to control volume
+            activeNotes.current.add(noteName);
+          }
+        } else {
+          // If velocity is 0, treat as Note Off
+          if (activeNotes.current.has(noteName)) {
+            sampler.current?.triggerRelease(noteName);
+            activeNotes.current.delete(noteName);
+          }
+        }
+        break;
+      case 128: // Note off
+        if (activeNotes.current.has(noteName)) {
+          sampler.current?.triggerRelease(noteName);
+          activeNotes.current.delete(noteName);
+        }
+        break;
+      default:
+        break;
     }
+  }, []);
 
-    const noteNames = notes.map(midiToToneNote); // Convert MIDI notes to Tone.js note names
+  // Use the raw MIDI hook to register the handler
+  const { onMIDIMessage, isMIDIDeviceConnected } = useRawMIDI();
 
-    // Find newly pressed notes
-    noteNames.forEach((note) => {
-      if (!activeNotes.current.has(note)) {
-        sampler.current?.triggerAttack(note); // Play new note
-        activeNotes.current.add(note); // Mark note as active
-      }
-    });
+  useEffect(() => {
+    onMIDIMessage(handleMIDIMessage); // Register the MIDI handler
 
-    // Find released notes
-    activeNotes.current.forEach((note) => {
-      if (!noteNames.includes(note)) {
-        sampler.current?.triggerRelease(note); // Stop playing released note
-        activeNotes.current.delete(note); // Remove from active notes
-      }
-    });
-  };
-
-  // Use the MIDI hook to get MIDI input and handle notes change
-  const { pressedNotes, isMIDIDeviceConnected } = useMIDI({
-    onNotesChange: handleNotesChange, // Pass handler to update notes and play sound
-  });
+    return () => {
+      // Optionally clean up if needed
+    };
+  }, [handleMIDIMessage, onMIDIMessage]);
 
   return {
-    pressedNotes,
     isMIDIDeviceConnected,
   };
 };

@@ -1,4 +1,4 @@
-import { useAppContext } from "./providers/app-provider";
+import { useAppContext } from "@/hooks/use-app-context";
 import { PracticeSidebar } from "./components/practice-sidebar";
 import { ChordPractice } from "@/components/modes/chord-practice/chord-practice";
 import { NotePractice } from "@/components/modes/note-practice/note-practice";

@@ -1,8 +1,7 @@
-// hooks/modes/use-single-note-practice.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getRandomNote } from "@/utils/chord-utils";
-import { useMIDI } from "@/hooks/use-midi";
-import { useSettings } from "@/providers/settings-provider"; // Import the settings hook to access the range
+import { useSettings } from "@/hooks/use-settings";
+import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi";
 
 export const useSingleNotePractice = () => {
   const { lowKey, highKey } = useSettings(); // Access the user-defined range from settings
@@ -11,29 +10,27 @@ export const useSingleNotePractice = () => {
   );
   const [feedback, setFeedback] = useState<string>("");
   const [isNoteComplete, setIsNoteComplete] = useState<boolean>(false);
-  const [awaitingKeyRelease, setAwaitingKeyRelease] = useState<boolean>(false);
+
+  const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
   const handleNotePlayed = (
     playedNotes: number[],
     allKeysReleased: boolean,
   ) => {
-    if (isNoteComplete && allKeysReleased && awaitingKeyRelease) {
-      skipNote(); // Use skipNote function to skip to next note
+    if (isNoteComplete && allKeysReleased) {
+      // If note is complete and all keys are released, advance to the next question
+      skipNote();
       return;
     }
 
     if (isNoteComplete) {
-      if (allKeysReleased) {
-        setAwaitingKeyRelease(true); // Set awaiting release to switch question
-      }
-      return; // Do nothing if note is already validated
+      return; // Do nothing if note is already validated and waiting for release
     }
 
     if (playedNotes.length === 1) {
       if (playedNotes.includes(currentNote)) {
         setFeedback("Correct!");
         setIsNoteComplete(true);
-        setAwaitingKeyRelease(false); // Wait for user to release the key
       } else {
         setFeedback("Try Again!");
       }
@@ -44,16 +41,16 @@ export const useSingleNotePractice = () => {
     setCurrentNote((prev) => getRandomNote(lowKey, highKey, prev));
     setFeedback("");
     setIsNoteComplete(false);
-    setAwaitingKeyRelease(false);
   };
 
-  useMIDI({
-    onNotesChange: handleNotePlayed, // Hook is used specifically for note practice
-  });
+  // Use useEffect to call handleNotePlayed only when necessary
+  useEffect(() => {
+    handleNotePlayed(pressedNotes, allKeysReleased);
+  }, [pressedNotes, allKeysReleased]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     currentNote,
     feedback,
-    skipNote, // Return skipNote function
+    skipNote,
   };
 };
