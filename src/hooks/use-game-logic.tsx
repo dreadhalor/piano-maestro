@@ -9,11 +9,16 @@ export interface UseGameLogicOptions {
 }
 
 export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
+  const playgroundMode = usePlaygroundMode();
   const notePractice = useSingleNotePractice();
   const chordPractice = useChordPractice();
-  const playgroundMode = usePlaygroundMode();
 
   switch (mode) {
+    case "playground":
+      return {
+        pressedNotes: playgroundMode.pressedNotes,
+        mode,
+      };
     case "note":
       return {
         currentNote: notePractice.currentNote,
@@ -28,11 +33,7 @@ export const useGameLogic = ({ mode }: UseGameLogicOptions) => {
         skipChord: chordPractice.skipChord,
         mode,
       };
-    case "playground":
-      return {
-        pressedNotes: playgroundMode.pressedNotes,
-        mode,
-      };
+
     default:
       return {
         mode,

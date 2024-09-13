@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 
-export type PracticeMode = "chord" | "note" | "playground";
+export type PracticeMode = "playground" | "chord" | "note" | "progression";
 
 type AppContextType = {
   mode: PracticeMode;

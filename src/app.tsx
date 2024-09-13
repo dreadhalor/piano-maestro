@@ -1,11 +1,12 @@
 import { useAppContext } from "@/hooks/use-app-context";
 import { PracticeSidebar } from "./components/practice-sidebar";
-import { ChordPractice } from "@/components/modes/chord-practice/chord-practice";
-import { NotePractice } from "@/components/modes/note-practice/note-practice";
 import { Playground } from "@/components/modes/playground/playground";
-import { PianoRoll } from "./components/piano-roll";
+import { NotePractice } from "@/components/modes/note-practice/note-practice";
+import { ChordPractice } from "@/components/modes/chord-practice/chord-practice";
+import { ChordProgressionPractice } from "@/components/modes/chord-progression-practice/chord-progression-practice";
+import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
-import { SettingsDialog } from "./components/settings-dialog";
+import { SettingsDialog } from "@/components/settings-dialog";
 import { Button } from "@ui/button";
 
 const App = () => {
@@ -14,12 +15,14 @@ const App = () => {
   // Function to render the selected practice mode component
   const renderModeComponent = () => {
     switch (mode) {
-      case "chord":
-        return <ChordPractice />;
-      case "note":
-        return <NotePractice />;
       case "playground":
         return <Playground />;
+      case "note":
+        return <NotePractice />;
+      case "chord":
+        return <ChordPractice />;
+      case "progression":
+        return <ChordProgressionPractice />;
       default:
         return <div>Please select a mode from the sidebar.</div>;
     }
@@ -43,9 +46,8 @@ const App = () => {
         </h1>
 
         {/* Main Content Area with Distinct Background */}
-        <div className="my-auto flex h-[400px] w-full max-w-2xl flex-col items-center justify-center rounded-lg border border-gray-300 bg-gradient-to-b from-white to-gray-50 p-8 shadow-lg">
-          {renderModeComponent()}{" "}
-          {/* Render Mode Component directly without additional card */}
+        <div className="my-auto flex w-full max-w-2xl flex-col items-center justify-center rounded-lg border border-gray-300 bg-gradient-to-b from-white to-gray-50 p-8 shadow-lg">
+          {renderModeComponent()}
         </div>
 
         {/* Piano Roll */}
