@@ -1,12 +1,17 @@
-import { useEffect, useRef, useCallback } from "react";
+// use-synth-sound.tsx
+import { useEffect, useRef, useCallback, useState } from "react";
 import * as Tone from "tone"; // Import Tone.js for audio synthesis
 import { useRawMIDI } from "@/hooks/use-midi/use-raw-midi";
 
 export const useSynthSound = () => {
   // Ref to manage the Sampler instance
   const sampler = useRef<Tone.Sampler | null>(null);
+  const volumeNode = useRef<Tone.Volume | null>(null); // Volume node to control volume
   const activeNotes = useRef<Set<string>>(new Set()); // Track active notes to avoid retriggering
   const isSynthInitialized = useRef(false); // Track if synth is initialized
+
+  // State for volume control
+  const [volume, setVolume] = useState(100); // Default volume is 100%
 
   // Function to convert MIDI note number to Tone.js note format
   const midiToToneNote = (midiNumber: number): string => {
@@ -28,9 +33,12 @@ export const useSynthSound = () => {
     return `${note}${octave}`;
   };
 
-  // Initialize the Sampler and AudioContext only once
+  // Initialize the Sampler, Volume, and AudioContext only once
   useEffect(() => {
     if (!isSynthInitialized.current) {
+      // Create a new volume node
+      volumeNode.current = new Tone.Volume(0).toDestination(); // Start with neutral volume (0 dB)
+
       // Load piano samples for different octaves
       sampler.current = new Tone.Sampler(
         {
@@ -46,7 +54,7 @@ export const useSynthSound = () => {
         () => {
           console.log("Sampler loaded!");
         },
-      ).toDestination();
+      ).connect(volumeNode.current); // Connect the sampler to the volume node
 
       // Set the envelope release time to 2 seconds for a natural fade-out
       sampler.current.set({
@@ -72,7 +80,25 @@ export const useSynthSound = () => {
         sampler.current = null; // Set sampler to null after disposing
         isSynthInitialized.current = false; // Mark synth as uninitialized
       }
+      if (volumeNode.current) {
+        volumeNode.current.dispose(); // Clean up the volume node on unmount
+        volumeNode.current = null;
+      }
     };
+  }, []);
+
+  // Function to map percentage to dB and handle changing volume
+  const changeVolume = useCallback((percent: number) => {
+    setVolume(percent);
+    if (volumeNode.current) {
+      // Convert percentage to dB
+      let dbValue: number;
+      if (percent === 0)
+        dbValue = -Infinity; // Mute
+      else dbValue = 20 * Math.log10(percent / 100); // Above 0 dB
+
+      volumeNode.current.volume.value = dbValue; // Set volume using Tone.js' Volume class
+    }
   }, []);
 
   // Handle raw MIDI messages
@@ -121,5 +147,7 @@ export const useSynthSound = () => {
 
   return {
     isMIDIDeviceConnected,
+    volume,
+    changeVolume, // Provide function to change volume
   };
 };

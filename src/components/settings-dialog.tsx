@@ -35,7 +35,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="pb-3 sm:max-w-[425px]">
+      <DialogContent className="pb-4 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>
