@@ -5,9 +5,9 @@ import { useAppContext } from "@/hooks/use-app-context";
 import { cn } from "@/lib/utils";
 
 const tabColors: Record<string, string> = {
+  playground: "hover:bg-purple-100 text-purple-700 border-purple-300",
   note: "hover:bg-green-100 text-green-700 border-green-300",
   chord: "hover:bg-blue-100 text-blue-700 border-blue-300",
-  playground: "hover:bg-purple-100 text-purple-700 border-purple-300",
 };
 
 export const PracticeSidebar = () => {
