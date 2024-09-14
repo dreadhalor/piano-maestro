@@ -25,11 +25,6 @@ export const ProgressionDisplay: React.FC<ProgressionDisplayProps> = ({
         </h2>
         {nextChord && <p className="text-sm">Next Chord: {nextChord.name}</p>}
       </div>
-      {/* {nextChord && (
-        <p className="text-lg text-gray-600">
-          Next Chord: <span className="font-semibold">{nextChord.name}</span>
-        </p>
-      )} */}
     </div>
   );
 };

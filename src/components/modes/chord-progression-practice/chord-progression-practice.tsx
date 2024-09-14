@@ -1,10 +1,10 @@
 // components/chord-progression-practice.tsx
 import { useChordProgressionPractice } from "@/hooks/modes/use-chord-progression-practice";
 import { ChordDisplay } from "../chord-practice/chord-display";
-import { Feedback } from "../../feedback";
-import { MidiInput } from "../../midi-input";
+import { Feedback } from "@/components/feedback";
+import { MidiInput } from "@/components/midi-input";
 import { ProgressionDisplay } from "./progression-display";
-import { Button } from "@ui/button"; // Import Button component
+import { Button } from "@ui/button";
 
 export const ChordProgressionPractice = () => {
   const { currentChord, nextChord, feedback, progression, skipProgression } =

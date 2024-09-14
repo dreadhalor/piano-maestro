@@ -42,6 +42,10 @@ export const CHORD_TYPES = {
     label: "Diminished",
     intervals: [0, 3, 6],
   },
+  augmented: {
+    label: "Augmented",
+    intervals: [0, 4, 8],
+  },
   "major-7": {
     label: "Major 7",
     intervals: [0, 4, 7, 11],
@@ -53,10 +57,6 @@ export const CHORD_TYPES = {
   "dominant-7": {
     label: "Dominant 7",
     intervals: [0, 4, 7, 10],
-  },
-  augmented: {
-    label: "Augmented",
-    intervals: [0, 4, 8],
   },
   "suspended-2": {
     label: "Suspended 2",

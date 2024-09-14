@@ -1,12 +1,12 @@
 // note-practice.tsx
 import { KeyDisplay } from "./key-display";
-import { Feedback } from "../../feedback";
-import { MidiInput } from "../../midi-input";
-import { useGameLogic } from "@/hooks/use-game-logic"; // Import useGameLogic hook
+import { Feedback } from "@/components/feedback";
+import { MidiInput } from "@/components/midi-input";
 import { Button } from "@ui/button";
+import { useSingleNotePractice } from "@/hooks/modes/use-single-note-practice";
 
 export const NotePractice = () => {
-  const { currentNote, feedback, skipNote } = useGameLogic({ mode: "note" });
+  const { currentNote, feedback, skipNote } = useSingleNotePractice();
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
