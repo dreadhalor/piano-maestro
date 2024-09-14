@@ -73,7 +73,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
                 Select Chord Types for Practice
               </h3>
               <div className="grid grid-cols-2 gap-3">
-                {Object.entries(CHORD_TYPES).map(([key, label]) => (
+                {Object.entries(CHORD_TYPES).map(([key, { label }]) => (
                   <div className="flex items-center space-x-2" key={key}>
                     <Checkbox
                       id={key}

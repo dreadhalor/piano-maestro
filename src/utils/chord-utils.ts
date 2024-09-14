@@ -5,7 +5,20 @@ export interface Chord {
   notes: number[];
 }
 
-const NOTES = ["C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B"];
+export const NOTES = [
+  "C",
+  "C#",
+  "D",
+  "Eb",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "Bb",
+  "B",
+];
 
 export const midiToNoteName = (midiNumber: number): string => {
   const note = NOTES[midiNumber % 12];
