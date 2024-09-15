@@ -1,4 +1,3 @@
-// midi-provider.tsx
 import React, {
   createContext,
   useEffect,
@@ -6,15 +5,14 @@ import React, {
   useCallback,
   useRef,
 } from "react";
+import { WebMidi, Input, NoteMessageEvent } from "webmidi";
 
 // Define the types for MIDIContext
 interface MIDIContextType {
-  onMIDIMessage: (
-    callback: (message: WebMidi.MIDIMessageEvent) => void,
-  ) => void;
+  onMIDIMessage: (callback: (message: NoteMessageEvent) => void) => void;
   isMIDIDeviceConnected: boolean;
   pressedNotes: number[];
-  velocities: Map<number, number>; // Store velocities of pressed notes
+  velocities: Map<number, number>;
   allKeysReleased: boolean;
 }
 
@@ -28,9 +26,9 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isMIDIDeviceConnected, setIsMIDIDeviceConnected] =
     useState<boolean>(false);
-  const midiCallbacks = useRef<
-    Set<(message: WebMidi.MIDIMessageEvent) => void>
-  >(new Set());
+  const midiCallbacks = useRef<Set<(message: NoteMessageEvent) => void>>(
+    new Set(),
+  );
 
   // Processed MIDI states
   const [pressedNotes, setPressedNotes] = useState<number[]>([]);
@@ -39,100 +37,90 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Register a callback for raw MIDI messages
   const onMIDIMessage = useCallback(
-    (callback: (message: WebMidi.MIDIMessageEvent) => void) => {
+    (callback: (message: NoteMessageEvent) => void) => {
       midiCallbacks.current.add(callback);
     },
     [],
   );
 
   // Process MIDI messages and update state
-  const handleMIDIMessage = useCallback((message: WebMidi.MIDIMessageEvent) => {
-    midiCallbacks.current.forEach((callback) => callback(message)); // Call all registered callbacks with the MIDI message
+  const handleNoteOn = useCallback((event: NoteMessageEvent) => {
+    midiCallbacks.current.forEach((callback) => callback(event));
 
-    const [command, note, velocity] = message.data;
+    const { note } = event;
 
-    switch (command) {
-      case 144: // Note on
-        if (velocity > 0) {
-          // Handle Note On with velocity > 0
-          setPressedNotes((prevNotes) =>
-            prevNotes.includes(note) ? prevNotes : [...prevNotes, note],
-          );
-          setVelocities((prevVelocities) =>
-            new Map(prevVelocities).set(note, velocity),
-          ); // Store velocity
-          setAllKeysReleased(false); // Keys are pressed
-        } else {
-          // Handle "Note On" with velocity 0 as "Note Off"
-          handleNoteOff(note);
-        }
-        break;
-      case 128: // Note off
-        handleNoteOff(note);
-        break;
-      default:
-        break;
-    }
+    setPressedNotes((prevNotes) =>
+      prevNotes.includes(note.number) ? prevNotes : [...prevNotes, note.number],
+    );
+    setVelocities((prevVelocities) =>
+      new Map(prevVelocities).set(note.number, note.rawAttack),
+    );
+    setAllKeysReleased(false);
   }, []);
 
-  // Function to handle Note Off messages
-  const handleNoteOff = (note: number) => {
+  const handleNoteOff = useCallback((event: NoteMessageEvent) => {
+    midiCallbacks.current.forEach((callback) => callback(event));
+
+    const { note } = event;
+
     setPressedNotes((prevNotes) => {
-      const newNotes = prevNotes.filter((n) => n !== note);
+      const newNotes = prevNotes.filter((n) => n !== note.number);
       if (newNotes.length === 0) {
-        setAllKeysReleased(true); // All keys are released
+        setAllKeysReleased(true);
       }
       return newNotes;
     });
     setVelocities((prevVelocities) => {
       const newVelocities = new Map(prevVelocities);
-      newVelocities.delete(note); // Remove velocity for the released note
+      newVelocities.delete(note.number);
       return newVelocities;
     });
-  };
+  }, []);
 
   useEffect(() => {
-    const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
-      const inputs = midiAccess.inputs.values();
-      let deviceConnected = false;
+    const initWebMidi = async () => {
+      try {
+        await WebMidi.enable();
+        console.log("WebMidi enabled!");
 
-      for (const input of inputs) {
-        input.onmidimessage = handleMIDIMessage; // Attach the handler to each input
-        deviceConnected = true; // A MIDI device is connected
+        const updateConnectionStatus = () => {
+          setIsMIDIDeviceConnected(WebMidi.inputs.length > 0);
+        };
+
+        updateConnectionStatus();
+
+        WebMidi.addListener("connected", updateConnectionStatus);
+        WebMidi.addListener("disconnected", updateConnectionStatus);
+
+        const setupInputListeners = (input: Input) => {
+          input.addListener("noteon", handleNoteOn);
+          input.addListener("noteoff", handleNoteOff);
+        };
+
+        WebMidi.inputs.forEach(setupInputListeners);
+
+        WebMidi.addListener("portschanged", () => {
+          WebMidi.inputs.forEach(setupInputListeners);
+        });
+      } catch (err) {
+        console.error("WebMidi could not be enabled.", err);
+        setIsMIDIDeviceConnected(false);
       }
-
-      setIsMIDIDeviceConnected(deviceConnected); // Update state based on connection status
-
-      // Listen for device connection/disconnection
-      midiAccess.onstatechange = (event) => {
-        if (event.port.type === "input") {
-          setIsMIDIDeviceConnected(event.port.state === "connected");
-        }
-      };
     };
 
-    const onMIDIFailure = () => {
-      console.error("Could not access your MIDI devices.");
-      setIsMIDIDeviceConnected(false); // No MIDI device available
-    };
+    initWebMidi();
 
-    if (navigator.requestMIDIAccess) {
-      navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
-    } else {
-      console.warn("Web MIDI API is not supported in this browser.");
-      setIsMIDIDeviceConnected(false);
-    }
-
-    // Capture the current value of midiCallbacks for cleanup
-    const cleanupMidiCallbacks = midiCallbacks.current;
+    // Capture the current callbacks for cleanup
+    const currentCallbacks = midiCallbacks.current;
 
     return () => {
-      cleanupMidiCallbacks.clear(); // Clear all callbacks
-      setIsMIDIDeviceConnected(false); // Reset device connection state
-      setPressedNotes([]); // Reset pressed notes
-      setAllKeysReleased(true); // Reset keys released state
+      WebMidi.disable();
+      currentCallbacks.clear();
+      setIsMIDIDeviceConnected(false);
+      setPressedNotes([]);
+      setAllKeysReleased(true);
     };
-  }, [handleMIDIMessage]);
+  }, [handleNoteOn, handleNoteOff]);
 
   return (
     <MIDIContext.Provider
