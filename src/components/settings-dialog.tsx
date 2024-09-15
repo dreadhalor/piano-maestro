@@ -8,11 +8,11 @@ import {
 } from "@ui/dialog";
 import { Button } from "@ui/button";
 import { useSettings } from "@/hooks/use-settings";
-import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
+import { CHORD_TYPES, type ChordTypeKey } from "@/utils/chords";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { Checkbox } from "@ui/checkbox";
 import { Label } from "@ui/label";
-import { SCALE_MODES, ScaleTypeKey } from "@/utils/scale-utils";
+import { SCALE_MODES, type ScaleTypeKey } from "@/utils/scale-utils";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,

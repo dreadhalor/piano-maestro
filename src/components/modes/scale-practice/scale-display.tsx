@@ -3,6 +3,7 @@ import React from "react";
 import { Scale } from "@/utils/scale-utils";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { FaDotCircle } from "react-icons/fa";
+import { cn } from "@/lib/utils";
 
 interface ScaleDisplayProps {
   scale: Scale;
@@ -42,11 +43,14 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
                 className="row-span-2 row-start-1 grid grid-rows-subgrid"
                 key={index}
               >
-                {index === previousIndex && (
-                  <div className="flex h-2 items-center justify-center">
-                    <FaDotCircle className="h-2 w-2" />
-                  </div>
-                )}
+                <div className="flex h-2 items-center justify-center">
+                  <FaDotCircle
+                    className={cn(
+                      "invisible h-2 w-2",
+                      index === previousIndex && "visible",
+                    )}
+                  />
+                </div>
 
                 <span
                   key={note}
