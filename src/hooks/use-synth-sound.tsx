@@ -111,12 +111,13 @@ export const useSynthSound = () => {
     switch (command) {
       case 144: // Note on
         if (velocity > 0) {
+          // Handle Note On
           if (!activeNotes.current.has(noteName)) {
             sampler.current?.triggerAttack(noteName, undefined, velocity / 127); // Use velocity to control volume
             activeNotes.current.add(noteName);
           }
         } else {
-          // If velocity is 0, treat as Note Off
+          // If "Note On" with velocity 0, treat as Note Off
           if (activeNotes.current.has(noteName)) {
             sampler.current?.triggerRelease(noteName);
             activeNotes.current.delete(noteName);
@@ -124,6 +125,7 @@ export const useSynthSound = () => {
         }
         break;
       case 128: // Note off
+        // Handle Note Off
         if (activeNotes.current.has(noteName)) {
           sampler.current?.triggerRelease(noteName);
           activeNotes.current.delete(noteName);

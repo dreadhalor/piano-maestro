@@ -54,6 +54,7 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
     switch (command) {
       case 144: // Note on
         if (velocity > 0) {
+          // Handle Note On with velocity > 0
           setPressedNotes((prevNotes) =>
             prevNotes.includes(note) ? prevNotes : [...prevNotes, note],
           );
@@ -62,33 +63,33 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
           ); // Store velocity
           setAllKeysReleased(false); // Keys are pressed
         } else {
-          // If "Note On" with zero velocity, treat as "Note Off"
-          setPressedNotes((prevNotes) => prevNotes.filter((n) => n !== note));
-          setVelocities((prevVelocities) => {
-            const newVelocities = new Map(prevVelocities);
-            newVelocities.delete(note); // Remove velocity for the released note
-            return newVelocities;
-          });
+          // Handle "Note On" with velocity 0 as "Note Off"
+          handleNoteOff(note);
         }
         break;
       case 128: // Note off
-        setPressedNotes((prevNotes) => {
-          const newNotes = prevNotes.filter((n) => n !== note);
-          if (newNotes.length === 0) {
-            setAllKeysReleased(true); // All keys are released
-          }
-          return newNotes;
-        });
-        setVelocities((prevVelocities) => {
-          const newVelocities = new Map(prevVelocities);
-          newVelocities.delete(note);
-          return newVelocities;
-        });
+        handleNoteOff(note);
         break;
       default:
         break;
     }
   }, []);
+
+  // Function to handle Note Off messages
+  const handleNoteOff = (note: number) => {
+    setPressedNotes((prevNotes) => {
+      const newNotes = prevNotes.filter((n) => n !== note);
+      if (newNotes.length === 0) {
+        setAllKeysReleased(true); // All keys are released
+      }
+      return newNotes;
+    });
+    setVelocities((prevVelocities) => {
+      const newVelocities = new Map(prevVelocities);
+      newVelocities.delete(note); // Remove velocity for the released note
+      return newVelocities;
+    });
+  };
 
   useEffect(() => {
     const onMIDISuccess = (midiAccess: WebMidi.MIDIAccess) => {
