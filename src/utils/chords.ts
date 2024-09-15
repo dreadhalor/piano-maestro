@@ -1,27 +1,12 @@
 // utils/chords.ts
 
-import { NOTES } from "./chord-utils";
+import { noteOffsets, NOTES } from "./chord-utils";
 
 export interface Chord {
   name: string; // Human-readable name
   notes: number[]; // MIDI note numbers for the chord
   type: ChordTypeKey; // Unique key for the chord type
 }
-
-const noteOffsets: { [key: string]: number } = {
-  C: 0,
-  "C#": 1,
-  D: 2,
-  Eb: 3,
-  E: 4,
-  F: 5,
-  "F#": 6,
-  G: 7,
-  "G#": 8,
-  A: 9,
-  Bb: 10,
-  B: 11,
-};
 
 const generateChordNotes = (root: string, pattern: ReadonlyArray<number>) => {
   const rootMidi = 60 + noteOffsets[root]; // Assume starting from Middle C (C4, MIDI 60)
@@ -54,10 +39,22 @@ export const CHORDS: Chord[] = NOTES.flatMap((note) =>
 );
 
 // Function to get a random chord, optionally different from the current one
-export const getRandomChord = (currentChord?: Chord): Chord => {
+export const getRandomChord = ({
+  currentChord,
+  enabledChords,
+}: {
+  currentChord?: Chord;
+  enabledChords?: ChordTypeKey[];
+}) => {
   let randomChord: Chord;
+  // If no enabled chords, return the first chord I guess
+  if (enabledChords && enabledChords.length === 0) return CHORDS[0];
+
   do {
     randomChord = CHORDS[Math.floor(Math.random() * CHORDS.length)];
-  } while (currentChord && randomChord.name === currentChord.name);
+  } while (
+    (currentChord && randomChord.name === currentChord.name) ||
+    (enabledChords && !enabledChords.includes(randomChord.type))
+  );
   return randomChord;
 };

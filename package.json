@@ -29,6 +29,7 @@
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "tone": "^15.0.4",
+    "webmidi": "^3.1.11",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

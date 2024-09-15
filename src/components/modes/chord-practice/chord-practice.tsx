@@ -18,7 +18,7 @@ export const ChordPractice = () => {
       <Feedback message={feedback} />
       {/* Add Skip Button */}
       <Button className="mt-4" onClick={skipChord}>
-        Skip
+        Skip Chord
       </Button>
     </div>
   );

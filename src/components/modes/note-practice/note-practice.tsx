@@ -18,7 +18,7 @@ export const NotePractice = () => {
       <Feedback message={feedback} />
       {/* Add Skip Button */}
       <Button className="mt-4" onClick={skipNote}>
-        Skip
+        Skip Note
       </Button>
     </div>
   );

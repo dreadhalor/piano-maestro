@@ -5,7 +5,7 @@ import {
   ChordProgression,
 } from "@/utils/chord-progressions";
 import { notesMatchWithExactIntervals } from "@/utils/chord-utils";
-import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi";
+import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const useChordProgressionPractice = () => {
   const { pressedNotes, allKeysReleased } = useProcessedMIDI();

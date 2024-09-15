@@ -3,6 +3,7 @@ import { PracticeSidebar } from "./components/practice-sidebar";
 import { Playground } from "@/components/modes/playground/playground";
 import { NotePractice } from "@/components/modes/note-practice/note-practice";
 import { ChordPractice } from "@/components/modes/chord-practice/chord-practice";
+import { ScalePractice } from "@/components/modes/scale-practice/scale-practice";
 import { ChordProgressionPractice } from "@/components/modes/chord-progression-practice/chord-progression-practice";
 import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
@@ -21,6 +22,8 @@ const App = () => {
         return <NotePractice />;
       case "chord":
         return <ChordPractice />;
+      case "scale":
+        return <ScalePractice />;
       case "progression":
         return <ChordProgressionPractice />;
       default:

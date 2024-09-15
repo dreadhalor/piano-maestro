@@ -20,6 +20,21 @@ export const NOTES = [
   "B",
 ];
 
+export const noteOffsets: { [key: string]: number } = {
+  C: 0,
+  "C#": 1,
+  D: 2,
+  Eb: 3,
+  E: 4,
+  F: 5,
+  "F#": 6,
+  G: 7,
+  "G#": 8,
+  A: 9,
+  Bb: 10,
+  B: 11,
+};
+
 export const midiToNoteName = (midiNumber: number): string => {
   const note = NOTES[midiNumber % 12];
   const octave = Math.floor(midiNumber / 12) - 1; // MIDI note 0 is C-1

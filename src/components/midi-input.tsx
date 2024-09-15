@@ -1,8 +1,8 @@
 import { midiToNoteName } from "@/utils/chord-utils";
-import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi";
+import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const MidiInput = () => {
-  const { pressedNotes, isMIDIDeviceConnected } = useProcessedMIDI(); // Use the processed MIDI hook
+  const { pressedNotes, isMIDIDeviceConnected } = useProcessedMIDI();
 
   return (
     <div className="mt-4 w-full text-center">
@@ -14,8 +14,8 @@ export const MidiInput = () => {
           <h3 className="mt-2 text-lg font-semibold text-gray-800">
             Currently Pressed Notes:{" "}
             {pressedNotes
-              .slice() // Make a copy of the array to avoid mutating state
-              .sort((a, b) => a - b) // Sort notes from lowest to highest
+              .slice()
+              .sort((a, b) => a - b)
               .map(midiToNoteName)
               .join(", ")}
           </h3>

@@ -1,25 +1,15 @@
 // hooks/modes/use-chord-practice.tsx
 import { useState, useEffect } from "react";
-import { CHORDS, Chord } from "@/utils/chords";
+import { Chord, getRandomChord } from "@/utils/chords";
 import { notesMatchWithExactIntervals } from "@/utils/chord-utils";
-import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi";
+import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettings } from "@/hooks/use-settings";
 
 export const useChordPractice = () => {
   const { enabledChordTypes } = useSettings(); // Use the enabled chord types from settings
 
-  // Filter chords by enabled types using exact key matching
-  const filteredChords = CHORDS.filter((chord) =>
-    enabledChordTypes.has(chord.type),
-  );
-
-  const getRandomChordFromEnabled = (): Chord => {
-    const randomIndex = Math.floor(Math.random() * filteredChords.length);
-    return filteredChords[randomIndex];
-  };
-
   const [currentChord, setCurrentChord] = useState<Chord>(
-    getRandomChordFromEnabled(),
+    getRandomChord({ enabledChords: [...enabledChordTypes] }),
   );
 
   const [feedback, setFeedback] = useState<string>("");
@@ -33,7 +23,12 @@ export const useChordPractice = () => {
   ) => {
     if (isChordComplete && allKeysReleased) {
       // If chord is complete and all keys are released, allow to advance
-      setCurrentChord(getRandomChordFromEnabled());
+      setCurrentChord((prev) =>
+        getRandomChord({
+          currentChord: prev,
+          enabledChords: [...enabledChordTypes],
+        }),
+      );
       setFeedback("");
       setIsChordComplete(false);
       return;
@@ -58,7 +53,12 @@ export const useChordPractice = () => {
   };
 
   const skipChord = () => {
-    setCurrentChord(getRandomChordFromEnabled());
+    setCurrentChord((prev) =>
+      getRandomChord({
+        currentChord: prev,
+        enabledChords: [...enabledChordTypes],
+      }),
+    );
     setFeedback(""); // Reset feedback on skip
     setIsChordComplete(false);
   };
@@ -71,6 +71,6 @@ export const useChordPractice = () => {
   return {
     currentChord,
     feedback,
-    skipChord, // Include the skipChord function to be used in the UI
+    skipChord,
   };
 };

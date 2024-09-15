@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getRandomNote } from "@/utils/chord-utils";
 import { useSettings } from "@/hooks/use-settings";
-import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi";
+import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const useSingleNotePractice = () => {
   const { lowKey, highKey } = useSettings(); // Access the user-defined range from settings

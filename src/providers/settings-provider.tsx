@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
-import { useProcessedMIDI } from "@/hooks/use-midi/use-processed-midi";
+import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { ChordTypeKey } from "@/utils/chords";
 

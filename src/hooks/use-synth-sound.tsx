@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import * as Tone from "tone";
-import { useRawMIDI } from "@/hooks/use-midi/use-raw-midi";
+import { useRawMIDI } from "@/hooks/use-midi/midi-hooks";
 import { NoteMessageEvent } from "webmidi";
 import { midiToNoteName } from "@/utils/chord-utils";
 
@@ -11,6 +11,8 @@ export const useSynthSound = () => {
   const isSynthInitialized = useRef(false);
 
   const [volume, setVolume] = useState(100);
+
+  const { onMIDIMessage, isMIDIDeviceConnected } = useRawMIDI();
 
   useEffect(() => {
     if (!isSynthInitialized.current) {
@@ -87,14 +89,12 @@ export const useSynthSound = () => {
     }
   }, []);
 
-  const { onMIDIMessage, isMIDIDeviceConnected } = useRawMIDI();
-
   useEffect(() => {
-    onMIDIMessage(handleMIDIMessage);
+    const unsubscribe = onMIDIMessage(handleMIDIMessage);
     return () => {
-      // Optionally clean up if needed
+      unsubscribe();
     };
-  }, [handleMIDIMessage, onMIDIMessage]);
+  }, [onMIDIMessage, handleMIDIMessage]);
 
   return {
     isMIDIDeviceConnected,
