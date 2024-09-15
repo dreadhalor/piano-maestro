@@ -1,15 +1,18 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
+import { SCALE_MODES, ScaleTypeKey } from "@/utils/scale-utils";
 
 // Zustand store for settings
 interface SettingsState {
   lowKey: number;
   highKey: number;
-  enabledChordTypes: Set<ChordTypeKey>; // Use ChordTypeKey instead of string
+  enabledChordTypes: Set<ChordTypeKey>;
+  enabledScales: Set<ScaleTypeKey>;
   setLowKey: (value: number) => void;
   setHighKey: (value: number) => void;
-  toggleChordType: (type: ChordTypeKey) => void; // Toggle chord type state
+  toggleChordType: (type: ChordTypeKey) => void;
+  toggleScale: (mode: ScaleTypeKey) => void;
 }
 
 export const useSettingsStore = create<SettingsState>()(
@@ -20,6 +23,9 @@ export const useSettingsStore = create<SettingsState>()(
       enabledChordTypes: new Set<ChordTypeKey>(
         Object.keys(CHORD_TYPES) as ChordTypeKey[],
       ), // All types enabled by default
+      enabledScales: new Set<ScaleTypeKey>(
+        Object.keys(SCALE_MODES) as ScaleTypeKey[],
+      ), // All modes enabled by default
       setLowKey: (value: number) => set({ lowKey: value }),
       setHighKey: (value: number) => set({ highKey: value }),
       toggleChordType: (type: ChordTypeKey) =>
@@ -32,6 +38,16 @@ export const useSettingsStore = create<SettingsState>()(
           }
           return { enabledChordTypes: updatedTypes };
         }),
+      toggleScale: (mode: ScaleTypeKey) =>
+        set((state) => {
+          const updatedModes = new Set(state.enabledScales);
+          if (updatedModes.has(mode)) {
+            updatedModes.delete(mode);
+          } else {
+            updatedModes.add(mode);
+          }
+          return { enabledScales: updatedModes };
+        }),
     }),
     {
       name: "piano-maestro-settings",
@@ -41,6 +57,7 @@ export const useSettingsStore = create<SettingsState>()(
         lowKey: state.lowKey,
         highKey: state.highKey,
         enabledChordTypes: Array.from(state.enabledChordTypes), // Serialize Set to array
+        enabledScales: Array.from(state.enabledScales), // Serialize Set to array
       }),
       merge: (persistedState, currentState) => {
         const persisted = persistedState as Partial<SettingsState>; // Cast persistedState to partial
@@ -48,6 +65,7 @@ export const useSettingsStore = create<SettingsState>()(
           ...currentState,
           ...persisted,
           enabledChordTypes: new Set(persisted.enabledChordTypes || []), // Deserialize array back to Set
+          enabledScales: new Set(persisted.enabledScales || []), // Deserialize array back to Set
         };
       },
     },

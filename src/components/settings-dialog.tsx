@@ -12,6 +12,7 @@ import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { Checkbox } from "@ui/checkbox";
 import { Label } from "@ui/label";
+import { SCALE_MODES, ScaleTypeKey } from "@/utils/scale-utils";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -26,6 +27,8 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
     cancelSetKey,
     enabledChordTypes,
     toggleChordType,
+    enabledScales,
+    toggleScale,
   } = useSettings();
 
   return (
@@ -84,6 +87,31 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
                       onCheckedChange={() =>
                         toggleChordType(key as ChordTypeKey)
                       }
+                    />
+                    <Label htmlFor={key} className="flex items-center gap-2">
+                      {label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Scale type selection */}
+          <div className="grid grid-cols-2 items-center gap-4">
+            <div className="col-span-2">
+              <h3 className="mb-4 text-lg font-bold">
+                Select Scale Types for Practice
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                {Object.entries(SCALE_MODES).map(([key, { label }]) => (
+                  <div className="flex items-center space-x-2" key={key}>
+                    <Checkbox
+                      id={key}
+                      checked={
+                        enabledScales && enabledScales.has(key as ScaleTypeKey)
+                      }
+                      onCheckedChange={() => toggleScale(key as ScaleTypeKey)}
                     />
                     <Label htmlFor={key} className="flex items-center gap-2">
                       {label}

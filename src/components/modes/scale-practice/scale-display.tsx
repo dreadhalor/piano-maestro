@@ -8,12 +8,14 @@ interface ScaleDisplayProps {
   scale: Scale;
   currentNote: number;
   previousIndex: number;
+  isScaleComplete: boolean;
 }
 
 export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
   scale,
   currentNote,
   previousIndex,
+  isScaleComplete,
 }) => {
   return (
     <div className="mb-6 w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
@@ -22,7 +24,7 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
       </h2>
       <div className="mt-4 text-center">
         <h2 className="mb-4 text-xl font-bold text-gray-800">
-          {currentNote ? (
+          {currentNote && !isScaleComplete ? (
             <>
               Press this key:{" "}
               <span className="text-red-500">
@@ -30,7 +32,7 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
               </span>
             </>
           ) : (
-            "Scale Complete!"
+            <span className="text-red-500">Scale complete!</span>
           )}
         </h2>
         <div className="flex justify-center">

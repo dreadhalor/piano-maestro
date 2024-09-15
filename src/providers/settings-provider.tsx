@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { ChordTypeKey } from "@/utils/chords";
+import { ScaleTypeKey } from "@/utils/scale-utils";
 
 interface SettingsContextType {
   lowKey: number;
@@ -15,6 +16,8 @@ interface SettingsContextType {
   cancelSetKey: () => void;
   enabledChordTypes: Set<ChordTypeKey>;
   toggleChordType: (type: ChordTypeKey) => void;
+  enabledScales: Set<ScaleTypeKey>;
+  toggleScale: (mode: ScaleTypeKey) => void;
 }
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -31,6 +34,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     setHighKey: storeSetHighKey,
     enabledChordTypes,
     toggleChordType,
+    enabledScales,
+    toggleScale,
   } = useSettingsStore(); // Use Zustand store
 
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
@@ -119,6 +124,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         cancelSetKey,
         enabledChordTypes,
         toggleChordType,
+        enabledScales,
+        toggleScale,
       }}
     >
       {children}

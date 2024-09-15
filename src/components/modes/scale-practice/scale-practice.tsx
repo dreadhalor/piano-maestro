@@ -6,8 +6,14 @@ import { MidiInput } from "@/components/midi-input";
 import { Button } from "@ui/button";
 
 export const ScalePractice = () => {
-  const { currentNote, previousScaleIndex, feedback, scale, skipScale } =
-    useScalePractice();
+  const {
+    currentNote,
+    previousScaleIndex,
+    feedback,
+    scale,
+    skipScale,
+    isScaleComplete,
+  } = useScalePractice();
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
@@ -20,6 +26,7 @@ export const ScalePractice = () => {
         scale={scale}
         currentNote={currentNote}
         previousIndex={previousScaleIndex}
+        isScaleComplete={isScaleComplete}
       />
 
       {/* MIDI input and feedback */}

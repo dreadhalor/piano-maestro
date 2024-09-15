@@ -2,9 +2,13 @@
 import { useState, useCallback, useEffect } from "react";
 import { getRandomScale, Scale } from "@/utils/scale-utils";
 import { useNotePressed, useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
+import { useSettings } from "@/hooks/use-settings";
 
 export const useScalePractice = () => {
-  const [scale, setScale] = useState<Scale>(getRandomScale());
+  const { enabledScales } = useSettings();
+  const [scale, setScale] = useState<Scale>(
+    getRandomScale({ enabledScales: [...enabledScales] }),
+  );
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentScaleIndex, setCurrentScaleIndex] = useState<number>(0);
   const [previousScaleIndex, setPreviousScaleIndex] = useState<number>(-1);
@@ -27,9 +31,14 @@ export const useScalePractice = () => {
   useEffect(() => {
     if (isScaleComplete && allKeysReleased) {
       resetScale();
-      setScale((prev) => getRandomScale({ currentScale: prev }));
+      setScale((prev) =>
+        getRandomScale({
+          currentScale: prev,
+          enabledScales: [...enabledScales],
+        }),
+      );
     }
-  }, [isScaleComplete, allKeysReleased, resetScale]);
+  }, [isScaleComplete, allKeysReleased, resetScale, enabledScales]);
 
   useEffect(() => {
     setCurrentScaleIndex((prev) => {
@@ -55,16 +64,19 @@ export const useScalePractice = () => {
           return nextIndex;
         });
       } else {
+        resetScale();
         setFeedback("Try Again!");
       }
     },
-    [currentNote, fullScale.length, isScaleComplete],
+    [currentNote, fullScale.length, isScaleComplete, resetScale],
   );
 
   const skipScale = useCallback(() => {
     resetScale();
-    setScale((prev) => getRandomScale({ currentScale: prev }));
-  }, [resetScale]);
+    setScale((prev) =>
+      getRandomScale({ currentScale: prev, enabledScales: [...enabledScales] }),
+    );
+  }, [resetScale, enabledScales]);
 
   useNotePressed(handleNotePlayed);
 
