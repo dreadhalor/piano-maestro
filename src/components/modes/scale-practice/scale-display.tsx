@@ -37,7 +37,12 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
           )}
         </h2>
         <div className="flex justify-center">
-          <div className="grid grid-cols-7 grid-rows-[1fr_auto] items-center justify-center gap-x-2">
+          <div
+            className="grid grid-rows-[1fr_auto] items-center justify-center gap-x-2"
+            style={{
+              gridTemplateColumns: `repeat(${scale.notes.length}, 1fr)`,
+            }}
+          >
             {scale.notes.map((note, index) => (
               <div
                 className="row-span-2 row-start-1 grid grid-rows-subgrid"

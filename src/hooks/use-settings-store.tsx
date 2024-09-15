@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
-import { SCALE_MODES, ScaleTypeKey } from "@/utils/scale-utils";
+import { SCALE_TYPES, ScaleTypeKey } from "@/utils/scale-utils";
 
 // Zustand store for settings
 interface SettingsState {
@@ -24,7 +24,7 @@ export const useSettingsStore = create<SettingsState>()(
         Object.keys(CHORD_TYPES) as ChordTypeKey[],
       ), // All types enabled by default
       enabledScales: new Set<ScaleTypeKey>(
-        Object.keys(SCALE_MODES) as ScaleTypeKey[],
+        Object.keys(SCALE_TYPES) as ScaleTypeKey[],
       ), // All modes enabled by default
       setLowKey: (value: number) => set({ lowKey: value }),
       setHighKey: (value: number) => set({ highKey: value }),

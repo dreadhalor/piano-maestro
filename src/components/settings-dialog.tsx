@@ -12,7 +12,7 @@ import { CHORD_TYPES, type ChordTypeKey } from "@/utils/chords";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { Checkbox } from "@ui/checkbox";
 import { Label } from "@ui/label";
-import { SCALE_MODES, type ScaleTypeKey } from "@/utils/scale-utils";
+import { SCALE_TYPES, type ScaleTypeKey } from "@/utils/scale-utils";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -79,7 +79,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
                 {Object.entries(CHORD_TYPES).map(([key, { label }]) => (
                   <div className="flex items-center space-x-2" key={key}>
                     <Checkbox
-                      id={key}
+                      id={`chord-${key}`}
                       checked={
                         enabledChordTypes &&
                         enabledChordTypes.has(key as ChordTypeKey)
@@ -88,7 +88,10 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
                         toggleChordType(key as ChordTypeKey)
                       }
                     />
-                    <Label htmlFor={key} className="flex items-center gap-2">
+                    <Label
+                      htmlFor={`chord-${key}`}
+                      className="flex items-center gap-2"
+                    >
                       {label}
                     </Label>
                   </div>
@@ -104,16 +107,19 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
                 Select Scale Types for Practice
               </h3>
               <div className="grid grid-cols-2 gap-3">
-                {Object.entries(SCALE_MODES).map(([key, { label }]) => (
+                {Object.entries(SCALE_TYPES).map(([key, { label }]) => (
                   <div className="flex items-center space-x-2" key={key}>
                     <Checkbox
-                      id={key}
+                      id={`scale-${key}`}
                       checked={
                         enabledScales && enabledScales.has(key as ScaleTypeKey)
                       }
                       onCheckedChange={() => toggleScale(key as ScaleTypeKey)}
                     />
-                    <Label htmlFor={key} className="flex items-center gap-2">
+                    <Label
+                      htmlFor={`scale-${key}`}
+                      className="flex items-center gap-2"
+                    >
                       {label}
                     </Label>
                   </div>
