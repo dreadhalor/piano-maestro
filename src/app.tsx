@@ -10,7 +10,7 @@ import { FaGear } from "react-icons/fa6";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { Button } from "@ui/button";
 
-const App = () => {
+export const App = () => {
   const { mode } = useAppContext(); // Get mode from context
 
   // Function to render the selected practice mode component
@@ -34,7 +34,7 @@ const App = () => {
   return (
     <div className="flex min-h-screen bg-gray-100 p-8">
       <PracticeSidebar />
-      <div className="flex flex-1 flex-col items-center justify-center py-[100px]">
+      <div className="my-auto flex flex-1 flex-col items-center justify-center">
         {/* Header */}
         <h1 className="relative mb-6 w-full text-center text-5xl font-extrabold text-blue-600">
           Piano Maestro
@@ -59,5 +59,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

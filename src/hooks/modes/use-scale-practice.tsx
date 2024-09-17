@@ -9,6 +9,7 @@ export const useScalePractice = () => {
   const [scale, setScale] = useState<Scale>(
     getRandomScale({ enabledScales: [...enabledScales] }),
   );
+  const [repeat, setRepeat] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const [feedback, setFeedback] = useState<string>("");
@@ -51,14 +52,15 @@ export const useScalePractice = () => {
   useEffect(() => {
     if (isScaleComplete && allKeysReleased) {
       resetScale();
-      setScale((prev) =>
-        getRandomScale({
-          currentScale: prev,
-          enabledScales: [...enabledScales],
-        }),
-      );
+      if (!repeat)
+        setScale((prev) =>
+          getRandomScale({
+            currentScale: prev,
+            enabledScales: [...enabledScales],
+          }),
+        );
     }
-  }, [isScaleComplete, allKeysReleased, resetScale, enabledScales]);
+  }, [isScaleComplete, allKeysReleased, resetScale, enabledScales, repeat]);
 
   const handleNotePlayed = useCallback(
     (note: number) => {
@@ -94,5 +96,7 @@ export const useScalePractice = () => {
     scale,
     skipScale,
     isScaleComplete,
+    repeat,
+    setRepeat,
   };
 };

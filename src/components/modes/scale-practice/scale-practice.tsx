@@ -4,6 +4,8 @@ import { ScaleDisplay } from "./scale-display";
 import { Feedback } from "@/components/feedback";
 import { MidiInput } from "@/components/midi-input";
 import { Button } from "@ui/button";
+import { Toggle } from "@ui/toggle";
+import { FaRepeat } from "react-icons/fa6";
 
 export const ScalePractice = () => {
   const {
@@ -13,6 +15,8 @@ export const ScalePractice = () => {
     scale,
     skipScale,
     isScaleComplete,
+    repeat,
+    setRepeat,
   } = useScalePractice();
 
   return (
@@ -34,9 +38,12 @@ export const ScalePractice = () => {
       <Feedback message={feedback} />
 
       {/* Add Skip Button */}
-      <Button className="mt-4" onClick={skipScale}>
-        Skip Scale
-      </Button>
+      <div className="mt-2 flex items-center gap-2">
+        <Toggle variant="outline" pressed={repeat} onPressedChange={setRepeat}>
+          <FaRepeat />
+        </Toggle>
+        <Button onClick={skipScale}>Skip Scale</Button>
+      </div>
     </div>
   );
 };
