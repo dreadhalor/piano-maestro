@@ -21,7 +21,7 @@ export const CHORD_TYPES = {
   augmented: { label: "Augmented", intervals: [0, 4, 8] },
   "major-7": { label: "Major 7", intervals: [0, 4, 7, 11] },
   "minor-7": { label: "Minor 7", intervals: [0, 3, 7, 10] },
-  "dominant-7": { label: "Dominant 7", intervals: [0, 4, 7, 10] },
+  "dominant-7": { label: "7 (Dominant 7)", intervals: [0, 4, 7, 10] },
   "suspended-2": { label: "Suspended 2", intervals: [0, 2, 7] },
   "suspended-4": { label: "Suspended 4", intervals: [0, 5, 7] },
 } as const;

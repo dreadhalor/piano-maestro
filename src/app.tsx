@@ -36,12 +36,12 @@ export const App = () => {
       <PracticeSidebar />
       <div className="my-auto flex flex-1 flex-col items-center justify-center">
         {/* Header */}
-        <h1 className="relative mb-6 w-full text-center text-5xl font-extrabold text-blue-600">
+        <h1 className="relative mb-6 flex w-full items-center justify-center text-center text-5xl font-extrabold text-blue-600">
           Piano Maestro
           <SettingsDialog>
             <Button
               variant="ghost"
-              className="absolute right-[200px] top-0 p-0 text-4xl text-gray-400 hover:text-gray-600"
+              className="absolute right-[200px] p-0 text-4xl text-gray-400 hover:bg-transparent hover:text-gray-600"
             >
               <FaGear />
             </Button>
