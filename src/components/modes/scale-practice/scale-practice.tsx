@@ -8,7 +8,7 @@ import { Button } from "@ui/button";
 export const ScalePractice = () => {
   const {
     currentNote,
-    previousScaleIndex,
+    highlightedIndex,
     feedback,
     scale,
     skipScale,
@@ -25,7 +25,7 @@ export const ScalePractice = () => {
       <ScaleDisplay
         scale={scale}
         currentNote={currentNote}
-        previousIndex={previousScaleIndex}
+        highlightedIndex={highlightedIndex}
         isScaleComplete={isScaleComplete}
       />
 

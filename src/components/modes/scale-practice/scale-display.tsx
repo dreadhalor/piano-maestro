@@ -8,14 +8,14 @@ import { cn } from "@/lib/utils";
 interface ScaleDisplayProps {
   scale: Scale;
   currentNote: number;
-  previousIndex: number;
+  highlightedIndex: number;
   isScaleComplete: boolean;
 }
 
 export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
   scale,
   currentNote,
-  previousIndex,
+  highlightedIndex,
   isScaleComplete,
 }) => {
   return (
@@ -52,7 +52,7 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
                   <FaDotCircle
                     className={cn(
                       "invisible h-2 w-2",
-                      index === previousIndex && "visible",
+                      index === highlightedIndex && "visible",
                     )}
                   />
                 </div>

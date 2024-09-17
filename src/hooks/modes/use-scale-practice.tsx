@@ -10,8 +10,7 @@ export const useScalePractice = () => {
     getRandomScale({ enabledScales: [...enabledScales] }),
   );
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [currentScaleIndex, setCurrentScaleIndex] = useState<number>(0);
-  const [previousScaleIndex, setPreviousScaleIndex] = useState<number>(-1);
+  const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const [feedback, setFeedback] = useState<string>("");
   const [isScaleComplete, setIsScaleComplete] = useState<boolean>(false);
   const { allKeysReleased } = useProcessedMIDI();
@@ -21,12 +20,33 @@ export const useScalePractice = () => {
   const currentNote = fullScale[currentIndex];
   const nextNote = fullScale[currentIndex + 1];
 
-  const resetScale = useCallback(() => {
+  const resetScale = useCallback((msg?: string) => {
     setCurrentIndex(0);
-    setPreviousScaleIndex(-1);
-    setFeedback("");
+    setHighlightedIndex(-1);
+    setFeedback(msg || "");
     setIsScaleComplete(false);
   }, []);
+  const resetIndexToSecondNote = useCallback(() => {
+    setCurrentIndex(1);
+    setHighlightedIndex(0);
+    setFeedback("Restarted Scale!");
+    setIsScaleComplete(false);
+  }, []);
+
+  const advanceCurrentIndex = useCallback(() => {
+    setCurrentIndex((prev) => {
+      const nextIndex = prev + 1;
+      if (prev < scale.notes.length) setHighlightedIndex(prev);
+      else setHighlightedIndex(fullScale.length - prev - 1);
+
+      setFeedback("Correct!");
+      if (nextIndex === fullScale.length) {
+        setIsScaleComplete(true);
+        return prev;
+      }
+      return nextIndex;
+    });
+  }, [scale.notes.length, fullScale.length]);
 
   useEffect(() => {
     if (isScaleComplete && allKeysReleased) {
@@ -40,35 +60,21 @@ export const useScalePractice = () => {
     }
   }, [isScaleComplete, allKeysReleased, resetScale, enabledScales]);
 
-  useEffect(() => {
-    setCurrentScaleIndex((prev) => {
-      if (currentIndex > 0 || isScaleComplete) setPreviousScaleIndex(prev);
-      return currentIndex < scale.notes.length
-        ? currentIndex
-        : fullScale.length - currentIndex - 1;
-    });
-  }, [currentIndex, fullScale.length, scale.notes.length, isScaleComplete]);
-
   const handleNotePlayed = useCallback(
     (note: number) => {
       if (isScaleComplete) return;
-
-      if (note === currentNote) {
-        setFeedback("Correct!");
-        setCurrentIndex((prev) => {
-          const nextIndex = prev + 1;
-          if (nextIndex === fullScale.length) {
-            setIsScaleComplete(true);
-            return prev;
-          }
-          return nextIndex;
-        });
-      } else {
-        resetScale();
-        setFeedback("Try Again!");
-      }
+      if (note === currentNote) return advanceCurrentIndex();
+      if (note === scale.notes[0]) return resetIndexToSecondNote();
+      resetScale("Try again!");
     },
-    [currentNote, fullScale.length, isScaleComplete, resetScale],
+    [
+      isScaleComplete,
+      currentNote,
+      advanceCurrentIndex,
+      resetIndexToSecondNote,
+      resetScale,
+      scale.notes,
+    ],
   );
 
   const skipScale = useCallback(() => {
@@ -82,8 +88,7 @@ export const useScalePractice = () => {
 
   return {
     currentNote,
-    currentScaleIndex,
-    previousScaleIndex,
+    highlightedIndex,
     nextNote,
     feedback,
     scale,
