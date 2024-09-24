@@ -3,14 +3,14 @@ import { useSettings } from "@/hooks/use-settings";
 import { midiToNoteName } from "@/utils/chord-utils";
 import { cn } from "@/lib/utils";
 import { VerticalSlider } from "@ui/slider";
-import { useSynthSound } from "@/hooks/use-synth-sound";
 import { Label } from "@radix-ui/react-label";
 import { FaVolumeHigh } from "react-icons/fa6";
+import { useSound } from "@/hooks/use-sound/use-sound";
 
 export const PianoRoll = () => {
-  const { pressedNotes } = useProcessedMIDI(); // Get processed notes from hook
-  const { lowKey, highKey } = useSettings(); // Access range from settings
-  const { volume, changeVolume } = useSynthSound(); // Access the changeVolume function from useSynthSound
+  const { pressedNotes } = useProcessedMIDI();
+  const { lowKey, highKey } = useSettings();
+  const { volume, changeVolume } = useSound();
 
   // Define white and black keys dynamically based on the user-defined range
   const whiteKeys: { note: string; midiNumber: number }[] = [];
@@ -40,11 +40,9 @@ export const PianoRoll = () => {
     <div className="mt-8 flex gap-4">
       <div className="flex flex-col items-center gap-1">
         <FaVolumeHigh className="h-6 w-6 text-gray-700" />
-        <Label className="w-[30px] text-center">
-          {volume > 0 ? volume : "0(?)"}
-        </Label>
+        <Label className="w-[30px] text-center">{volume}</Label>
         <VerticalSlider
-          defaultValue={[100]} // Default to 100% volume
+          defaultValue={[volume]} // Use current volume as default
           max={200} // Allow up to 200% volume
           min={0} // Allow down to 0% volume
           step={1}

@@ -5,6 +5,7 @@ import { NotePractice } from "@/components/modes/note-practice/note-practice";
 import { ChordPractice } from "@/components/modes/chord-practice/chord-practice";
 import { ScalePractice } from "@/components/modes/scale-practice/scale-practice";
 import { ChordProgressionPractice } from "@/components/modes/chord-progression-practice/chord-progression-practice";
+import { EarTrainingPractice } from "@/components/modes/ear-training/ear-training";
 import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
 import { SettingsDialog } from "@/components/settings-dialog";
@@ -26,6 +27,8 @@ export const App = () => {
         return <ScalePractice />;
       case "progression":
         return <ChordProgressionPractice />;
+      case "ear-training":
+        return <EarTrainingPractice />;
       default:
         return <div>Please select a mode from the sidebar.</div>;
     }

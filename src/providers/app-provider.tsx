@@ -5,7 +5,8 @@ export type PracticeMode =
   | "note"
   | "chord"
   | "scale"
-  | "progression";
+  | "progression"
+  | "ear-training";
 
 type AppContextType = {
   mode: PracticeMode;

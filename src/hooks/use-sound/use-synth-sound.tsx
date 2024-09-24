@@ -89,6 +89,17 @@ export const useSynthSound = () => {
     }
   }, []);
 
+  const playNote = useCallback(
+    async (noteName: string) => {
+      if (!sampler.current || !isSynthInitialized.current) return;
+
+      if (!activeNotes.current.has(noteName)) {
+        sampler.current.triggerAttackRelease(noteName, "8n");
+      }
+    },
+    [sampler],
+  );
+
   useEffect(() => {
     const unsubscribe = onMIDIMessage(handleMIDIMessage);
     return () => {
@@ -100,5 +111,6 @@ export const useSynthSound = () => {
     isMIDIDeviceConnected,
     volume,
     changeVolume,
+    playNote,
   };
 };
