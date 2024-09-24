@@ -1,5 +1,3 @@
-// utils/chord-utils.ts
-
 export interface Chord {
   name: string;
   notes: number[];

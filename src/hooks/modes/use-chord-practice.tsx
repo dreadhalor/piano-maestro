@@ -1,4 +1,3 @@
-// hooks/modes/use-chord-practice.tsx
 import { useState, useEffect } from "react";
 import { Chord, getRandomChord } from "@/utils/chords";
 import { notesMatchWithExactIntervals } from "@/utils/chord-utils";

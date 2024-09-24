@@ -1,4 +1,3 @@
-// note-practice.tsx
 import { KeyDisplay } from "./key-display";
 import { Feedback } from "@/components/feedback";
 import { MidiInput } from "@/components/midi-input";

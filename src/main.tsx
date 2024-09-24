@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { AppProvider } from "@/providers/app-provider.tsx";
-import { SettingsProvider } from "@/providers/settings-provider.tsx";
-import { SoundProvider } from "./providers/sound-provider.tsx";
-import { MIDIProvider } from "./providers/midi-provider.tsx";
-import { App } from "./app.tsx";
+import { AppProvider } from "@/providers/app-provider";
+import { SettingsProvider } from "@/providers/settings-provider";
+import { SoundProvider } from "./providers/sound-provider";
+import { MIDIProvider } from "./providers/midi-provider";
+import { App } from "./app";
 import "./index.css";
 
 createRoot(document.getElementById("root")!).render(

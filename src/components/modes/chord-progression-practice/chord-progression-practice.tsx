@@ -1,4 +1,3 @@
-// components/chord-progression-practice.tsx
 import { useChordProgressionPractice } from "@/hooks/modes/use-chord-progression-practice";
 import { ChordDisplay } from "../chord-practice/chord-display";
 import { Feedback } from "@/components/feedback";

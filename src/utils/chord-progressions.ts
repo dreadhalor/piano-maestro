@@ -1,5 +1,3 @@
-// utils/chord-progressions.ts
-
 import { Chord, CHORDS } from "./chords";
 
 // Interface to define a chord progression

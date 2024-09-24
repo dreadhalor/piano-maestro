@@ -1,4 +1,3 @@
-// components/scale-display.tsx
 import React from "react";
 import { Scale } from "@/utils/scale-utils";
 import { midiToNoteName } from "@/utils/chord-utils";

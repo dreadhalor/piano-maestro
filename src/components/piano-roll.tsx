@@ -1,4 +1,3 @@
-// piano-roll.tsx
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettings } from "@/hooks/use-settings";
 import { midiToNoteName } from "@/utils/chord-utils";

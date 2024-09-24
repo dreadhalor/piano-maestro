@@ -1,4 +1,3 @@
-// components/scale-practice.tsx
 import { useScalePractice } from "@/hooks/modes/use-scale-practice";
 import { ScaleDisplay } from "./scale-display";
 import { Feedback } from "@/components/feedback";

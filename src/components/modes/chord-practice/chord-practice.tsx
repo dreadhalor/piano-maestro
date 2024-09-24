@@ -1,4 +1,3 @@
-// chord-practice.tsx
 import { ChordDisplay } from "./chord-display";
 import { Feedback } from "@/components/feedback";
 import { MidiInput } from "@/components/midi-input";

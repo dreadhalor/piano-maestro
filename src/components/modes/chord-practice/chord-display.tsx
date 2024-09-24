@@ -1,4 +1,3 @@
-// components/chord-display.tsx
 import React from "react";
 import { Chord } from "@/utils/chords";
 import { midiToNoteNameWithoutOctave } from "@/utils/chord-utils";

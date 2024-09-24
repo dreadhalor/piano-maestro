@@ -1,5 +1,3 @@
-// utils/chords.ts
-
 import { noteOffsets, NOTES } from "./chord-utils";
 
 export interface Chord {

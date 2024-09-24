@@ -1,5 +1,3 @@
-// utils/scales.ts
-
 import { noteOffsets, NOTES } from "./chord-utils";
 
 // Define the modes and their corresponding interval patterns

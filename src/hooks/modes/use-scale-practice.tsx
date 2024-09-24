@@ -1,4 +1,3 @@
-// use-scale-practice.ts
 import { useState, useCallback, useEffect } from "react";
 import { getRandomScale, Scale } from "@/utils/scale-utils";
 import { useNotePressed, useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";

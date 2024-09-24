@@ -1,4 +1,3 @@
-// components/progression-display.tsx
 import React from "react";
 import { ChordProgression } from "@/utils/chord-progressions";
 import { type Chord } from "@/utils/chords";

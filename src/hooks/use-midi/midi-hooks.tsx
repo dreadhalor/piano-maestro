@@ -1,4 +1,3 @@
-// midi-hooks.ts
 import { MIDIContext } from "@/providers/midi-provider";
 import { useContext, useEffect, useState, useCallback } from "react";
 import { NoteMessageEvent } from "webmidi";

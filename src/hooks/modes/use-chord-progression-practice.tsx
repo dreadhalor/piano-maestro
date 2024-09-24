@@ -1,4 +1,3 @@
-// hooks/modes/use-chord-progression-practice.tsx
 import { useState, useCallback, useEffect } from "react";
 import {
   getDifferentChordProgression,

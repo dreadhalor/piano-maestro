@@ -1,4 +1,3 @@
-// midi-provider.tsx
 import React, { createContext, useEffect, useState } from "react";
 import { WebMidi, Input } from "webmidi";
 
