@@ -1,7 +1,7 @@
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettings } from "@/hooks/use-settings";
 import { midiToNoteName } from "@/utils/chord-utils";
-import { cn } from "@/lib/utils";
+import { cn, getWhiteAndBlackKeys } from "@/lib/utils";
 import { VerticalSlider } from "@ui/slider";
 import { Label } from "@radix-ui/react-label";
 import { FaVolumeHigh } from "react-icons/fa6";
@@ -12,23 +12,7 @@ export const PianoRoll = () => {
   const { lowKey, highKey } = useSettings();
   const { volume, changeVolume } = useSound();
 
-  // Define white and black keys dynamically based on the user-defined range
-  const whiteKeys: { note: string; midiNumber: number }[] = [];
-  const blackKeys = [];
-
-  // MIDI notes that are black keys
-  const blackKeyNotes = ["C#", "Eb", "F#", "G#", "Bb"];
-
-  for (let i = lowKey; i <= highKey; i++) {
-    const noteName = midiToNoteName(i);
-    const isBlackKey = blackKeyNotes.includes(noteName.slice(0, -1)); // Exclude octave for comparison
-
-    if (isBlackKey) {
-      blackKeys.push({ note: noteName, midiNumber: i });
-    } else {
-      whiteKeys.push({ note: noteName, midiNumber: i });
-    }
-  }
+  const { whiteKeys, blackKeys } = getWhiteAndBlackKeys(lowKey, highKey);
 
   // Convert pressed MIDI notes to note names
   const pressedNoteNames = pressedNotes.map(midiToNoteName);
@@ -50,6 +34,7 @@ export const PianoRoll = () => {
         />
       </div>
       <div className="flex flex-col items-center justify-center">
+        {/* Set desired width here */}
         {/* White Keys */}
         <div className="relative flex">
           {whiteKeys.map(({ note, midiNumber }) => (
@@ -96,5 +81,3 @@ export const PianoRoll = () => {
     </div>
   );
 };
-
-export default PianoRoll;

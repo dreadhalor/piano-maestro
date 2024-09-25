@@ -10,9 +10,13 @@ import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
 import { SettingsDialog } from "@/components/settings-dialog";
 import { Button } from "@ui/button";
+import { ResponsiveScalingDiv } from "@/components/responsive-scaling-div";
+import { getWhiteAndBlackKeys } from "@/lib/utils";
+import { useSettings } from "@/hooks/use-settings";
 
 export const App = () => {
-  const { mode } = useAppContext(); // Get mode from context
+  const { mode } = useAppContext();
+  const { lowKey, highKey } = useSettings();
 
   // Function to render the selected practice mode component
   const renderModeComponent = () => {
@@ -35,16 +39,16 @@ export const App = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 p-8">
+    <div className="flex min-h-screen gap-8 bg-gray-100 p-8">
       <PracticeSidebar />
-      <div className="my-auto flex flex-1 flex-col items-center justify-center">
+      <div className="my-auto flex min-w-0 flex-1 flex-col items-center justify-center">
         {/* Header */}
         <h1 className="relative mb-6 flex w-full items-center justify-center text-center text-5xl font-extrabold text-blue-600">
           Piano Maestro
           <SettingsDialog>
             <Button
               variant="ghost"
-              className="absolute right-[200px] p-0 text-4xl text-gray-400 hover:bg-transparent hover:text-gray-600"
+              className="absolute right-[20px] p-0 text-4xl text-gray-400 hover:bg-transparent hover:text-gray-600"
             >
               <FaGear />
             </Button>
@@ -56,8 +60,15 @@ export const App = () => {
           {renderModeComponent()}
         </div>
 
-        {/* Piano Roll */}
-        <PianoRoll />
+        {/* Gotta make they keyboard scale-down-able for laptops */}
+        <ResponsiveScalingDiv
+          desiredWidth={
+            // white keys = 48px, volume slider = 30px, gap = 16px
+            getWhiteAndBlackKeys(lowKey, highKey).whiteKeys.length * 48 + 46
+          }
+        >
+          <PianoRoll />
+        </ResponsiveScalingDiv>
       </div>
     </div>
   );
