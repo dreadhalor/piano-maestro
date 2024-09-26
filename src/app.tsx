@@ -9,7 +9,7 @@ import { EarTrainingPractice } from "@/components/modes/ear-training/ear-trainin
 import { IntervalPractice } from "@/components/modes/interval-practice/interval-practice"; // Import IntervalPractice
 import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
-import { SettingsDialog } from "@/components/settings-dialog";
+import { SettingsDialog } from "@/components/settings/settings-dialog";
 import { Button } from "@ui/button";
 import { ResponsiveScalingDiv } from "@/components/responsive-scaling-div";
 import { getWhiteAndBlackKeys } from "@/lib/utils";

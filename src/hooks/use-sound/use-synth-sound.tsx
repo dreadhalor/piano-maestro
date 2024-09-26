@@ -94,7 +94,7 @@ export const useSynthSound = () => {
       if (!sampler.current || !isSynthInitialized.current) return;
 
       if (!activeNotes.current.has(noteName)) {
-        sampler.current.triggerAttackRelease(noteName, "8n", undefined, 0.7);
+        sampler.current.triggerAttackRelease(noteName, "8n", undefined, 1);
       }
     },
     [sampler],

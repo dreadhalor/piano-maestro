@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# tsbuildinfo
+*.tsbuildinfo
+
+# Extra, extra, don't read all about it
+code.txt
