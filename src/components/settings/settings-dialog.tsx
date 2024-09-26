@@ -7,11 +7,11 @@ import {
   DialogTrigger,
 } from "@ui/dialog";
 import { useSettings } from "@/hooks/use-settings";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
 import { GeneralSettings } from "./general-settings";
 import { ChordSettings } from "./chord-settings";
 import { ScaleSettings } from "./scale-settings";
-import { IntervalSettings } from "./interval-settings";
+import { IntervalRecognitionSettings } from "./interval-recognition-settings";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -41,7 +41,11 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
             <TabsTrigger value="general">General</TabsTrigger>
             <TabsTrigger value="chords">Chords</TabsTrigger>
             <TabsTrigger value="scales">Scales</TabsTrigger>
-            <TabsTrigger value="intervals">Intervals</TabsTrigger>
+            <TabsTrigger value="interval-recognition">
+              Interval
+              <br />
+              recognition
+            </TabsTrigger>
           </TabsList>
           <div className="flex-1 p-2">
             <TabsContent value="general">
@@ -53,8 +57,8 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
             <TabsContent value="scales">
               <ScaleSettings />
             </TabsContent>
-            <TabsContent value="intervals">
-              <IntervalSettings />
+            <TabsContent value="interval-recognition">
+              <IntervalRecognitionSettings />
             </TabsContent>
           </div>
         </Tabs>

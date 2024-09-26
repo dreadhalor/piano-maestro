@@ -7,7 +7,7 @@ export type PracticeMode =
   | "scale"
   | "progression"
   | "ear-training"
-  | "interval-training";
+  | "interval-recognition";
 
 type AppContextType = {
   mode: PracticeMode;

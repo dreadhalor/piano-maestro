@@ -15,9 +15,13 @@ interface Interval {
 
 type State = "initial" | "playing" | "answered";
 
-export const useIntervalPractice = () => {
-  const { lowKey, highKey, enabledIntervals, intervalDirection } =
-    useSettings();
+export const useIntervalRecognitionPractice = () => {
+  const {
+    lowKey,
+    highKey,
+    enabledIntervalRecognitionIntervals: enabledIntervals,
+    intervalRecognitionDirection: intervalDirection,
+  } = useSettings();
   const { playNote } = useSound();
   const [state, setState] = useState<State>("initial");
 

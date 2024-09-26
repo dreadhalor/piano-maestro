@@ -11,7 +11,8 @@ export const IntervalGrid: React.FC<IntervalGridProps> = ({
   submitAnswer,
   state,
 }) => {
-  const { enabledIntervals } = useSettings();
+  const { enabledIntervalRecognitionIntervals: enabledIntervals } =
+    useSettings();
 
   return (
     <div className="mt-8 grid grid-cols-3 gap-4">

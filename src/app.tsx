@@ -6,7 +6,7 @@ import { ChordPractice } from "@/components/modes/chord-practice/chord-practice"
 import { ScalePractice } from "@/components/modes/scale-practice/scale-practice";
 import { ChordProgressionPractice } from "@/components/modes/chord-progression-practice/chord-progression-practice";
 import { EarTrainingPractice } from "@/components/modes/ear-training/ear-training";
-import { IntervalPractice } from "@/components/modes/interval-practice/interval-practice"; // Import IntervalPractice
+import { IntervalRecognitionPractice } from "@/components/modes/interval-recognition-practice/interval-recognition-practice";
 import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
 import { SettingsDialog } from "@/components/settings/settings-dialog";
@@ -34,8 +34,8 @@ export const App = () => {
         return <ChordProgressionPractice />;
       case "ear-training":
         return <EarTrainingPractice />;
-      case "interval-training":
-        return <IntervalPractice />;
+      case "interval-recognition":
+        return <IntervalRecognitionPractice />;
       default:
         return <div>Please select a mode from the sidebar.</div>;
     }

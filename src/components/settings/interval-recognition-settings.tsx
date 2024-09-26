@@ -4,12 +4,12 @@ import { useSettings } from "@/hooks/use-settings";
 import { Label } from "@ui/label";
 import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
 
-export const IntervalSettings = () => {
+export const IntervalRecognitionSettings = () => {
   const {
-    enabledIntervals,
-    toggleInterval,
-    intervalDirection,
-    setIntervalDirection,
+    enabledIntervalRecognitionIntervals: enabledIntervals,
+    toggleIntervalRecognitionInterval: toggleInterval,
+    intervalRecognitionDirection: intervalDirection,
+    setIntervalRecognitionDirection: setIntervalDirection,
   } = useSettings();
   return (
     <div className="flex flex-col gap-4">

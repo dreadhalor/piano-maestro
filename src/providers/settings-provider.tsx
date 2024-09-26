@@ -19,10 +19,10 @@ interface SettingsContextType {
   toggleChordType: (type: ChordTypeKey) => void;
   enabledScales: Set<ScaleTypeKey>;
   toggleScale: (mode: ScaleTypeKey) => void;
-  enabledIntervals: Set<IntervalKey>;
-  toggleInterval: (interval: IntervalKey) => void;
-  intervalDirection: "ascending" | "descending" | "both";
-  setIntervalDirection: (
+  enabledIntervalRecognitionIntervals: Set<IntervalKey>;
+  toggleIntervalRecognitionInterval: (interval: IntervalKey) => void;
+  intervalRecognitionDirection: "ascending" | "descending" | "both";
+  setIntervalRecognitionDirection: (
     direction: "ascending" | "descending" | "both",
   ) => void;
 }
@@ -43,10 +43,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     toggleChordType,
     enabledScales,
     toggleScale,
-    enabledIntervals,
-    toggleInterval,
-    intervalDirection,
-    setIntervalDirection,
+    enabledIntervalRecognitionIntervals: enabledIntervalRecognitionIntervals,
+    toggleIntervalRecognitionInterval: toggleIntervalRecognitionInterval,
+    intervalRecognitionDirection: intervalRecognitionDirection,
+    setIntervalRecognitionDirection: setIntervalRecognitionDirection,
   } = useSettingsStore();
 
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
@@ -137,10 +137,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         toggleChordType,
         enabledScales,
         toggleScale,
-        enabledIntervals,
-        toggleInterval,
-        intervalDirection,
-        setIntervalDirection,
+        enabledIntervalRecognitionIntervals,
+        toggleIntervalRecognitionInterval,
+        intervalRecognitionDirection,
+        setIntervalRecognitionDirection,
       }}
     >
       {children}

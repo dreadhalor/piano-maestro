@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import { CHORD_TYPES, ChordTypeKey } from "@/utils/chords";
 import { SCALE_TYPES, ScaleTypeKey } from "@/utils/scale-utils";
-import { INTERVAL_TYPES, IntervalKey } from "@/utils/interval-utils"; // Import interval types
+import { INTERVAL_TYPES, IntervalKey } from "@/utils/interval-utils";
 
 // Zustand store for settings
 interface SettingsState {
@@ -10,14 +10,14 @@ interface SettingsState {
   highKey: number;
   enabledChordTypes: Set<ChordTypeKey>;
   enabledScales: Set<ScaleTypeKey>;
-  enabledIntervals: Set<IntervalKey>; // Enabled intervals
-  intervalDirection: "ascending" | "descending" | "both"; // Interval direction
+  enabledIntervalRecognitionIntervals: Set<IntervalKey>;
+  intervalRecognitionDirection: "ascending" | "descending" | "both";
   setLowKey: (value: number) => void;
   setHighKey: (value: number) => void;
   toggleChordType: (type: ChordTypeKey) => void;
   toggleScale: (mode: ScaleTypeKey) => void;
-  toggleInterval: (interval: IntervalKey) => void; // Toggle interval
-  setIntervalDirection: (
+  toggleIntervalRecognitionInterval: (interval: IntervalKey) => void;
+  setIntervalRecognitionDirection: (
     direction: "ascending" | "descending" | "both",
   ) => void; // Set direction
 }
@@ -33,10 +33,10 @@ export const useSettingsStore = create<SettingsState>()(
       enabledScales: new Set<ScaleTypeKey>(
         Object.keys(SCALE_TYPES) as ScaleTypeKey[],
       ), // All scale types enabled by default
-      enabledIntervals: new Set<IntervalKey>(
+      enabledIntervalRecognitionIntervals: new Set<IntervalKey>(
         Object.keys(INTERVAL_TYPES) as IntervalKey[],
       ), // All intervals enabled by default
-      intervalDirection: "both", // Default direction
+      intervalRecognitionDirection: "both", // Default direction
       setLowKey: (value: number) => set({ lowKey: value }),
       setHighKey: (value: number) => set({ highKey: value }),
       toggleChordType: (type: ChordTypeKey) =>
@@ -59,19 +59,23 @@ export const useSettingsStore = create<SettingsState>()(
           }
           return { enabledScales: updatedModes };
         }),
-      toggleInterval: (interval: IntervalKey) =>
+      toggleIntervalRecognitionInterval: (interval: IntervalKey) =>
         set((state) => {
-          const updatedIntervals = new Set(state.enabledIntervals);
+          const updatedIntervals = new Set(
+            state.enabledIntervalRecognitionIntervals,
+          );
           if (updatedIntervals.has(interval)) {
             updatedIntervals.delete(interval);
           } else {
             updatedIntervals.add(interval);
           }
-          return { enabledIntervals: updatedIntervals };
+          return { enabledIntervalRecognitionIntervals: updatedIntervals };
         }),
-      setIntervalDirection: (direction: "ascending" | "descending" | "both") =>
+      setIntervalRecognitionDirection: (
+        direction: "ascending" | "descending" | "both",
+      ) =>
         set({
-          intervalDirection: direction,
+          intervalRecognitionDirection: direction,
         }),
     }),
     {
@@ -83,8 +87,10 @@ export const useSettingsStore = create<SettingsState>()(
         highKey: state.highKey,
         enabledChordTypes: Array.from(state.enabledChordTypes), // Serialize Set to array
         enabledScales: Array.from(state.enabledScales), // Serialize Set to array
-        enabledIntervals: Array.from(state.enabledIntervals), // Serialize Set to array
-        intervalDirection: state.intervalDirection, // Serialize direction
+        enabledIntervalRecognitionIntervals: Array.from(
+          state.enabledIntervalRecognitionIntervals,
+        ), // Serialize Set to array
+        intervalRecognitionDirection: state.intervalRecognitionDirection, // Serialize direction
       }),
       merge: (persistedState, currentState) => {
         const persisted = persistedState as Partial<SettingsState>; // Cast persistedState to partial
@@ -93,7 +99,9 @@ export const useSettingsStore = create<SettingsState>()(
           ...persisted,
           enabledChordTypes: new Set(persisted.enabledChordTypes || []), // Deserialize array back to Set
           enabledScales: new Set(persisted.enabledScales || []), // Deserialize array back to Set
-          enabledIntervals: new Set(persisted.enabledIntervals || []), // Deserialize array back to Set
+          enabledIntervalRecognitionIntervals: new Set(
+            persisted.enabledIntervalRecognitionIntervals || [],
+          ), // Deserialize array back to Set
         };
       },
     },
