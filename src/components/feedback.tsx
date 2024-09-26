@@ -12,7 +12,7 @@ export const Feedback: React.FC<FeedbackProps> = ({ message, className }) => {
   return (
     <h3
       className={cn(
-        "mt-4 text-xl font-bold",
+        "text-xl font-bold",
         message === "Correct!" ? "text-green-600" : "text-red-600",
         className,
       )}

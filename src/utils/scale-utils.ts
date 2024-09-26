@@ -55,7 +55,6 @@ export const getRandomScale = ({
   enabledScales?: ScaleTypeKey[];
 } = {}) => {
   let randomScale: Scale;
-  // return SCALES[0];
   // If no enabled scales, return the first scale
   if (enabledScales && enabledScales.length === 0) return SCALES[0];
 

@@ -10,7 +10,7 @@ import { useSound } from "@/hooks/use-sound/use-sound";
 export const PianoRoll = () => {
   const { pressedNotes } = useProcessedMIDI();
   const { lowKey, highKey } = useSettings();
-  const { volume, changeVolume } = useSound();
+  const { volume, changeVolume, playNote } = useSound();
 
   const { whiteKeys, blackKeys } = getWhiteAndBlackKeys(lowKey, highKey);
 
@@ -41,9 +41,11 @@ export const PianoRoll = () => {
             <div
               key={midiNumber}
               className={cn(
-                "relative flex h-40 w-12 items-end justify-center border border-gray-400 bg-white shadow-md",
+                "relative flex h-40 w-12 cursor-pointer items-end justify-center border border-gray-400 bg-white shadow-md",
                 isKeyPressed(note) && "bg-blue-300",
+                "hover:bg-blue-200",
               )}
+              onMouseDown={() => playNote(note)}
             >
               <span className="mb-2 text-sm font-semibold text-gray-700">
                 {note[0]}
@@ -66,9 +68,11 @@ export const PianoRoll = () => {
                 <div
                   key={midiNumber}
                   className={cn(
-                    "pointer-events-auto relative h-24 w-8 -translate-x-1/2 transform bg-black shadow-lg",
+                    "pointer-events-auto relative h-24 w-8 -translate-x-1/2 transform cursor-pointer bg-black shadow-lg",
                     isKeyPressed(note) && "bg-blue-700",
+                    "hover:bg-blue-800",
                   )}
+                  onMouseDown={() => playNote(note)}
                   style={{
                     gridColumnStart: precedingWhiteIndex + 2, // Place black key between appropriate white keys
                   }}

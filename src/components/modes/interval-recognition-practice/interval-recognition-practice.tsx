@@ -1,7 +1,8 @@
 import { useIntervalRecognitionPractice } from "@/hooks/modes/use-interval-recognition-practice";
 import { Feedback } from "@/components/feedback";
 import { Button } from "@ui/button";
-import { IntervalGrid } from "./interval-recognition-grid"; // Import IntervalGrid
+import { IntervalGrid } from "./interval-recognition-grid";
+import { Separator } from "@/components/ui/separator";
 
 export const IntervalRecognitionPractice = () => {
   const {
@@ -15,13 +16,13 @@ export const IntervalRecognitionPractice = () => {
   } = useIntervalRecognitionPractice();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <h2 className="mb-4 text-2xl font-bold text-indigo-600">
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      <h2 className="text-2xl font-bold text-indigo-600">
         Interval Practice Mode
       </h2>
 
       {/* Describe the mode to the user */}
-      <p className="mb-4 text-lg text-gray-700">
+      <p className="text-lg text-gray-700">
         Practice identifying intervals by ear.
       </p>
 
@@ -56,13 +57,14 @@ export const IntervalRecognitionPractice = () => {
           <Feedback message={feedback} />
 
           {/* Interval Controls */}
-          <div className="mt-4 flex gap-4">
+          <div className="flex gap-4">
             <Button onClick={replayInterval} disabled={!currentInterval}>
               Replay Interval
             </Button>
             <Button onClick={nextInterval}>Next Interval</Button>
           </div>
 
+          <Separator />
           {/* Interval Grid for User Selection */}
           <IntervalGrid submitAnswer={submitAnswer} state={state} />
         </>

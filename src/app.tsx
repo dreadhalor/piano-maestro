@@ -7,6 +7,7 @@ import { ScalePractice } from "@/components/modes/scale-practice/scale-practice"
 import { ChordProgressionPractice } from "@/components/modes/chord-progression-practice/chord-progression-practice";
 import { EarTrainingPractice } from "@/components/modes/ear-training/ear-training";
 import { IntervalRecognitionPractice } from "@/components/modes/interval-recognition-practice/interval-recognition-practice";
+import { IntervalPractice } from "@/components/modes/interval-practice/interval-practice";
 import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
 import { SettingsDialog } from "@/components/settings/settings-dialog";
@@ -26,6 +27,8 @@ export const App = () => {
         return <Playground />;
       case "note":
         return <NotePractice />;
+      case "interval":
+        return <IntervalPractice />;
       case "chord":
         return <ChordPractice />;
       case "scale":

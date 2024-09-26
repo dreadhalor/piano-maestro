@@ -3,6 +3,7 @@ import { createContext, useState } from "react";
 export type PracticeMode =
   | "playground"
   | "note"
+  | "interval"
   | "chord"
   | "scale"
   | "progression"

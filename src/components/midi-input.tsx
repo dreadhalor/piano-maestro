@@ -5,7 +5,7 @@ export const MidiInput = () => {
   const { pressedNotes, isMIDIDeviceConnected } = useProcessedMIDI();
 
   return (
-    <div className="mt-4 w-full text-center">
+    <div className="w-full text-center">
       {isMIDIDeviceConnected ? (
         <>
           <p className="text-sm text-green-600">

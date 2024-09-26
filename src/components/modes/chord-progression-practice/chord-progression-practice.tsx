@@ -10,8 +10,8 @@ export const ChordProgressionPractice = () => {
     useChordProgressionPractice();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <h2 className="mb-4 text-2xl font-bold text-blue-600">
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      <h2 className="text-2xl font-bold text-blue-600">
         Chord Progression Practice Mode
       </h2>
 
@@ -30,9 +30,7 @@ export const ChordProgressionPractice = () => {
       <Feedback message={feedback} />
 
       {/* Add Skip Button */}
-      <Button className="mt-4" onClick={skipProgression}>
-        Skip Progression
-      </Button>
+      <Button onClick={skipProgression}>Skip Progression</Button>
     </div>
   );
 };

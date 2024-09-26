@@ -14,11 +14,11 @@ export const ProgressionDisplay: React.FC<ProgressionDisplayProps> = ({
   nextChord,
 }) => {
   return (
-    <div className="mb-6 w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
-      <h2 className="mb-4 text-xl font-bold text-gray-800">
+    <div className="flex w-full flex-col gap-4 rounded-lg bg-gray-100 p-4 text-center shadow-inner">
+      <h2 className="text-xl font-bold text-gray-800">
         Progression: <span className="text-blue-500">{progression.name}</span>
       </h2>
-      <div className="mt-4 text-center">
+      <div className="text-center">
         <h2 className="text-lg font-semibold">
           Current Chord: {currentChord.name}
         </h2>

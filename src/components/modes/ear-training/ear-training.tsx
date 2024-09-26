@@ -7,13 +7,11 @@ export const EarTrainingPractice = () => {
   const { state, start, feedback, playCurrentNote } = useEarTrainingPractice();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <h2 className="mb-4 text-2xl font-bold text-orange-600">
-        Ear Training Mode
-      </h2>
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      <h2 className="text-2xl font-bold text-orange-600">Ear Training Mode</h2>
 
       {/* Describe the mode to the user */}
-      <p className="mb-4 text-lg text-gray-700">
+      <p className="text-lg text-gray-700">
         Listen to the note and try to play it on your keyboard.
       </p>
 
@@ -25,10 +23,10 @@ export const EarTrainingPractice = () => {
       {state !== "initial" && (
         <>
           <MidiInput />
-          <Feedback message={feedback} />
+          <Feedback message={feedback} className="mt-0" />
 
           {/* Controls */}
-          <div className="mt-4 flex gap-4">
+          <div className="flex gap-4">
             <Button onClick={playCurrentNote} disabled={state !== "playing"}>
               Replay Note
             </Button>

@@ -1,16 +1,16 @@
 export const INTERVAL_TYPES = {
-  "minor-2nd": { label: "Minor 2nd", semitones: 1 },
-  "major-2nd": { label: "Major 2nd", semitones: 2 },
-  "minor-3rd": { label: "Minor 3rd", semitones: 3 },
-  "major-3rd": { label: "Major 3rd", semitones: 4 },
-  "perfect-4th": { label: "Perfect 4th", semitones: 5 },
-  tritone: { label: "Tritone", semitones: 6 },
-  "perfect-5th": { label: "Perfect 5th", semitones: 7 },
-  "minor-6th": { label: "Minor 6th", semitones: 8 },
-  "major-6th": { label: "Major 6th", semitones: 9 },
-  "minor-7th": { label: "Minor 7th", semitones: 10 },
-  "major-7th": { label: "Major 7th", semitones: 11 },
-  octave: { label: "Octave", semitones: 12 },
+  "minor-2nd": { label: "Minor 2nd", shorthand: "m2", semitones: 1 },
+  "major-2nd": { label: "Major 2nd", shorthand: "M2", semitones: 2 },
+  "minor-3rd": { label: "Minor 3rd", shorthand: "m3", semitones: 3 },
+  "major-3rd": { label: "Major 3rd", shorthand: "M4", semitones: 4 },
+  "perfect-4th": { label: "Perfect 4th", shorthand: "P4", semitones: 5 },
+  tritone: { label: "Tritone", shorthand: "TT", semitones: 6 },
+  "perfect-5th": { label: "Perfect 5th", shorthand: "P5", semitones: 7 },
+  "minor-6th": { label: "Minor 6th", shorthand: "m6", semitones: 8 },
+  "major-6th": { label: "Major 6th", shorthand: "M6", semitones: 9 },
+  "minor-7th": { label: "Minor 7th", shorthand: "m7", semitones: 10 },
+  "major-7th": { label: "Major 7th", shorthand: "M7", semitones: 11 },
+  octave: { label: "Octave", shorthand: "P8", semitones: 12 },
 } as const;
 
 export type IntervalKey = keyof typeof INTERVAL_TYPES;
@@ -28,4 +28,63 @@ export const INTERVAL_NAMES: Record<IntervalKey, string> = {
   "minor-7th": "Minor 7th",
   "major-7th": "Major 7th",
   octave: "Octave",
+};
+
+export interface Interval {
+  name: string;
+  notes: number[];
+  type: IntervalKey;
+  shorthand?: string;
+  direction?: "ascending" | "descending";
+}
+
+export const getRandomIntervalKey = ({
+  currentInterval,
+  enabledIntervals,
+}: {
+  currentInterval?: IntervalKey;
+  enabledIntervals?: IntervalKey[];
+} = {}) => {
+  let randomInterval: IntervalKey;
+  // If no enabled intervals, return the first interval
+  if (enabledIntervals && enabledIntervals.length === 0) return "minor-2nd";
+
+  do {
+    randomInterval = Object.keys(INTERVAL_TYPES)[
+      Math.floor(Math.random() * Object.keys(INTERVAL_TYPES).length)
+    ] as IntervalKey;
+  } while (
+    (currentInterval && randomInterval === currentInterval) ||
+    (enabledIntervals && !enabledIntervals.includes(randomInterval))
+  );
+  return randomInterval;
+};
+
+export const getRandomInterval = ({
+  currentInterval,
+  enabledIntervals,
+  lowKey,
+  highKey,
+}: {
+  currentInterval?: IntervalKey;
+  enabledIntervals?: IntervalKey[];
+  lowKey: number;
+  highKey: number;
+}) => {
+  const intervalKey = getRandomIntervalKey({
+    currentInterval,
+    enabledIntervals,
+  });
+  const interval = INTERVAL_TYPES[intervalKey];
+  const rootMidi =
+    lowKey +
+    Math.floor(Math.random() * (highKey - lowKey - interval.semitones));
+  const secondNote = rootMidi + interval.semitones;
+  return {
+    name: intervalKey,
+    notes: [rootMidi, secondNote],
+    shorthand: interval.shorthand,
+    type: intervalKey,
+    direction: "ascending",
+  } satisfies Interval;
 };

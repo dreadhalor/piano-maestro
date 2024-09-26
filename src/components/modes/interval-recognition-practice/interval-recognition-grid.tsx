@@ -15,7 +15,7 @@ export const IntervalGrid: React.FC<IntervalGridProps> = ({
     useSettings();
 
   return (
-    <div className="mt-8 grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-3 gap-4">
       {Object.keys(INTERVAL_TYPES)
         .filter((key) => enabledIntervals.has(key as IntervalKey))
         .map((key) => {

@@ -19,10 +19,8 @@ export const ScalePractice = () => {
   } = useScalePractice();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <h2 className="mb-4 text-2xl font-bold text-red-600">
-        Scale Practice Mode
-      </h2>
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      <h2 className="text-2xl font-bold text-red-600">Scale Practice Mode</h2>
 
       {/* Display the scale details */}
       <ScaleDisplay
@@ -37,7 +35,7 @@ export const ScalePractice = () => {
       <Feedback message={feedback} />
 
       {/* Add Skip Button */}
-      <div className="mt-2 flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <Toggle variant="outline" pressed={repeat} onPressedChange={setRepeat}>
           <FaRepeat />
         </Toggle>

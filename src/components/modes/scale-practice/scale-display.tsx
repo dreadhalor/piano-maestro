@@ -18,7 +18,7 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
   isScaleComplete,
 }) => {
   return (
-    <div className="mb-6 w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
+    <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
       <h2 className="mb-4 text-xl font-bold text-gray-800">
         Scale: <span className="text-red-500">{scale.name}</span>
       </h2>

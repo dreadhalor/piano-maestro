@@ -25,7 +25,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
       }}
     >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="flex h-[90%] max-h-[50%] flex-col overflow-auto pb-4 sm:max-w-[600px]">
+      <DialogContent className="flex h-[90%] max-h-[70%] flex-col overflow-auto pb-4 sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Settings</DialogTitle>
           <DialogDescription>

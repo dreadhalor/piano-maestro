@@ -8,17 +8,13 @@ export const ChordPractice = () => {
   const { currentChord, feedback, skipChord } = useChordPractice();
 
   return (
-    <div className="flex w-full flex-col items-center justify-center">
-      <h2 className="mb-4 text-2xl font-bold text-blue-600">
-        Chord Practice Mode
-      </h2>
+    <div className="flex w-full flex-col items-center justify-center gap-4">
+      <h2 className="text-2xl font-bold text-blue-600">Chord Practice Mode</h2>
       <ChordDisplay chord={currentChord} />
       <MidiInput />
       <Feedback message={feedback} />
       {/* Add Skip Button */}
-      <Button className="mt-4" onClick={skipChord}>
-        Skip Chord
-      </Button>
+      <Button onClick={skipChord}>Skip Chord</Button>
     </div>
   );
 };
