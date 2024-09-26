@@ -2,7 +2,7 @@ export const INTERVAL_TYPES = {
   "minor-2nd": { label: "Minor 2nd", shorthand: "m2", semitones: 1 },
   "major-2nd": { label: "Major 2nd", shorthand: "M2", semitones: 2 },
   "minor-3rd": { label: "Minor 3rd", shorthand: "m3", semitones: 3 },
-  "major-3rd": { label: "Major 3rd", shorthand: "M4", semitones: 4 },
+  "major-3rd": { label: "Major 3rd", shorthand: "M3", semitones: 4 },
   "perfect-4th": { label: "Perfect 4th", shorthand: "P4", semitones: 5 },
   tritone: { label: "Tritone", shorthand: "TT", semitones: 6 },
   "perfect-5th": { label: "Perfect 5th", shorthand: "P5", semitones: 7 },

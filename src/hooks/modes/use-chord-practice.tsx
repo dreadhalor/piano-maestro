@@ -5,7 +5,7 @@ import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettings } from "@/hooks/use-settings";
 
 export const useChordPractice = () => {
-  const { enabledChordTypes } = useSettings(); // Use the enabled chord types from settings
+  const { enabledChordTypes } = useSettings();
 
   const [currentChord, setCurrentChord] = useState<Chord>(
     getRandomChord({ enabledChords: [...enabledChordTypes] }),
@@ -14,7 +14,7 @@ export const useChordPractice = () => {
   const [feedback, setFeedback] = useState<string>("");
   const [isChordComplete, setIsChordComplete] = useState<boolean>(false);
 
-  const { pressedNotes, allKeysReleased } = useProcessedMIDI(); // Use the new processed MIDI hook
+  const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
   const handleChordPlayed = (
     playedNotes: number[],
