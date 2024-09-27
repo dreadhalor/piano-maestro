@@ -20,7 +20,7 @@ const WhiteKey = ({ note, enabled, onClick }: KeyProps) => {
     <button
       key={note}
       className={cn(
-        "relative flex h-40 w-12 cursor-pointer items-end justify-center border border-gray-400 bg-white shadow-md transition-transform duration-200",
+        "relative flex h-40 w-12 origin-top cursor-pointer items-end justify-center border border-gray-400 bg-white shadow-md transition-transform duration-200",
         isEnabled
           ? "scale-105 transform bg-white shadow-lg"
           : "bg-gray-300 opacity-50 shadow-sm",
@@ -53,7 +53,7 @@ const BlackKey = ({ note, enabled, onClick }: KeyProps) => {
     <button
       key={note}
       className={cn(
-        "pointer-events-auto absolute h-24 w-8 -translate-x-1/2 transform cursor-pointer bg-black shadow-lg transition-transform duration-200",
+        "pointer-events-auto absolute h-24 w-8 origin-top -translate-x-1/2 transform cursor-pointer bg-black shadow-lg transition-transform duration-200",
         isEnabled
           ? "scale-105 transform bg-black shadow-xl"
           : "bg-gray-400 shadow-sm",
@@ -90,8 +90,8 @@ export const PianoRollInput = ({ enabledNotes }: PianoRollInputProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4 pt-8 shadow-md">
-      <div className="relative flex">
+    <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4 pt-6 shadow-md">
+      <div className="relative flex pb-2">
         {/* White Keys */}
         <div className="flex space-x-0">
           {WHITE_KEYS.map((note) => (
