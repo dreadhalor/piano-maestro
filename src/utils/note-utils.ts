@@ -34,13 +34,21 @@ export const BLACK_KEYS = [
 ] as const;
 
 export const getRandomAbstractNote = (opts?: {
+  currentNote?: AbstractNote;
   enabledNotes?: AbstractNote[];
 }) => {
-  const { enabledNotes } = opts || {};
-  if (enabledNotes && enabledNotes.length > 0) {
-    return enabledNotes[Math.floor(Math.random() * enabledNotes.length)];
-  }
-  return NOTES[Math.floor(Math.random() * 12)] satisfies AbstractNote;
+  const { enabledNotes, currentNote } = opts || {};
+  let randomNote: AbstractNote;
+  // If no enabled notes, return the first note
+  if (enabledNotes && enabledNotes.length === 0) return NOTES[0];
+  if (enabledNotes && enabledNotes.length === 1) return enabledNotes[0];
+  do {
+    randomNote = NOTES[Math.floor(Math.random() * 12)];
+  } while (
+    randomNote === currentNote ||
+    (enabledNotes && !enabledNotes.includes(randomNote))
+  );
+  return randomNote;
 };
 
 export const stepFromAbstractNote = (

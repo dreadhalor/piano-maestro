@@ -60,11 +60,15 @@ export const getRandomIntervalKey = ({
   let randomInterval: IntervalKey;
   // If no enabled intervals, return the first interval
   if (enabledIntervals && enabledIntervals.length === 0) return "minor-2nd";
+  // If only one interval is enabled, return that interval
+  if (enabledIntervals && enabledIntervals.length === 1)
+    return enabledIntervals[0];
 
   do {
     randomInterval = Object.keys(INTERVAL_TYPES)[
       Math.floor(Math.random() * Object.keys(INTERVAL_TYPES).length)
     ] as IntervalKey;
+    console.log("randomInterval", randomInterval);
   } while (
     (currentInterval && randomInterval === currentInterval) ||
     (enabledIntervals && !enabledIntervals.includes(randomInterval))
@@ -81,61 +85,24 @@ const coerceDirection = (direction?: IntervalDirections) => {
     : direction;
 };
 
-export const getRandomInterval = ({
-  currentInterval,
-  enabledIntervals,
-  lowKey,
-  highKey,
-  direction,
-}: {
-  currentInterval?: IntervalKey;
-  enabledIntervals?: IntervalKey[];
-  lowKey: number;
-  highKey: number;
-  direction?: IntervalDirections;
-}) => {
-  const intervalKey = getRandomIntervalKey({
-    currentInterval,
-    enabledIntervals,
-  });
-  const interval = INTERVAL_TYPES[intervalKey];
-  const rootMidi =
-    lowKey +
-    Math.floor(Math.random() * (highKey - lowKey - interval.semitones));
-  const secondNote = rootMidi + interval.semitones;
-  const notes = [rootMidi, secondNote];
-  const coercedDirection = coerceDirection(direction);
-  if (coercedDirection === "descending") {
-    notes.reverse();
-  }
-  return {
-    name: intervalKey,
-    notes,
-    shorthand: interval.shorthand,
-    type: intervalKey,
-    direction: coercedDirection,
-  } satisfies Interval;
-};
-
-export const getRandomAbstractInterval = ({
-  currentInterval,
+const getTrueRandomAbstractInterval = ({
   enabledIntervals,
   enabledRootNotes,
   direction,
 }: {
-  currentInterval?: IntervalKey;
   enabledIntervals?: IntervalKey[];
   enabledRootNotes: AbstractNote[];
   direction?: IntervalDirections;
 }) => {
-  const intervalKey = getRandomIntervalKey({
-    currentInterval,
+  const randomIntervalKey = getRandomIntervalKey({
     enabledIntervals,
+  });
+  const randomRoot = getRandomAbstractNote({
+    enabledNotes: enabledRootNotes,
   });
   const coercedDirection = coerceDirection(direction);
 
-  const interval = INTERVAL_TYPES[intervalKey];
-  const randomRoot = getRandomAbstractNote({ enabledNotes: enabledRootNotes });
+  const interval = INTERVAL_TYPES[randomIntervalKey];
   const secondNote = stepFromAbstractNote(
     randomRoot,
     interval.semitones,
@@ -145,10 +112,76 @@ export const getRandomAbstractInterval = ({
   const notes = [randomRoot, secondNote] as [AbstractNote, AbstractNote];
 
   return {
-    name: intervalKey,
+    name: randomIntervalKey,
     notes,
     shorthand: interval.shorthand,
-    type: intervalKey,
+    type: randomIntervalKey,
     direction: coercedDirection,
   } satisfies AbstractInterval;
+};
+
+export const getRandomAbstractInterval = ({
+  currentInterval,
+  enabledIntervals,
+  enabledRootNotes,
+  direction,
+}: {
+  currentInterval?: AbstractInterval;
+  enabledIntervals?: IntervalKey[];
+  enabledRootNotes: AbstractNote[];
+  direction?: IntervalDirections;
+}) => {
+  const otherEnabledIntervals = (enabledIntervals?.length ?? 0) > 1;
+  const otherEnabledRootNotes = enabledRootNotes.length > 1;
+  const bothDirections = direction === "both";
+  const onlyOneOption =
+    !otherEnabledIntervals && !otherEnabledRootNotes && !bothDirections;
+  if (onlyOneOption)
+    return getTrueRandomAbstractInterval({
+      enabledIntervals,
+      enabledRootNotes,
+      direction,
+    });
+
+  let result: AbstractInterval;
+
+  let matchingKey, matchingRoot, matchingDirection, exactSameInterval;
+
+  do {
+    matchingKey = false;
+    matchingRoot = false;
+    matchingDirection = false;
+    exactSameInterval = false;
+
+    result = getTrueRandomAbstractInterval({
+      enabledIntervals,
+      enabledRootNotes,
+      direction,
+    });
+
+    if (currentInterval) {
+      if (result.type === currentInterval.type) matchingKey = true;
+      if (result.notes[0] === currentInterval.notes[0]) matchingRoot = true;
+      if (result.direction === currentInterval.direction)
+        matchingDirection = true;
+      if (matchingKey && matchingRoot && matchingDirection)
+        exactSameInterval = true;
+    }
+    console.log(
+      "key",
+      matchingKey,
+      "root",
+      matchingRoot,
+      "direction",
+      matchingDirection,
+      "exact",
+      exactSameInterval,
+      "current",
+      currentInterval,
+      "result",
+      result,
+    );
+  } while (exactSameInterval);
+
+  return result;
 };
