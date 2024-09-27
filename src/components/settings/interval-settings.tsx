@@ -7,6 +7,7 @@ import { Checkbox } from "@ui/checkbox";
 import { useSettings } from "@/hooks/use-settings";
 import { Label } from "@ui/label";
 import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
+import { PianoRollInput } from "../piano-roll-input";
 
 export const IntervalSettings = () => {
   const {
@@ -18,6 +19,13 @@ export const IntervalSettings = () => {
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-2xl font-bold">Interval Practice Settings</h2>
+
+      {/* Enabled Root Notes */}
+      <div className="flex flex-col gap-4">
+        <h3 className="text-lg font-bold">Enabled Root Notes</h3>
+        <PianoRollInput />
+      </div>
+
       {/* Interval Selection */}
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-bold">Select Intervals for Practice</h3>
