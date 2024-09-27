@@ -36,5 +36,5 @@ export const SETTINGS_TABS = [
     ),
     component: <IntervalRecognitionSettings />,
   },
-];
-export type SettingsTab = (typeof SETTINGS_TABS)[number];
+] as const;
+export type SettingsTab = (typeof SETTINGS_TABS)[number]["key"];

@@ -3,9 +3,16 @@ import { Feedback } from "@/components/feedback";
 import { MidiInput } from "@/components/midi-input";
 import { Button } from "@ui/button";
 import { useChordPractice } from "@/hooks/modes/use-chord-practice";
+import { useSettings } from "@/hooks/use-settings";
+import { useEffect } from "react";
 
 export const ChordPractice = () => {
   const { currentChord, feedback, skipChord } = useChordPractice();
+  const { setTab } = useSettings();
+
+  useEffect(() => {
+    setTab("chords");
+  }, [setTab]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">

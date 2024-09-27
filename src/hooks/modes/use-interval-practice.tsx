@@ -8,26 +8,41 @@ import {
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const useIntervalPractice = () => {
-  const { lowKey, highKey, enabledIntervals, intervalDirection } =
-    useSettings();
+  const {
+    lowKey,
+    highKey,
+    enabledIntervals,
+    intervalDirection,
+    enabledIntervalPracticeRootNotes,
+  } = useSettings();
   const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
   const [interval, setInterval] = useState<AbstractInterval | null>(null);
   const [isIntervalComplete, setIsIntervalComplete] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
-  const advanceInterval = useCallback(() => {
-    setInterval(() =>
-      getRandomAbstractInterval({
-        currentInterval: interval?.type,
-        enabledIntervals: [...enabledIntervals],
-        direction: intervalDirection,
-      }),
-    );
-    setFeedback("");
-    setIsIntervalComplete(false);
-    // if we include interval in the dependencies, it will cause an infinite loop
-  }, [lowKey, highKey, enabledIntervals, intervalDirection]); // eslint-disable-line react-hooks/exhaustive-deps
+  const advanceInterval = useCallback(
+    () => {
+      setInterval(() =>
+        getRandomAbstractInterval({
+          currentInterval: interval?.type,
+          enabledIntervals: [...enabledIntervals],
+          enabledRootNotes: [...enabledIntervalPracticeRootNotes],
+          direction: intervalDirection,
+        }),
+      );
+      setFeedback("");
+      setIsIntervalComplete(false);
+      // if we include interval in the dependencies, it will cause an infinite loop
+    }, // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      lowKey,
+      highKey,
+      enabledIntervals,
+      intervalDirection,
+      enabledIntervalPracticeRootNotes,
+    ],
+  );
 
   const checkAnswer = useCallback(() => {
     if (!interval) return;

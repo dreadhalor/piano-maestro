@@ -120,10 +120,12 @@ export const getRandomInterval = ({
 export const getRandomAbstractInterval = ({
   currentInterval,
   enabledIntervals,
+  enabledRootNotes,
   direction,
 }: {
   currentInterval?: IntervalKey;
   enabledIntervals?: IntervalKey[];
+  enabledRootNotes: AbstractNote[];
   direction?: IntervalDirections;
 }) => {
   const intervalKey = getRandomIntervalKey({
@@ -133,7 +135,7 @@ export const getRandomAbstractInterval = ({
   const coercedDirection = coerceDirection(direction);
 
   const interval = INTERVAL_TYPES[intervalKey];
-  const randomRoot = getRandomAbstractNote();
+  const randomRoot = getRandomAbstractNote({ enabledNotes: enabledRootNotes });
   const secondNote = stepFromAbstractNote(
     randomRoot,
     interval.semitones,

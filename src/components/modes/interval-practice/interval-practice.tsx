@@ -11,7 +11,7 @@ export const IntervalPractice = () => {
   const { setTab } = useSettings();
 
   useEffect(() => {
-    setTab("interval");
+    setTab("intervals");
   }, [setTab]);
 
   return (

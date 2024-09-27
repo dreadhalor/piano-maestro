@@ -5,6 +5,8 @@ import { MidiInput } from "@/components/midi-input";
 import { Button } from "@ui/button";
 import { Toggle } from "@ui/toggle";
 import { FaRepeat } from "react-icons/fa6";
+import { useSettings } from "@/hooks/use-settings";
+import { useEffect } from "react";
 
 export const ScalePractice = () => {
   const {
@@ -17,6 +19,11 @@ export const ScalePractice = () => {
     repeat,
     setRepeat,
   } = useScalePractice();
+  const { setTab } = useSettings();
+
+  useEffect(() => {
+    setTab("scales");
+  }, [setTab]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">

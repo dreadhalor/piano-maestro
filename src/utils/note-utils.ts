@@ -33,7 +33,13 @@ export const BLACK_KEYS = [
   NOTES[10],
 ] as const;
 
-export const getRandomAbstractNote = (): AbstractNote => {
+export const getRandomAbstractNote = (opts?: {
+  enabledNotes?: AbstractNote[];
+}) => {
+  const { enabledNotes } = opts || {};
+  if (enabledNotes && enabledNotes.length > 0) {
+    return enabledNotes[Math.floor(Math.random() * enabledNotes.length)];
+  }
   return NOTES[Math.floor(Math.random() * 12)] satisfies AbstractNote;
 };
 

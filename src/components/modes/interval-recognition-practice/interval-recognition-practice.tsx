@@ -3,6 +3,8 @@ import { Feedback } from "@/components/feedback";
 import { Button } from "@ui/button";
 import { IntervalGrid } from "./interval-recognition-grid";
 import { Separator } from "@/components/ui/separator";
+import { useSettings } from "@/hooks/use-settings";
+import { useEffect } from "react";
 
 export const IntervalRecognitionPractice = () => {
   const {
@@ -14,6 +16,11 @@ export const IntervalRecognitionPractice = () => {
     currentInterval,
     submitAnswer,
   } = useIntervalRecognitionPractice();
+  const { setTab } = useSettings();
+
+  useEffect(() => {
+    setTab("interval-recognition");
+  }, [setTab]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">

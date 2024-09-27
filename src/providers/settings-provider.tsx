@@ -5,10 +5,11 @@ import { ScaleTypeKey } from "@/utils/scale-utils";
 import { IntervalDirections, IntervalKey } from "@/utils/interval-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { AbstractNote } from "@/utils/note-utils";
+import { SettingsTab } from "@/constants";
 
 interface SettingsContextType {
-  tab: string;
-  setTab: (value: string) => void;
+  tab: SettingsTab;
+  setTab: (tab: SettingsTab) => void;
   lowKey: number;
   highKey: number;
   setLowKey: (value: number) => void;
@@ -64,7 +65,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
   const [isSettingHighKey, setIsSettingHighKey] = useState<boolean>(false);
-  const [tab, setTab] = useState<string>("general");
+  const [tab, setTab] = useState<SettingsTab>("general");
 
   // Get processed MIDI data from the new hook
   const { pressedNotes } = useProcessedMIDI();
