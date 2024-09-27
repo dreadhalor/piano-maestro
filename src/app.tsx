@@ -50,7 +50,7 @@ export const App = () => {
       <div className="my-auto flex min-w-0 flex-1 flex-col items-center justify-center">
         {/* Header */}
         <h1 className="relative mb-6 flex w-full items-center justify-center text-center text-5xl font-extrabold text-blue-600">
-          Piano Maestro
+          PianoMaestro
           <SettingsDialog>
             <Button
               variant="ghost"
