@@ -1,14 +1,18 @@
 import { useState, useCallback } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import { useSound } from "@/hooks/use-sound/use-sound";
-import { INTERVAL_TYPES, IntervalKey } from "@/utils/interval-utils";
+import {
+  INTERVAL_TYPES,
+  IntervalDirection,
+  IntervalKey,
+} from "@/utils/interval-utils";
 import { midiToNoteName } from "@/utils/chord-utils";
 
 // Extended Interface to store both notes of the interval
 interface Interval {
   name: IntervalKey;
   semitones: number;
-  direction: "ascending" | "descending";
+  direction: IntervalDirection;
   firstNote: number;
   secondNote: number;
 }
@@ -44,7 +48,7 @@ export const useIntervalRecognitionPractice = () => {
     );
 
     for (const interval of shuffledIntervals) {
-      const possibleDirections: Array<"ascending" | "descending"> = [];
+      const possibleDirections: Array<IntervalDirection> = [];
       if (intervalDirection === "ascending" || intervalDirection === "both") {
         possibleDirections.push("ascending");
       }

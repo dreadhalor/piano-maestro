@@ -12,11 +12,12 @@ import { GeneralSettings } from "./general-settings";
 import { ChordSettings } from "./chord-settings";
 import { ScaleSettings } from "./scale-settings";
 import { IntervalRecognitionSettings } from "./interval-recognition-settings";
+import { IntervalSettings } from "./interval-settings";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { cancelSetKey } = useSettings();
+  const { tab, setTab, cancelSetKey } = useSettings();
 
   return (
     <Dialog
@@ -35,10 +36,12 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
         <Tabs
           orientation="vertical"
           className="flex flex-1 gap-4"
-          defaultValue="general"
+          value={tab}
+          onValueChange={setTab}
         >
           <TabsList className="mb-auto flex flex-col gap-1 p-1.5">
-            <TabsTrigger value="general">General</TabsTrigger>
+            <TabsTrigger value="general">Shared</TabsTrigger>
+            <TabsTrigger value="intervals">Intervals</TabsTrigger>
             <TabsTrigger value="chords">Chords</TabsTrigger>
             <TabsTrigger value="scales">Scales</TabsTrigger>
             <TabsTrigger value="interval-recognition">
@@ -50,6 +53,9 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
           <div className="flex-1 p-2">
             <TabsContent value="general">
               <GeneralSettings />
+            </TabsContent>
+            <TabsContent value="intervals">
+              <IntervalSettings />
             </TabsContent>
             <TabsContent value="chords">
               <ChordSettings />

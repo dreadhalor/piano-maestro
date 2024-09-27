@@ -4,30 +4,35 @@ import { getRandomInterval, Interval } from "@/utils/interval-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const useIntervalPractice = () => {
-  const { lowKey, highKey } = useSettings();
+  const { lowKey, highKey, enabledIntervals, intervalDirection } =
+    useSettings();
   const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
   const [interval, setInterval] = useState<Interval | null>(null);
   const [isIntervalComplete, setIsIntervalComplete] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
-  const randomizeInterval = useCallback(() => {
-    const randomInterval = getRandomInterval({ lowKey, highKey });
-    setInterval(randomInterval);
-  }, [lowKey, highKey]);
-
-  const nextInterval = useCallback(() => {
-    randomizeInterval();
+  const advanceInterval = useCallback(() => {
+    setInterval(() =>
+      getRandomInterval({
+        lowKey,
+        highKey,
+        currentInterval: interval?.type,
+        enabledIntervals: [...enabledIntervals],
+        direction: intervalDirection,
+      }),
+    );
     setFeedback("");
     setIsIntervalComplete(false);
-  }, [randomizeInterval]);
+    // if we include interval in the dependencies, it will cause an infinite loop
+  }, [lowKey, highKey, enabledIntervals]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const checkAnswer = useCallback(() => {
     if (!interval) return;
 
     if (isIntervalComplete && allKeysReleased) {
       // If interval is complete and all keys are released, allow to advance
-      return nextInterval();
+      return advanceInterval();
     }
 
     if (isIntervalComplete) {
@@ -55,7 +60,7 @@ export const useIntervalPractice = () => {
     isIntervalComplete,
     allKeysReleased,
     pressedNotes,
-    nextInterval,
+    advanceInterval,
   ]);
 
   const handleNotePlayed = useCallback(() => {
@@ -68,13 +73,12 @@ export const useIntervalPractice = () => {
   }, [handleNotePlayed]);
 
   useEffect(() => {
-    randomizeInterval();
-  }, [randomizeInterval]);
+    advanceInterval();
+  }, [advanceInterval]);
 
   return {
     interval,
-    setInterval,
-    skipInterval: randomizeInterval,
+    skipInterval: advanceInterval,
     feedback,
     checkAnswer,
   };

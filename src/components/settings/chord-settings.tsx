@@ -7,6 +7,7 @@ export const ChordSettings = () => {
   const { enabledChordTypes, toggleChordType } = useSettings();
   return (
     <div className="flex flex-col gap-4">
+      <h2 className="text-2xl font-bold">Chord Practice Settings</h2>
       {/* Chord Type Selection */}
       <h3 className="text-lg font-bold">Select Chord Types for Practice</h3>
       <div className="grid grid-cols-2 gap-3">

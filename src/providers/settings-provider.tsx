@@ -2,10 +2,12 @@ import React, { createContext, useState, useEffect, useCallback } from "react";
 import { useSettingsStore } from "@/hooks/use-settings-store";
 import { ChordTypeKey } from "@/utils/chords";
 import { ScaleTypeKey } from "@/utils/scale-utils";
-import { IntervalKey } from "@/utils/interval-utils";
+import { IntervalDirections, IntervalKey } from "@/utils/interval-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 interface SettingsContextType {
+  tab: string;
+  setTab: (value: string) => void;
   lowKey: number;
   highKey: number;
   setLowKey: (value: number) => void;
@@ -15,16 +17,18 @@ interface SettingsContextType {
   startSetLowKey: () => void;
   startSetHighKey: () => void;
   cancelSetKey: () => void;
+  enabledIntervals: Set<IntervalKey>;
+  toggleInterval: (interval: IntervalKey) => void;
+  intervalDirection: IntervalDirections;
+  setIntervalDirection: (direction: IntervalDirections) => void;
   enabledChordTypes: Set<ChordTypeKey>;
   toggleChordType: (type: ChordTypeKey) => void;
   enabledScales: Set<ScaleTypeKey>;
   toggleScale: (mode: ScaleTypeKey) => void;
   enabledIntervalRecognitionIntervals: Set<IntervalKey>;
   toggleIntervalRecognitionInterval: (interval: IntervalKey) => void;
-  intervalRecognitionDirection: "ascending" | "descending" | "both";
-  setIntervalRecognitionDirection: (
-    direction: "ascending" | "descending" | "both",
-  ) => void;
+  intervalRecognitionDirection: IntervalDirections;
+  setIntervalRecognitionDirection: (direction: IntervalDirections) => void;
 }
 
 export const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -39,18 +43,23 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     highKey,
     setLowKey: storeSetLowKey,
     setHighKey: storeSetHighKey,
+    enabledIntervals,
+    toggleInterval,
+    intervalDirection,
+    setIntervalDirection,
     enabledChordTypes,
     toggleChordType,
     enabledScales,
     toggleScale,
-    enabledIntervalRecognitionIntervals: enabledIntervalRecognitionIntervals,
-    toggleIntervalRecognitionInterval: toggleIntervalRecognitionInterval,
-    intervalRecognitionDirection: intervalRecognitionDirection,
-    setIntervalRecognitionDirection: setIntervalRecognitionDirection,
+    enabledIntervalRecognitionIntervals,
+    toggleIntervalRecognitionInterval,
+    intervalRecognitionDirection,
+    setIntervalRecognitionDirection,
   } = useSettingsStore();
 
   const [isSettingLowKey, setIsSettingLowKey] = useState<boolean>(false);
   const [isSettingHighKey, setIsSettingHighKey] = useState<boolean>(false);
+  const [tab, setTab] = useState<string>("general");
 
   // Get processed MIDI data from the new hook
   const { pressedNotes } = useProcessedMIDI();
@@ -124,6 +133,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <SettingsContext.Provider
       value={{
+        tab,
+        setTab,
         lowKey,
         highKey,
         setLowKey,
@@ -133,6 +144,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         startSetLowKey,
         startSetHighKey,
         cancelSetKey,
+        enabledIntervals,
+        toggleInterval,
+        intervalDirection,
+        setIntervalDirection,
         enabledChordTypes,
         toggleChordType,
         enabledScales,

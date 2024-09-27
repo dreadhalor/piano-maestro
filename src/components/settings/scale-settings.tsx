@@ -7,6 +7,7 @@ export const ScaleSettings = () => {
   const { enabledScales, toggleScale } = useSettings();
   return (
     <div className="flex flex-col gap-4">
+      <h2 className="text-2xl font-bold">Scale Practice Settings</h2>
       <h3 className="text-lg font-bold">Select Scale Types for Practice</h3>
       <div className="grid grid-cols-2 gap-3">
         {Object.entries(SCALE_TYPES).map(([key, { label }]) => (

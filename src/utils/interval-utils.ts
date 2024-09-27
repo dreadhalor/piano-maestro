@@ -30,12 +30,15 @@ export const INTERVAL_NAMES: Record<IntervalKey, string> = {
   octave: "Octave",
 };
 
+export type IntervalDirection = "ascending" | "descending";
+export type IntervalDirections = IntervalDirection | "both";
+
 export interface Interval {
   name: string;
   notes: number[];
   type: IntervalKey;
   shorthand?: string;
-  direction?: "ascending" | "descending";
+  direction?: IntervalDirection;
 }
 
 export const getRandomIntervalKey = ({
@@ -60,16 +63,27 @@ export const getRandomIntervalKey = ({
   return randomInterval;
 };
 
+const coerceDirection = (direction?: IntervalDirections) => {
+  if (!direction) return "ascending";
+  return direction === "both"
+    ? Math.random() < 0.5
+      ? "ascending"
+      : "descending"
+    : direction;
+};
+
 export const getRandomInterval = ({
   currentInterval,
   enabledIntervals,
   lowKey,
   highKey,
+  direction,
 }: {
   currentInterval?: IntervalKey;
   enabledIntervals?: IntervalKey[];
   lowKey: number;
   highKey: number;
+  direction?: IntervalDirections;
 }) => {
   const intervalKey = getRandomIntervalKey({
     currentInterval,
@@ -80,11 +94,16 @@ export const getRandomInterval = ({
     lowKey +
     Math.floor(Math.random() * (highKey - lowKey - interval.semitones));
   const secondNote = rootMidi + interval.semitones;
+  const notes = [rootMidi, secondNote];
+  const coercedDirection = coerceDirection(direction);
+  if (coercedDirection === "descending") {
+    notes.reverse();
+  }
   return {
     name: intervalKey,
-    notes: [rootMidi, secondNote],
+    notes,
     shorthand: interval.shorthand,
     type: intervalKey,
-    direction: "ascending",
+    direction: coercedDirection,
   } satisfies Interval;
 };

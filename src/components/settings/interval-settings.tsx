@@ -8,16 +8,16 @@ import { useSettings } from "@/hooks/use-settings";
 import { Label } from "@ui/label";
 import { RadioGroup, RadioGroupItem } from "@ui/radio-group";
 
-export const IntervalRecognitionSettings = () => {
+export const IntervalSettings = () => {
   const {
-    enabledIntervalRecognitionIntervals,
-    toggleIntervalRecognitionInterval,
-    intervalRecognitionDirection,
-    setIntervalRecognitionDirection,
+    enabledIntervals,
+    toggleInterval,
+    intervalDirection,
+    setIntervalDirection,
   } = useSettings();
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-bold">Interval Recognition Settings</h2>
+      <h2 className="text-2xl font-bold">Interval Practice Settings</h2>
       {/* Interval Selection */}
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-bold">Select Intervals for Practice</h3>
@@ -29,12 +29,9 @@ export const IntervalRecognitionSettings = () => {
                 <Checkbox
                   id={`interval-${key}`}
                   checked={
-                    enabledIntervalRecognitionIntervals &&
-                    enabledIntervalRecognitionIntervals.has(key as IntervalKey)
+                    enabledIntervals && enabledIntervals.has(key as IntervalKey)
                   }
-                  onCheckedChange={() =>
-                    toggleIntervalRecognitionInterval(key as IntervalKey)
-                  }
+                  onCheckedChange={() => toggleInterval(key as IntervalKey)}
                 />
                 <Label
                   htmlFor={`interval-${key}`}
@@ -52,9 +49,9 @@ export const IntervalRecognitionSettings = () => {
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-bold">Interval Direction</h3>
         <RadioGroup
-          value={intervalRecognitionDirection}
+          value={intervalDirection}
           onValueChange={(value) =>
-            setIntervalRecognitionDirection(value as IntervalDirections)
+            setIntervalDirection(value as IntervalDirections)
           }
           className="flex flex-col gap-2"
         >
