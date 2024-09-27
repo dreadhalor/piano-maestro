@@ -7,6 +7,10 @@ import { createChordSettingsSlice } from "@/store/slices/chord-settings";
 import { createScaleSettingsSlice } from "@/store/slices/scale-settings";
 import { createIntervalRecognitionSettingsSlice } from "@/store/slices/interval-recognition-settings";
 import { StateCreator } from "zustand";
+import { NOTES } from "@/utils/note-utils";
+import { INTERVAL_NAMES } from "@/utils/interval-utils";
+import { CHORD_TYPES } from "@/utils/chords";
+import { SCALE_TYPES } from "@/utils/scale-utils";
 
 // Helper type to simplify StateCreator typing
 type MyStateCreator = StateCreator<SettingsState, [], [], SettingsState>;
@@ -45,13 +49,17 @@ export const useSettingsStore = create<SettingsState>()(
       ...currentState,
       ...persistedState,
       enabledIntervalPracticeRootNotes: new Set(
-        persistedState.enabledIntervalPracticeRootNotes || [],
+        persistedState.enabledIntervalPracticeRootNotes || NOTES,
       ),
-      enabledIntervals: new Set(persistedState.enabledIntervals || []),
-      enabledChordTypes: new Set(persistedState.enabledChordTypes || []),
-      enabledScales: new Set(persistedState.enabledScales || []),
+      enabledIntervals: new Set(
+        persistedState.enabledIntervals || INTERVAL_NAMES,
+      ),
+      enabledChordTypes: new Set(
+        persistedState.enabledChordTypes || CHORD_TYPES,
+      ),
+      enabledScales: new Set(persistedState.enabledScales || SCALE_TYPES),
       enabledIntervalRecognitionIntervals: new Set(
-        persistedState.enabledIntervalRecognitionIntervals || [],
+        persistedState.enabledIntervalRecognitionIntervals || INTERVAL_NAMES,
       ),
     }),
   }),
