@@ -12,21 +12,34 @@ interface KeyProps {
   enabled: Set<AbstractNote>;
   onClick: (note: AbstractNote) => void;
 }
-const WhiteKey = ({ note, enabled, onClick }: KeyProps) => (
-  <div
-    key={note}
-    className={cn(
-      "relative flex h-40 w-12 cursor-pointer items-end justify-center border border-gray-400 bg-white shadow-md",
-      "hover:bg-gray-200",
-      !enabled.has(note) ? "bg-gray-200" : "",
-    )}
-    onClick={() => onClick(note)}
-  >
-    <span className="mb-2 text-sm font-semibold text-gray-700">{note[0]}</span>
-  </div>
-);
+
+const WhiteKey = ({ note, enabled, onClick }: KeyProps) => {
+  const isEnabled = enabled.has(note);
+
+  return (
+    <button
+      key={note}
+      className={cn(
+        "relative flex h-40 w-12 cursor-pointer items-end justify-center border border-gray-400 bg-white shadow-md transition-transform duration-200",
+        isEnabled
+          ? "scale-105 transform bg-white shadow-lg"
+          : "bg-gray-300 opacity-50 shadow-sm",
+      )}
+      onClick={() => onClick(note)}
+      aria-pressed={isEnabled}
+      aria-label={`${note} ${isEnabled ? "enabled" : "disabled"}`}
+      data-tip={`${note} ${isEnabled ? "Enabled" : "Disabled"}`}
+    >
+      <span className="mb-2 select-none text-sm font-semibold text-gray-700">
+        {note[0]}
+      </span>
+    </button>
+  );
+};
 
 const BlackKey = ({ note, enabled, onClick }: KeyProps) => {
+  const isEnabled = enabled.has(note);
+
   // Calculate the position of the black key relative to its surrounding white keys
   const previousIndex = NOTES.indexOf(note) - 1;
   const precedingWhiteNote = NOTES[previousIndex];
@@ -37,24 +50,30 @@ const BlackKey = ({ note, enabled, onClick }: KeyProps) => {
   if (precedingWhiteIndex === -1) return null; // Skip if no valid position found
 
   return (
-    <div
+    <button
       key={note}
       className={cn(
-        "pointer-events-auto relative h-24 w-8 -translate-x-1/2 transform cursor-pointer border border-black bg-black shadow-lg",
-        "hover:bg-gray-700",
-        !enabled.has(note) ? "bg-gray-200" : "",
+        "pointer-events-auto absolute h-24 w-8 -translate-x-1/2 transform cursor-pointer bg-black shadow-lg transition-transform duration-200",
+        isEnabled
+          ? "scale-105 transform bg-black shadow-xl"
+          : "bg-gray-400 shadow-sm",
       )}
       style={{
-        gridColumnStart: precedingWhiteIndex + 2, // Place black key between appropriate white keys
+        left: `${((precedingWhiteIndex + 1) * 100) / WHITE_KEYS.length}%`, // Adjust positioning based on white keys
+        zIndex: 10,
       }}
       onClick={() => onClick(note)}
-    />
+      aria-pressed={isEnabled}
+      aria-label={`${note} ${isEnabled ? "enabled" : "disabled"}`}
+      data-tip={`${note} ${isEnabled ? "Enabled" : "Disabled"}`}
+    ></button>
   );
 };
 
 interface PianoRollInputProps {
   enabledNotes?: Set<AbstractNote>;
 }
+
 export const PianoRollInput = ({ enabledNotes }: PianoRollInputProps) => {
   const [enabled, setEnabled] = useState<Set<AbstractNote>>(
     enabledNotes ?? new Set(NOTES),
@@ -71,28 +90,41 @@ export const PianoRollInput = ({ enabledNotes }: PianoRollInputProps) => {
   };
 
   return (
-    <div className="flex gap-4">
-      <div className="flex flex-col items-center justify-center">
-        {/* Set desired width here */}
+    <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4 pt-8 shadow-md">
+      <div className="relative flex">
         {/* White Keys */}
-        <div className="relative flex">
-          {WHITE_KEYS.map((note) =>
-            WhiteKey({ note, enabled, onClick: toggleNote }),
-          )}
-          {/* Black Keys */}
-          <div
-            className="pointer-events-none absolute inset-0 grid"
-            style={{ gridTemplateColumns: `repeat(${WHITE_KEYS.length}, 1fr)` }} // Adjust grid size based on white keys
-          >
-            {BLACK_KEYS.map((note) => (
-              <BlackKey
-                key={note}
-                note={note}
-                enabled={enabled}
-                onClick={toggleNote}
-              />
-            ))}
-          </div>
+        <div className="flex space-x-0">
+          {WHITE_KEYS.map((note) => (
+            <WhiteKey
+              key={note}
+              note={note}
+              enabled={enabled}
+              onClick={toggleNote}
+            />
+          ))}
+        </div>
+        {/* Black Keys */}
+        <div className="pointer-events-none absolute bottom-0 left-0 right-0 top-0">
+          {BLACK_KEYS.map((note) => (
+            <BlackKey
+              key={note}
+              note={note}
+              enabled={enabled}
+              onClick={toggleNote}
+            />
+          ))}
+        </div>
+      </div>
+      {/* Legend */}
+      <div className="mt-4 flex space-x-4">
+        <div className="flex items-center space-x-2">
+          <span className="inline-block h-6 w-6 border border-gray-400 bg-white shadow-md"></span>
+          <span className="inline-block h-6 w-6 border border-gray-400 bg-black shadow-md"></span>
+          <span className="text-gray-700">Enabled</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <span className="inline-block h-6 w-6 border border-gray-400 bg-gray-300 shadow-sm"></span>
+          <span className="text-gray-700">Disabled</span>
         </div>
       </div>
     </div>
