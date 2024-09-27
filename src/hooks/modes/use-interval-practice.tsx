@@ -25,7 +25,7 @@ export const useIntervalPractice = () => {
     setFeedback("");
     setIsIntervalComplete(false);
     // if we include interval in the dependencies, it will cause an infinite loop
-  }, [lowKey, highKey, enabledIntervals]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [lowKey, highKey, enabledIntervals, intervalDirection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const checkAnswer = useCallback(() => {
     if (!interval) return;

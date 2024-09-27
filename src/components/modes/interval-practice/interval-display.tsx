@@ -23,7 +23,10 @@ export const IntervalDisplay: React.FC<KeyDisplayProps> = ({ interval }) => {
       <p className="text-sm text-gray-600">
         Notes:{" "}
         <span className="font-semibold">
-          {interval.notes.map(midiToNoteName).join(", ")}
+          {[...interval.notes]
+            .sort((a, b) => a - b)
+            .map(midiToNoteName)
+            .join(", ")}
         </span>
       </p>
     </div>
