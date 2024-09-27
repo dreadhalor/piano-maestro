@@ -8,7 +8,7 @@ import {
 } from "@ui/dialog";
 import { useSettings } from "@/hooks/use-settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
-import { SETTINGS_TABS } from "@/constants";
+import { SETTINGS_TABS, SettingsTab } from "@/constants";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -33,7 +33,7 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
           orientation="vertical"
           className="flex flex-1 gap-4"
           value={tab}
-          onValueChange={setTab}
+          onValueChange={(_tab) => setTab(_tab as SettingsTab)}
         >
           <TabsList className="mb-auto flex flex-col gap-1 p-1.5">
             {SETTINGS_TABS.map(({ key, label }) => (
