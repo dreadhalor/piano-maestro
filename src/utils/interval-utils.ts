@@ -1,3 +1,9 @@
+import {
+  AbstractNote,
+  getRandomAbstractNote,
+  stepFromAbstractNote,
+} from "./note-utils";
+
 export const INTERVAL_TYPES = {
   "minor-2nd": { label: "Minor 2nd", shorthand: "m2", semitones: 1 },
   "major-2nd": { label: "Major 2nd", shorthand: "M2", semitones: 2 },
@@ -39,6 +45,9 @@ export interface Interval {
   type: IntervalKey;
   shorthand?: string;
   direction?: IntervalDirection;
+}
+export interface AbstractInterval extends Omit<Interval, "notes"> {
+  notes: [AbstractNote, AbstractNote];
 }
 
 export const getRandomIntervalKey = ({
@@ -106,4 +115,38 @@ export const getRandomInterval = ({
     type: intervalKey,
     direction: coercedDirection,
   } satisfies Interval;
+};
+
+export const getRandomAbstractInterval = ({
+  currentInterval,
+  enabledIntervals,
+  direction,
+}: {
+  currentInterval?: IntervalKey;
+  enabledIntervals?: IntervalKey[];
+  direction?: IntervalDirections;
+}) => {
+  const intervalKey = getRandomIntervalKey({
+    currentInterval,
+    enabledIntervals,
+  });
+  const coercedDirection = coerceDirection(direction);
+
+  const interval = INTERVAL_TYPES[intervalKey];
+  const randomRoot = getRandomAbstractNote();
+  const secondNote = stepFromAbstractNote(
+    randomRoot,
+    interval.semitones,
+    coercedDirection,
+  );
+
+  const notes = [randomRoot, secondNote] as [AbstractNote, AbstractNote];
+
+  return {
+    name: intervalKey,
+    notes,
+    shorthand: interval.shorthand,
+    type: intervalKey,
+    direction: coercedDirection,
+  } satisfies AbstractInterval;
 };

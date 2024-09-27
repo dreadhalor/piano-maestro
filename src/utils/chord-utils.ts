@@ -1,22 +1,9 @@
+import { type AbstractNote, NOTES } from "./note-utils";
+
 export interface Chord {
   name: string;
   notes: number[];
 }
-
-export const NOTES = [
-  "C",
-  "C#",
-  "D",
-  "Eb",
-  "E",
-  "F",
-  "F#",
-  "G",
-  "G#",
-  "A",
-  "Bb",
-  "B",
-];
 
 export const noteOffsets: { [key: string]: number } = {
   C: 0,
@@ -40,8 +27,8 @@ export const midiToNoteName = (midiNumber: number): string => {
 };
 
 // New function: Convert MIDI note to note name without the octave
-export const midiToNoteNameWithoutOctave = (midiNumber: number): string => {
-  return NOTES[midiNumber % 12];
+export const midiToAbstractNoteName = (midiNumber: number) => {
+  return NOTES[midiNumber % 12] satisfies AbstractNote;
 };
 
 // Calculate intervals between notes from the root note

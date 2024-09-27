@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { getRandomInterval, Interval } from "@/utils/interval-utils";
+import {
+  AbstractInterval,
+  getRandomAbstractInterval,
+  INTERVAL_TYPES,
+} from "@/utils/interval-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const useIntervalPractice = () => {
@@ -8,15 +12,13 @@ export const useIntervalPractice = () => {
     useSettings();
   const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
-  const [interval, setInterval] = useState<Interval | null>(null);
+  const [interval, setInterval] = useState<AbstractInterval | null>(null);
   const [isIntervalComplete, setIsIntervalComplete] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
   const advanceInterval = useCallback(() => {
     setInterval(() =>
-      getRandomInterval({
-        lowKey,
-        highKey,
+      getRandomAbstractInterval({
         currentInterval: interval?.type,
         enabledIntervals: [...enabledIntervals],
         direction: intervalDirection,
@@ -42,13 +44,9 @@ export const useIntervalPractice = () => {
     if (pressedNotes.length !== 2) return;
 
     const sortedInput = [...pressedNotes].sort((a, b) => a - b);
-    const sortedInterval = [interval.notes[0], interval.notes[1]].sort(
-      (a, b) => a - b,
-    );
 
-    const correct =
-      sortedInput[0] === sortedInterval[0] &&
-      sortedInput[1] === sortedInterval[1];
+    const steps = sortedInput[1] - sortedInput[0];
+    const correct = steps === INTERVAL_TYPES[interval.type].semitones;
     if (correct) {
       setFeedback("Correct!");
       setIsIntervalComplete(true);

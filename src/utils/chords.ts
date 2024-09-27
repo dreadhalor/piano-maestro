@@ -1,4 +1,5 @@
-import { noteOffsets, NOTES } from "./chord-utils";
+import { noteOffsets } from "./chord-utils";
+import { NOTES } from "./note-utils";
 
 export interface Chord {
   name: string; // Human-readable name

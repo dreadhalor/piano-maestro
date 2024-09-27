@@ -1,4 +1,5 @@
-import { noteOffsets, NOTES } from "./chord-utils";
+import { noteOffsets } from "./chord-utils";
+import { NOTES } from "./note-utils";
 
 // Define the modes and their corresponding interval patterns
 export const SCALE_TYPES = {
