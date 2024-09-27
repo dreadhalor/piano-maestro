@@ -5,7 +5,7 @@ import {
   NOTES,
   WHITE_KEYS,
 } from "@/utils/note-utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface KeyProps {
   note: AbstractNote;
@@ -72,9 +72,13 @@ const BlackKey = ({ note, enabled, onClick }: KeyProps) => {
 
 interface PianoRollInputProps {
   enabledNotes?: Set<AbstractNote>;
+  onClick?: (note: AbstractNote) => void;
 }
 
-export const PianoRollInput = ({ enabledNotes }: PianoRollInputProps) => {
+export const PianoRollInput = ({
+  enabledNotes,
+  onClick,
+}: PianoRollInputProps) => {
   const [enabled, setEnabled] = useState<Set<AbstractNote>>(
     enabledNotes ?? new Set(NOTES),
   );
@@ -87,7 +91,14 @@ export const PianoRollInput = ({ enabledNotes }: PianoRollInputProps) => {
       newEnabled.add(note);
     }
     setEnabled(newEnabled);
+    onClick?.(note);
   };
+
+  useEffect(() => {
+    if (enabledNotes) {
+      setEnabled(enabledNotes);
+    }
+  }, [enabledNotes]);
 
   return (
     <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4 pt-6 shadow-md">

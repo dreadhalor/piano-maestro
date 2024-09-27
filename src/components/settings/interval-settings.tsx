@@ -11,6 +11,8 @@ import { PianoRollInput } from "../piano-roll-input";
 
 export const IntervalSettings = () => {
   const {
+    enabledIntervalPracticeRootNotes,
+    toggleIntervalPracticeRootNote,
     enabledIntervals,
     toggleInterval,
     intervalDirection,
@@ -23,7 +25,10 @@ export const IntervalSettings = () => {
       {/* Enabled Root Notes */}
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-bold">Enabled Root Notes</h3>
-        <PianoRollInput />
+        <PianoRollInput
+          enabledNotes={enabledIntervalPracticeRootNotes}
+          onClick={toggleIntervalPracticeRootNote}
+        />
       </div>
 
       {/* Interval Selection */}

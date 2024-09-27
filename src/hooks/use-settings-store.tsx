@@ -28,6 +28,9 @@ export const useSettingsStore = create<SettingsState>()(
     partialize: (state) => ({
       lowKey: state.lowKey,
       highKey: state.highKey,
+      enabledIntervalPracticeRootNotes: Array.from(
+        state.enabledIntervalPracticeRootNotes,
+      ),
       enabledIntervals: Array.from(state.enabledIntervals),
       intervalDirection: state.intervalDirection,
       enabledChordTypes: Array.from(state.enabledChordTypes),
@@ -41,6 +44,9 @@ export const useSettingsStore = create<SettingsState>()(
     merge: (persistedState: any, currentState) => ({
       ...currentState,
       ...persistedState,
+      enabledIntervalPracticeRootNotes: new Set(
+        persistedState.enabledIntervalPracticeRootNotes || [],
+      ),
       enabledIntervals: new Set(persistedState.enabledIntervals || []),
       enabledChordTypes: new Set(persistedState.enabledChordTypes || []),
       enabledScales: new Set(persistedState.enabledScales || []),

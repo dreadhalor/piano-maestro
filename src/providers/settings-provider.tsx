@@ -4,6 +4,7 @@ import { ChordTypeKey } from "@/utils/chords";
 import { ScaleTypeKey } from "@/utils/scale-utils";
 import { IntervalDirections, IntervalKey } from "@/utils/interval-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
+import { AbstractNote } from "@/utils/note-utils";
 
 interface SettingsContextType {
   tab: string;
@@ -17,6 +18,8 @@ interface SettingsContextType {
   startSetLowKey: () => void;
   startSetHighKey: () => void;
   cancelSetKey: () => void;
+  enabledIntervalPracticeRootNotes: Set<AbstractNote>;
+  toggleIntervalPracticeRootNote: (note: AbstractNote) => void;
   enabledIntervals: Set<IntervalKey>;
   toggleInterval: (interval: IntervalKey) => void;
   intervalDirection: IntervalDirections;
@@ -43,6 +46,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
     highKey,
     setLowKey: storeSetLowKey,
     setHighKey: storeSetHighKey,
+    enabledIntervalPracticeRootNotes,
+    toggleIntervalPracticeRootNote,
     enabledIntervals,
     toggleInterval,
     intervalDirection,
@@ -144,6 +149,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
         startSetLowKey,
         startSetHighKey,
         cancelSetKey,
+        enabledIntervalPracticeRootNotes,
+        toggleIntervalPracticeRootNote,
         enabledIntervals,
         toggleInterval,
         intervalDirection,

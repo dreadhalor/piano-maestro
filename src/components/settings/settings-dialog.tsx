@@ -8,11 +8,7 @@ import {
 } from "@ui/dialog";
 import { useSettings } from "@/hooks/use-settings";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/tabs";
-import { GeneralSettings } from "./general-settings";
-import { ChordSettings } from "./chord-settings";
-import { ScaleSettings } from "./scale-settings";
-import { IntervalRecognitionSettings } from "./interval-recognition-settings";
-import { IntervalSettings } from "./interval-settings";
+import { SETTINGS_TABS } from "@/constants";
 
 export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -40,32 +36,18 @@ export const SettingsDialog: React.FC<{ children: React.ReactNode }> = ({
           onValueChange={setTab}
         >
           <TabsList className="mb-auto flex flex-col gap-1 p-1.5">
-            <TabsTrigger value="general">Shared</TabsTrigger>
-            <TabsTrigger value="intervals">Intervals</TabsTrigger>
-            <TabsTrigger value="chords">Chords</TabsTrigger>
-            <TabsTrigger value="scales">Scales</TabsTrigger>
-            <TabsTrigger value="interval-recognition">
-              Interval
-              <br />
-              recognition
-            </TabsTrigger>
+            {SETTINGS_TABS.map(({ key, label }) => (
+              <TabsTrigger key={key} value={key}>
+                {label}
+              </TabsTrigger>
+            ))}
           </TabsList>
           <div className="flex-1 p-2">
-            <TabsContent value="general">
-              <GeneralSettings />
-            </TabsContent>
-            <TabsContent value="intervals">
-              <IntervalSettings />
-            </TabsContent>
-            <TabsContent value="chords">
-              <ChordSettings />
-            </TabsContent>
-            <TabsContent value="scales">
-              <ScaleSettings />
-            </TabsContent>
-            <TabsContent value="interval-recognition">
-              <IntervalRecognitionSettings />
-            </TabsContent>
+            {SETTINGS_TABS.map(({ key, component }) => (
+              <TabsContent key={key} value={key}>
+                {component}
+              </TabsContent>
+            ))}
           </div>
         </Tabs>
       </DialogContent>

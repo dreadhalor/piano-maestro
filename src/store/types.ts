@@ -1,6 +1,7 @@
 import { ChordTypeKey } from "@/utils/chords";
 import { ScaleTypeKey } from "@/utils/scale-utils";
 import { IntervalKey, IntervalDirections } from "@/utils/interval-utils";
+import { AbstractNote } from "@/utils/note-utils";
 
 export interface KeyboardSettingsSlice {
   lowKey: number;
@@ -10,6 +11,8 @@ export interface KeyboardSettingsSlice {
 }
 
 export interface IntervalSettingsSlice {
+  enabledIntervalPracticeRootNotes: Set<AbstractNote>;
+  toggleIntervalPracticeRootNote: (note: AbstractNote) => void;
   enabledIntervals: Set<IntervalKey>;
   intervalDirection: IntervalDirections;
   toggleInterval: (interval: IntervalKey) => void;

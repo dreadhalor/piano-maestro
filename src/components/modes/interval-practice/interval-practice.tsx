@@ -3,9 +3,16 @@ import { MidiInput } from "@/components/midi-input";
 import { Button } from "@ui/button";
 import { useIntervalPractice } from "@/hooks/modes/use-interval-practice";
 import { IntervalDisplay } from "./interval-display";
+import { useSettings } from "@/hooks/use-settings";
+import { useEffect } from "react";
 
 export const IntervalPractice = () => {
   const { interval, skipInterval, feedback } = useIntervalPractice();
+  const { setTab } = useSettings();
+
+  useEffect(() => {
+    setTab("interval");
+  }, [setTab]);
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
