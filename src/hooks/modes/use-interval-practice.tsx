@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSettings } from "@/hooks/use-settings";
 import {
   AbstractInterval,
@@ -16,27 +16,26 @@ export const useIntervalPractice = () => {
   } = useSettings();
   const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
-  const [currentInterval, setCurrentInterval] =
-    useState<AbstractInterval | null>(null);
-  // We need a ref or else advanceInterval will be an infinite loop
-  const intervalRef = useRef<AbstractInterval | null>(currentInterval);
+  const [currentInterval, setCurrentInterval] = useState<AbstractInterval>(
+    getRandomAbstractInterval({
+      enabledIntervals: [...enabledIntervals],
+      enabledRootNotes: [...enabledIntervalPracticeRootNotes],
+      direction: intervalDirection,
+    }) || null,
+  );
 
   const [isIntervalComplete, setIsIntervalComplete] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
-  // Synchronize the ref with the currentInterval state
-  useEffect(() => {
-    intervalRef.current = currentInterval;
-  }, [currentInterval]);
-
   const advanceInterval = useCallback(() => {
     setCurrentInterval(
-      getRandomAbstractInterval({
-        currentInterval: intervalRef.current || undefined,
-        enabledIntervals: [...enabledIntervals],
-        enabledRootNotes: [...enabledIntervalPracticeRootNotes],
-        direction: intervalDirection,
-      }) || null,
+      (prev) =>
+        getRandomAbstractInterval({
+          currentInterval: prev || undefined,
+          enabledIntervals: [...enabledIntervals],
+          enabledRootNotes: [...enabledIntervalPracticeRootNotes],
+          direction: intervalDirection,
+        }) || null,
     );
     setFeedback("");
     setIsIntervalComplete(false);

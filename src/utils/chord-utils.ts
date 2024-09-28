@@ -101,7 +101,7 @@ const getRandomChordKey = ({
   return randomChord;
 };
 
-export const getTrueRandomAbstractChord = ({
+const getTrueRandomAbstractChord = ({
   enabledChords,
   enabledRootNotes,
 }: {
@@ -124,4 +124,46 @@ export const getTrueRandomAbstractChord = ({
     type: randomIntervalKey,
     steps: chord.intervals,
   } satisfies AbstractChord;
+};
+
+export const getRandomAbstractChord = ({
+  currentChord,
+  enabledChords,
+  enabledRootNotes,
+}: {
+  currentChord?: AbstractChord;
+  enabledChords?: ChordTypeKey[];
+  enabledRootNotes?: AbstractNote[];
+}) => {
+  const otherEnabledIntervals = (enabledChords ?? []).length > 1;
+  const otherEnabledRootNotes = (enabledRootNotes ?? []).length > 1;
+  const onlyOneOption = !otherEnabledIntervals && !otherEnabledRootNotes;
+  if (onlyOneOption)
+    return getTrueRandomAbstractChord({
+      enabledChords,
+      enabledRootNotes,
+    });
+
+  let result: AbstractChord;
+
+  let matchingKey, matchingRoot, exactSameChord;
+
+  do {
+    matchingKey = false;
+    matchingRoot = false;
+    exactSameChord = false;
+
+    result = getTrueRandomAbstractChord({
+      enabledChords,
+      enabledRootNotes,
+    });
+
+    if (currentChord) {
+      if (result.type === currentChord.type) matchingKey = true;
+      if (result.notes[0] === currentChord.notes[0]) matchingRoot = true;
+      if (matchingKey && matchingRoot) exactSameChord = true;
+    }
+  } while (exactSameChord);
+
+  return result;
 };

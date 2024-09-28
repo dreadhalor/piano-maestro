@@ -91,7 +91,7 @@ const getTrueRandomAbstractInterval = ({
   direction,
 }: {
   enabledIntervals?: IntervalKey[];
-  enabledRootNotes: AbstractNote[];
+  enabledRootNotes?: AbstractNote[];
   direction?: IntervalDirections;
 }) => {
   const randomIntervalKey = getRandomIntervalKey({
@@ -128,11 +128,11 @@ export const getRandomAbstractInterval = ({
 }: {
   currentInterval?: AbstractInterval;
   enabledIntervals?: IntervalKey[];
-  enabledRootNotes: AbstractNote[];
+  enabledRootNotes?: AbstractNote[];
   direction?: IntervalDirections;
 }) => {
-  const otherEnabledIntervals = (enabledIntervals?.length ?? 0) > 1;
-  const otherEnabledRootNotes = enabledRootNotes.length > 1;
+  const otherEnabledIntervals = (enabledIntervals ?? []).length > 1;
+  const otherEnabledRootNotes = (enabledRootNotes ?? []).length > 1;
   const bothDirections = direction === "both";
   const onlyOneOption =
     !otherEnabledIntervals && !otherEnabledRootNotes && !bothDirections;

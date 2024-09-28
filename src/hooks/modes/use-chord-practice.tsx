@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { AbstractChord, getTrueRandomAbstractChord } from "@/utils/chord-utils";
+import { useState, useEffect, useCallback } from "react";
+import { AbstractChord, getRandomAbstractChord } from "@/utils/chord-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettings } from "@/hooks/use-settings";
 import { midiToAbstractNoteName } from "@/utils/note-utils";
@@ -7,17 +7,12 @@ import { midiToAbstractNoteName } from "@/utils/note-utils";
 export const useChordPractice = () => {
   const { enabledChordTypes, enabledChordPracticeRootNotes } = useSettings();
 
-  // const [currentChord, setCurrentChord] = useState<Chord>(
-  //   getRandomChord({ enabledChords: [...enabledChordTypes] }),
-  // );
   const [currentChord, setCurrentChord] = useState<AbstractChord>(
-    getTrueRandomAbstractChord({
+    getRandomAbstractChord({
       enabledRootNotes: [...enabledChordPracticeRootNotes],
       enabledChords: [...enabledChordTypes],
     }),
   );
-  // We need a ref or else advanceInterval will be an infinite loop
-  const chordRef = useRef<AbstractChord | null>(currentChord);
 
   const [feedback, setFeedback] = useState<string>("");
   const [isChordComplete, setIsChordComplete] = useState<boolean>(false);
@@ -30,8 +25,9 @@ export const useChordPractice = () => {
   ) => {
     if (isChordComplete && allKeysReleased) {
       // If chord is complete and all keys are released, allow to advance
-      setCurrentChord(() =>
-        getTrueRandomAbstractChord({
+      setCurrentChord((prev) =>
+        getRandomAbstractChord({
+          currentChord: prev || undefined,
           enabledRootNotes: [...enabledChordPracticeRootNotes],
           enabledChords: [...enabledChordTypes],
         }),
@@ -69,30 +65,31 @@ export const useChordPractice = () => {
     }
   };
 
-  const skipChord = () => {
-    setCurrentChord(() =>
-      getTrueRandomAbstractChord({
-        enabledRootNotes: [...enabledChordPracticeRootNotes],
-        enabledChords: [...enabledChordTypes],
-      }),
+  const advanceChord = useCallback(() => {
+    setCurrentChord(
+      (prev) =>
+        getRandomAbstractChord({
+          currentChord: prev,
+          enabledChords: [...enabledChordTypes],
+          enabledRootNotes: [...enabledChordPracticeRootNotes],
+        }) || null,
     );
-    setFeedback(""); // Reset feedback on skip
+    setFeedback("");
     setIsChordComplete(false);
-  };
+  }, [enabledChordTypes, enabledChordPracticeRootNotes]);
 
   // Use useEffect to call handleChordPlayed only when necessary
   useEffect(() => {
     handleChordPlayed(pressedNotes, allKeysReleased);
   }, [pressedNotes, allKeysReleased]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Synchronize the ref with the currentChord state
   useEffect(() => {
-    chordRef.current = currentChord;
-  }, [currentChord]);
+    advanceChord();
+  }, [advanceChord]);
 
   return {
     currentChord,
     feedback,
-    skipChord,
+    skipChord: advanceChord,
   };
 };
