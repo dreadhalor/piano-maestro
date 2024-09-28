@@ -23,7 +23,7 @@ export const IntervalSettings = () => {
       <h2 className="text-2xl font-bold">Interval Practice Settings</h2>
 
       {/* Enabled Root Notes */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <h3 className="text-lg font-bold">Enabled Root Notes</h3>
         <PianoRollInput
           enabledNotes={enabledIntervalPracticeRootNotes}
