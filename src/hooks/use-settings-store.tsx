@@ -30,15 +30,23 @@ export const useSettingsStore = create<SettingsState>()(
     name: "piano-maestro-settings",
     storage: createJSONStorage(() => localStorage),
     partialize: (state) => ({
+      // shared settings
       lowKey: state.lowKey,
       highKey: state.highKey,
+      // interval practice settings
       enabledIntervalPracticeRootNotes: Array.from(
         state.enabledIntervalPracticeRootNotes,
       ),
       enabledIntervals: Array.from(state.enabledIntervals),
       intervalDirection: state.intervalDirection,
+      // chord settings
+      enabledChordPracticeRootNotes: Array.from(
+        state.enabledChordPracticeRootNotes,
+      ),
       enabledChordTypes: Array.from(state.enabledChordTypes),
+      // scale settings
       enabledScales: Array.from(state.enabledScales),
+      // interval recognition settings
       enabledIntervalRecognitionIntervals: Array.from(
         state.enabledIntervalRecognitionIntervals,
       ),
@@ -48,11 +56,15 @@ export const useSettingsStore = create<SettingsState>()(
     merge: (persistedState: any, currentState) => ({
       ...currentState,
       ...persistedState,
+      // Convert arrays back to sets
       enabledIntervalPracticeRootNotes: new Set(
         persistedState.enabledIntervalPracticeRootNotes || NOTES,
       ),
       enabledIntervals: new Set(
         persistedState.enabledIntervals || INTERVAL_NAMES,
+      ),
+      enabledChordPracticeRootNotes: new Set(
+        persistedState.enabledChordPracticeRootNotes || NOTES,
       ),
       enabledChordTypes: new Set(
         persistedState.enabledChordTypes || CHORD_TYPES,

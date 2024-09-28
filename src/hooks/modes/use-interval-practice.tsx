@@ -25,13 +25,12 @@ export const useIntervalPractice = () => {
   const [isIntervalComplete, setIsIntervalComplete] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
-  // 3. Synchronize the ref with the currentInterval state
+  // Synchronize the ref with the currentInterval state
   useEffect(() => {
     intervalRef.current = currentInterval;
   }, [currentInterval]);
 
   const advanceInterval = useCallback(() => {
-    console.log("enabledRoots", enabledIntervalPracticeRootNotes);
     setCurrentInterval(
       getRandomAbstractInterval({
         currentInterval: intervalRef.current || undefined,
@@ -80,18 +79,15 @@ export const useIntervalPractice = () => {
     advanceInterval,
   ]);
 
-  // 6. Update handleNotePlayed to use currentInterval
   const handleNotePlayed = useCallback(() => {
     if (!currentInterval) return;
     checkAnswer();
   }, [currentInterval, checkAnswer]);
 
-  // 7. useEffect to handle note played
   useEffect(() => {
     handleNotePlayed();
   }, [handleNotePlayed]);
 
-  // 8. useEffect to initialize the first interval
   useEffect(() => {
     advanceInterval();
   }, [advanceInterval]);

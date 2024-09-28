@@ -20,6 +20,8 @@ export interface IntervalSettingsSlice {
 }
 
 export interface ChordSettingsSlice {
+  enabledChordPracticeRootNotes: Set<AbstractNote>;
+  toggleChordPracticeRootNote: (note: AbstractNote) => void;
   enabledChordTypes: Set<ChordTypeKey>;
   toggleChordType: (type: ChordTypeKey) => void;
 }
