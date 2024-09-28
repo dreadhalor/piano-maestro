@@ -1,4 +1,4 @@
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

@@ -1,6 +1,6 @@
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 import { useSettings } from "@/hooks/use-settings";
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 import { cn, getWhiteAndBlackKeys } from "@/lib/utils";
 import { VerticalSlider } from "@ui/slider";
 import { Label } from "@radix-ui/react-label";

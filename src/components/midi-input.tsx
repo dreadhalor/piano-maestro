@@ -1,4 +1,4 @@
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
 
 export const MidiInput = () => {

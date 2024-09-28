@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSettings } from "@/hooks/use-settings";
-import { getRandomNote, midiToNoteName } from "@/utils/chord-utils";
+import { getRandomNote } from "@/utils/chord-utils";
 import { useNotePressed } from "@/hooks/use-midi/midi-hooks";
 import { useSound } from "@/hooks/use-sound/use-sound";
+import { midiToNoteName } from "@/utils/note-utils";
 
 type State = "initial" | "playing" | "answered";
 

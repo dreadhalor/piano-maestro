@@ -6,7 +6,7 @@ import {
   IntervalDirection,
   IntervalKey,
 } from "@/utils/interval-utils";
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 
 // Extended Interface to store both notes of the interval
 interface Interval {

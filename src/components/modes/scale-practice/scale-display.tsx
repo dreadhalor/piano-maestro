@@ -1,6 +1,6 @@
 import React from "react";
 import { Scale } from "@/utils/scale-utils";
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 import { FaDotCircle } from "react-icons/fa";
 import { cn } from "@/lib/utils";
 

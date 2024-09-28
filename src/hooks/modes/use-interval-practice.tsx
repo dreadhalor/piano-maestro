@@ -6,7 +6,7 @@ import {
   INTERVAL_TYPES,
 } from "@/utils/interval-utils";
 import { useProcessedMIDI } from "@/hooks/use-midi/midi-hooks";
-import { midiToAbstractNoteName } from "@/utils/chord-utils";
+import { midiToAbstractNoteName } from "@/utils/note-utils";
 
 export const useIntervalPractice = () => {
   const {
@@ -18,7 +18,6 @@ export const useIntervalPractice = () => {
 
   const [currentInterval, setCurrentInterval] =
     useState<AbstractInterval | null>(null);
-
   // We need a ref or else advanceInterval will be an infinite loop
   const intervalRef = useRef<AbstractInterval | null>(currentInterval);
 

@@ -1,9 +1,8 @@
 import React from "react";
-import { Chord } from "@/utils/chords";
-import { midiToAbstractNoteName } from "@/utils/chord-utils";
+import { AbstractChord } from "@/utils/chord-utils";
 
 interface ChordDisplayProps {
-  chord?: Chord;
+  chord?: AbstractChord;
 }
 
 export const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
@@ -17,10 +16,7 @@ export const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
         Play this chord: <span className="text-blue-500">{chord.name}</span>
       </h2>
       <p className="text-sm text-gray-600">
-        Notes:{" "}
-        <span className="font-semibold">
-          {chord.notes.map(midiToAbstractNoteName).join(", ")}
-        </span>
+        Notes: <span className="font-semibold">{chord.notes.join(", ")}</span>
       </p>
     </div>
   );

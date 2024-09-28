@@ -1,5 +1,5 @@
 import React from "react";
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 
 interface KeyDisplayProps {
   note?: number;

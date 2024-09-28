@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import * as Tone from "tone";
 import { useRawMIDI } from "@/hooks/use-midi/midi-hooks";
 import { NoteMessageEvent } from "webmidi";
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 
 export const useSynthSound = () => {
   const sampler = useRef<Tone.Sampler | null>(null);

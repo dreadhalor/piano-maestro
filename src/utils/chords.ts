@@ -1,11 +1,5 @@
-import { noteOffsets } from "./chord-utils";
+import { Chord, noteOffsets } from "./chord-utils";
 import { NOTES } from "./note-utils";
-
-export interface Chord {
-  name: string; // Human-readable name
-  notes: number[]; // MIDI note numbers for the chord
-  type: ChordTypeKey; // Unique key for the chord type
-}
 
 const generateChordNotes = (root: string, pattern: ReadonlyArray<number>) => {
   const rootMidi = 60 + noteOffsets[root]; // Assume starting from Middle C (C4, MIDI 60)
@@ -34,6 +28,7 @@ export const CHORDS: Chord[] = NOTES.flatMap((note) =>
     name: `${note} ${label}`,
     notes: generateChordNotes(note, intervals),
     type: key as ChordTypeKey,
+    steps: intervals,
   })),
 );
 

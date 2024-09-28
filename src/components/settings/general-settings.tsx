@@ -1,5 +1,5 @@
 import { useSettings } from "@/hooks/use-settings";
-import { midiToNoteName } from "@/utils/chord-utils";
+import { midiToNoteName } from "@/utils/note-utils";
 import { Button } from "@ui/button";
 
 export const GeneralSettings = () => {

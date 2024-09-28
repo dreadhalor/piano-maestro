@@ -167,20 +167,6 @@ export const getRandomAbstractInterval = ({
       if (matchingKey && matchingRoot && matchingDirection)
         exactSameInterval = true;
     }
-    console.log(
-      "key",
-      matchingKey,
-      "root",
-      matchingRoot,
-      "direction",
-      matchingDirection,
-      "exact",
-      exactSameInterval,
-      "current",
-      currentInterval,
-      "result",
-      result,
-    );
   } while (exactSameInterval);
 
   return result;

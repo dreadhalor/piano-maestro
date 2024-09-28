@@ -33,6 +33,15 @@ export const BLACK_KEYS = [
   NOTES[10],
 ] as const;
 
+export const midiToAbstractNoteName = (midiNumber: number) => {
+  return NOTES[midiNumber % 12] satisfies AbstractNote;
+};
+export const midiToNoteName = (midiNumber: number): string => {
+  const note = NOTES[midiNumber % 12];
+  const octave = Math.floor(midiNumber / 12) - 1; // MIDI note 0 is C-1
+  return `${note}${octave}`;
+};
+
 export const getRandomAbstractNote = (opts?: {
   currentNote?: AbstractNote;
   enabledNotes?: AbstractNote[];

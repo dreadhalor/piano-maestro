@@ -1,8 +1,18 @@
-import { type AbstractNote, NOTES } from "./note-utils";
+import { CHORD_TYPES, ChordTypeKey } from "./chords";
+import {
+  getRandomAbstractNote,
+  stepFromAbstractNote,
+  type AbstractNote,
+} from "./note-utils";
 
 export interface Chord {
-  name: string;
-  notes: number[];
+  name: string; // Human-readable name
+  notes: number[]; // MIDI note numbers for the chord
+  steps: Readonly<number[]>; // Intervals between notes
+  type: ChordTypeKey; // Unique key for the chord type
+}
+export interface AbstractChord extends Omit<Chord, "notes"> {
+  notes: AbstractNote[];
 }
 
 export const noteOffsets: { [key: string]: number } = {
@@ -18,17 +28,6 @@ export const noteOffsets: { [key: string]: number } = {
   A: 9,
   Bb: 10,
   B: 11,
-};
-
-export const midiToNoteName = (midiNumber: number): string => {
-  const note = NOTES[midiNumber % 12];
-  const octave = Math.floor(midiNumber / 12) - 1; // MIDI note 0 is C-1
-  return `${note}${octave}`;
-};
-
-// New function: Convert MIDI note to note name without the octave
-export const midiToAbstractNoteName = (midiNumber: number) => {
-  return NOTES[midiNumber % 12] satisfies AbstractNote;
 };
 
 // Calculate intervals between notes from the root note
@@ -82,4 +81,47 @@ export const getRandomNote = (
     newNote = getTrueRandomNoteInRange(lowKey, highKey); // Ensure a new random note is selected
   }
   return newNote;
+};
+
+const getRandomChordKey = ({
+  enabledChords,
+}: {
+  enabledChords?: ChordTypeKey[];
+}) => {
+  let randomChord: ChordTypeKey;
+  if (enabledChords && enabledChords.length === 0) return "major";
+  if (enabledChords && enabledChords.length === 1) return enabledChords[0];
+
+  do {
+    randomChord = Object.keys(CHORD_TYPES)[
+      Math.floor(Math.random() * Object.keys(CHORD_TYPES).length)
+    ] as ChordTypeKey;
+  } while (enabledChords && !enabledChords.includes(randomChord));
+
+  return randomChord;
+};
+
+export const getTrueRandomAbstractChord = ({
+  enabledChords,
+  enabledRootNotes,
+}: {
+  enabledChords?: ChordTypeKey[];
+  enabledRootNotes?: AbstractNote[];
+}) => {
+  const randomIntervalKey = getRandomChordKey({ enabledChords });
+  const randomRoot = getRandomAbstractNote({
+    enabledNotes: enabledRootNotes,
+  });
+
+  const chord = CHORD_TYPES[randomIntervalKey];
+  const notes = chord.intervals.map((interval) =>
+    stepFromAbstractNote(randomRoot, interval),
+  );
+
+  return {
+    name: `${randomRoot} ${chord.label}`,
+    notes,
+    type: randomIntervalKey,
+    steps: chord.intervals,
+  } satisfies AbstractChord;
 };
