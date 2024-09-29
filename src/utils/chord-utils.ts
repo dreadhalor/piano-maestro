@@ -8,11 +8,16 @@ import {
 export interface Chord {
   name: string; // Human-readable name
   notes: number[]; // MIDI note numbers for the chord
-  steps: Readonly<number[]>; // Intervals between notes
+  baseNotes: number[]; // MIDI note numbers for the chord without inversion
+  steps: readonly number[]; // Intervals between notes
+  baseSteps: readonly number[]; // Intervals between notes without inversion
+  inversion: number; // Inversion of the chord
   type: ChordTypeKey; // Unique key for the chord type
+  shorthand: string; // Shortened label for the chord
 }
-export interface AbstractChord extends Omit<Chord, "notes"> {
+export interface AbstractChord extends Omit<Chord, "notes" | "baseNotes"> {
   notes: AbstractNote[];
+  baseNotes: AbstractNote[];
 }
 
 export const noteOffsets: { [key: string]: number } = {
@@ -101,6 +106,39 @@ const getRandomChordKey = ({
   return randomChord;
 };
 
+const calculateChordNotes = ({
+  notes,
+  steps,
+  inversion,
+}: {
+  notes: AbstractNote[];
+  steps: readonly number[];
+  inversion: number;
+}) => {
+  const _notes = [...notes.slice(inversion), ...notes.slice(0, inversion)];
+  let _steps = [...steps.slice(inversion), ...steps.slice(0, inversion)];
+  _steps = _steps.map((step) => (step - _steps[0] + 12) % 12);
+
+  return {
+    notes: _notes,
+    steps: _steps,
+  };
+};
+
+const calculateChordLabel = ({
+  baseNotes,
+  chord,
+  inversion,
+}: {
+  baseNotes: AbstractNote[];
+  chord: ChordTypeKey;
+  inversion: number;
+}) => {
+  const chordType = CHORD_TYPES[chord];
+  if (inversion === 0) return `${baseNotes[0]}${chordType.shorthand}`;
+  return `${baseNotes[0]}${chordType.shorthand}/${baseNotes[inversion]}`;
+};
+
 const getTrueRandomAbstractChord = ({
   enabledChords,
   enabledRootNotes,
@@ -114,15 +152,33 @@ const getTrueRandomAbstractChord = ({
   });
 
   const chord = CHORD_TYPES[randomIntervalKey];
-  const notes = chord.intervals.map((interval) =>
+  const inversion = Math.floor(Math.random() * chord.intervals.length);
+
+  const baseNotes = chord.intervals.map((interval) =>
     stepFromAbstractNote(randomRoot, interval),
   );
+  let steps: readonly number[] = chord.intervals;
+  const notesAndSteps = calculateChordNotes({
+    notes: baseNotes,
+    steps,
+    inversion,
+  });
+  const notes = notesAndSteps.notes;
+  steps = notesAndSteps.steps;
 
   return {
-    name: `${randomRoot} ${chord.label}`,
+    name: calculateChordLabel({
+      baseNotes,
+      chord: randomIntervalKey,
+      inversion,
+    }),
     notes,
+    baseNotes: notes,
     type: randomIntervalKey,
-    steps: chord.intervals,
+    steps,
+    baseSteps: chord.intervals,
+    inversion,
+    shorthand: chord.shorthand,
   } satisfies AbstractChord;
 };
 
@@ -137,7 +193,9 @@ export const getRandomAbstractChord = ({
 }) => {
   const otherEnabledIntervals = (enabledChords ?? []).length > 1;
   const otherEnabledRootNotes = (enabledRootNotes ?? []).length > 1;
-  const onlyOneOption = !otherEnabledIntervals && !otherEnabledRootNotes;
+  const otherEnabledInversions = true;
+  const onlyOneOption =
+    !otherEnabledIntervals && !otherEnabledRootNotes && !otherEnabledInversions;
   if (onlyOneOption)
     return getTrueRandomAbstractChord({
       enabledChords,
@@ -146,11 +204,12 @@ export const getRandomAbstractChord = ({
 
   let result: AbstractChord;
 
-  let matchingKey, matchingRoot, exactSameChord;
+  let matchingKey, matchingRoot, matchingInversion, exactSameChord;
 
   do {
     matchingKey = false;
     matchingRoot = false;
+    matchingInversion = false;
     exactSameChord = false;
 
     result = getTrueRandomAbstractChord({
@@ -159,9 +218,12 @@ export const getRandomAbstractChord = ({
     });
 
     if (currentChord) {
+      console.log(result, currentChord);
       if (result.type === currentChord.type) matchingKey = true;
       if (result.notes[0] === currentChord.notes[0]) matchingRoot = true;
-      if (matchingKey && matchingRoot) exactSameChord = true;
+      if (result.inversion === currentChord.inversion) matchingInversion = true;
+      if (matchingKey && matchingRoot && matchingInversion)
+        exactSameChord = true;
     }
   } while (exactSameChord);
 

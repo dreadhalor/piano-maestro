@@ -1,22 +1,34 @@
 import { Chord, noteOffsets } from "./chord-utils";
 import { NOTES } from "./note-utils";
 
-const generateChordNotes = (root: string, pattern: ReadonlyArray<number>) => {
+const generateChordNotes = (root: string, pattern: readonly number[]) => {
   const rootMidi = 60 + noteOffsets[root]; // Assume starting from Middle C (C4, MIDI 60)
   return pattern.map((interval) => rootMidi + interval);
 };
 
 // Typed definition of chord types for better TypeScript support
 export const CHORD_TYPES = {
-  major: { label: "Major", intervals: [0, 4, 7] },
-  minor: { label: "Minor", intervals: [0, 3, 7] },
-  diminished: { label: "Diminished", intervals: [0, 3, 6] },
-  augmented: { label: "Augmented", intervals: [0, 4, 8] },
-  "major-7": { label: "Major 7", intervals: [0, 4, 7, 11] },
-  "minor-7": { label: "Minor 7", intervals: [0, 3, 7, 10] },
-  "dominant-7": { label: "7 (Dominant 7)", intervals: [0, 4, 7, 10] },
-  "suspended-2": { label: "Suspended 2", intervals: [0, 2, 7] },
-  "suspended-4": { label: "Suspended 4", intervals: [0, 5, 7] },
+  major: { label: "Major", shorthand: "", intervals: [0, 4, 7] },
+  minor: { label: "Minor", shorthand: "m", intervals: [0, 3, 7] },
+  diminished: { label: "Diminished", shorthand: "dim", intervals: [0, 3, 6] },
+  augmented: { label: "Augmented", shorthand: "aug", intervals: [0, 4, 8] },
+  "major-7": { label: "Major 7", shorthand: "maj7", intervals: [0, 4, 7, 11] },
+  "minor-7": { label: "Minor 7", shorthand: "m7", intervals: [0, 3, 7, 10] },
+  "dominant-7": {
+    label: "7 (Dominant 7)",
+    shorthand: "7",
+    intervals: [0, 4, 7, 10],
+  },
+  "suspended-2": {
+    label: "Suspended 2",
+    shorthand: "sus2",
+    intervals: [0, 2, 7],
+  },
+  "suspended-4": {
+    label: "Suspended 4",
+    shorthand: "sus4",
+    intervals: [0, 5, 7],
+  },
 } as const;
 
 // Type for ChordTypeKey
@@ -24,11 +36,15 @@ export type ChordTypeKey = keyof typeof CHORD_TYPES;
 
 // Precompute all possible chords with all possible roots
 export const CHORDS: Chord[] = NOTES.flatMap((note) =>
-  Object.entries(CHORD_TYPES).map(([key, { label, intervals }]) => ({
+  Object.entries(CHORD_TYPES).map(([key, { label, intervals, shorthand }]) => ({
     name: `${note} ${label}`,
     notes: generateChordNotes(note, intervals),
+    baseNotes: generateChordNotes(note, intervals),
     type: key as ChordTypeKey,
     steps: intervals,
+    baseSteps: intervals,
+    inversion: 0,
+    shorthand,
   })),
 );
 

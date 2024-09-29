@@ -33,7 +33,7 @@ export interface Scale {
   mode: ScaleTypeKey; // Unique key for the scale mode
 }
 
-const generateScaleNotes = (root: string, pattern: ReadonlyArray<number>) => {
+const generateScaleNotes = (root: string, pattern: readonly number[]) => {
   const rootMidi = 60 + noteOffsets[root] - 12; // Assume starting from Middle C (C4, MIDI 60)
   return pattern.map((interval) => rootMidi + interval);
 };

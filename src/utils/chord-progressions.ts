@@ -1,4 +1,5 @@
-import { Chord, CHORDS } from "./chords";
+import { Chord } from "./chord-utils";
+import { CHORDS } from "./chords";
 
 // Interface to define a chord progression
 export interface ChordProgression {
