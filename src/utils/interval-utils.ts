@@ -68,7 +68,6 @@ export const getRandomIntervalKey = ({
     randomInterval = Object.keys(INTERVAL_TYPES)[
       Math.floor(Math.random() * Object.keys(INTERVAL_TYPES).length)
     ] as IntervalKey;
-    console.log("randomInterval", randomInterval);
   } while (
     (currentInterval && randomInterval === currentInterval) ||
     (enabledIntervals && !enabledIntervals.includes(randomInterval))

@@ -5,12 +5,17 @@ import { useSettings } from "@/hooks/use-settings";
 import { midiToAbstractNoteName } from "@/utils/note-utils";
 
 export const useChordPractice = () => {
-  const { enabledChordTypes, enabledChordPracticeRootNotes } = useSettings();
+  const {
+    enabledChordTypes,
+    enabledChordPracticeRootNotes,
+    inversionsEnabled,
+  } = useSettings();
 
   const [currentChord, setCurrentChord] = useState<AbstractChord>(
     getRandomAbstractChord({
       enabledRootNotes: [...enabledChordPracticeRootNotes],
       enabledChords: [...enabledChordTypes],
+      inversionsEnabled,
     }),
   );
 
@@ -30,6 +35,7 @@ export const useChordPractice = () => {
           currentChord: prev || undefined,
           enabledRootNotes: [...enabledChordPracticeRootNotes],
           enabledChords: [...enabledChordTypes],
+          inversionsEnabled,
         }),
       );
       setFeedback("");
@@ -72,11 +78,12 @@ export const useChordPractice = () => {
           currentChord: prev,
           enabledChords: [...enabledChordTypes],
           enabledRootNotes: [...enabledChordPracticeRootNotes],
+          inversionsEnabled,
         }) || null,
     );
     setFeedback("");
     setIsChordComplete(false);
-  }, [enabledChordTypes, enabledChordPracticeRootNotes]);
+  }, [enabledChordTypes, enabledChordPracticeRootNotes, inversionsEnabled]);
 
   // Use useEffect to call handleChordPlayed only when necessary
   useEffect(() => {

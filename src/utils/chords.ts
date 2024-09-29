@@ -15,7 +15,7 @@ export const CHORD_TYPES = {
   "major-7": { label: "Major 7", shorthand: "maj7", intervals: [0, 4, 7, 11] },
   "minor-7": { label: "Minor 7", shorthand: "m7", intervals: [0, 3, 7, 10] },
   "dominant-7": {
-    label: "7 (Dominant 7)",
+    label: "Dominant 7",
     shorthand: "7",
     intervals: [0, 4, 7, 10],
   },

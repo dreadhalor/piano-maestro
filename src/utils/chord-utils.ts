@@ -142,9 +142,11 @@ const calculateChordLabel = ({
 const getTrueRandomAbstractChord = ({
   enabledChords,
   enabledRootNotes,
+  inversionsEnabled,
 }: {
   enabledChords?: ChordTypeKey[];
   enabledRootNotes?: AbstractNote[];
+  inversionsEnabled?: boolean;
 }) => {
   const randomIntervalKey = getRandomChordKey({ enabledChords });
   const randomRoot = getRandomAbstractNote({
@@ -152,7 +154,9 @@ const getTrueRandomAbstractChord = ({
   });
 
   const chord = CHORD_TYPES[randomIntervalKey];
-  const inversion = Math.floor(Math.random() * chord.intervals.length);
+  const inversion = inversionsEnabled
+    ? Math.floor(Math.random() * chord.intervals.length)
+    : 0;
 
   const baseNotes = chord.intervals.map((interval) =>
     stepFromAbstractNote(randomRoot, interval),
@@ -186,20 +190,23 @@ export const getRandomAbstractChord = ({
   currentChord,
   enabledChords,
   enabledRootNotes,
+  inversionsEnabled,
 }: {
   currentChord?: AbstractChord;
   enabledChords?: ChordTypeKey[];
   enabledRootNotes?: AbstractNote[];
+  inversionsEnabled?: boolean;
 }) => {
   const otherEnabledIntervals = (enabledChords ?? []).length > 1;
   const otherEnabledRootNotes = (enabledRootNotes ?? []).length > 1;
-  const otherEnabledInversions = true;
+  const otherEnabledInversions = inversionsEnabled;
   const onlyOneOption =
     !otherEnabledIntervals && !otherEnabledRootNotes && !otherEnabledInversions;
   if (onlyOneOption)
     return getTrueRandomAbstractChord({
       enabledChords,
       enabledRootNotes,
+      inversionsEnabled,
     });
 
   let result: AbstractChord;
@@ -215,10 +222,10 @@ export const getRandomAbstractChord = ({
     result = getTrueRandomAbstractChord({
       enabledChords,
       enabledRootNotes,
+      inversionsEnabled,
     });
 
     if (currentChord) {
-      console.log(result, currentChord);
       if (result.type === currentChord.type) matchingKey = true;
       if (result.notes[0] === currentChord.notes[0]) matchingRoot = true;
       if (result.inversion === currentChord.inversion) matchingInversion = true;

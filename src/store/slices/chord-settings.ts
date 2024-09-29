@@ -22,4 +22,7 @@ export const createChordSettingsSlice: StateCreator<
     const updatedSet = toggleSetItem(get().enabledChordTypes, type);
     set({ enabledChordTypes: updatedSet });
   },
+  inversionsEnabled: true,
+  toggleInversions: () =>
+    set((state) => ({ inversionsEnabled: !state.inversionsEnabled })),
 });

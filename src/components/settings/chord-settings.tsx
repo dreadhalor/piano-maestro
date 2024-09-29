@@ -5,12 +5,7 @@ import { Label } from "@ui/label";
 import { PianoRollInput } from "../piano-roll-input";
 
 export const ChordSettings = () => {
-  const {
-    enabledChordTypes,
-    toggleChordType,
-    enabledChordPracticeRootNotes,
-    toggleChordPracticeRootNote,
-  } = useSettings();
+  const settings = useSettings();
 
   return (
     <div className="flex flex-col gap-4">
@@ -20,8 +15,8 @@ export const ChordSettings = () => {
       <div className="flex flex-col gap-2">
         <h3 className="text-lg font-bold">Enabled Root Notes</h3>
         <PianoRollInput
-          enabledNotes={enabledChordPracticeRootNotes}
-          onClick={toggleChordPracticeRootNote}
+          enabledNotes={settings.enabledChordPracticeRootNotes}
+          onClick={settings.toggleChordPracticeRootNote}
         />
       </div>
 
@@ -33,15 +28,31 @@ export const ChordSettings = () => {
             <Checkbox
               id={`chord-${key}`}
               checked={
-                enabledChordTypes && enabledChordTypes.has(key as ChordTypeKey)
+                settings.enabledChordTypes &&
+                settings.enabledChordTypes.has(key as ChordTypeKey)
               }
-              onCheckedChange={() => toggleChordType(key as ChordTypeKey)}
+              onCheckedChange={() =>
+                settings.toggleChordType(key as ChordTypeKey)
+              }
             />
             <Label htmlFor={`chord-${key}`} className="flex items-center gap-2">
               {label}
             </Label>
           </div>
         ))}
+      </div>
+
+      {/* Enable/disable inversions */}
+      <h3 className="text-lg font-bold">Inversions</h3>
+      <div className="flex items-center space-x-2">
+        <Checkbox
+          id="enable-inversions"
+          checked={settings.inversionsEnabled}
+          onCheckedChange={() => settings.toggleInversions()}
+        />
+        <Label htmlFor="enable-inversions" className="flex items-center gap-2">
+          Enable Chord Inversions
+        </Label>
       </div>
     </div>
   );

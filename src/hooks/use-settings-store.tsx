@@ -44,6 +44,7 @@ export const useSettingsStore = create<SettingsState>()(
         state.enabledChordPracticeRootNotes,
       ),
       enabledChordTypes: Array.from(state.enabledChordTypes),
+      inversionsEnabled: state.inversionsEnabled,
       // scale settings
       enabledScales: Array.from(state.enabledScales),
       // interval recognition settings

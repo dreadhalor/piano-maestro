@@ -24,6 +24,8 @@ export interface ChordSettingsSlice {
   toggleChordPracticeRootNote: (note: AbstractNote) => void;
   enabledChordTypes: Set<ChordTypeKey>;
   toggleChordType: (type: ChordTypeKey) => void;
+  inversionsEnabled: boolean;
+  toggleInversions: () => void;
 }
 
 export interface ScaleSettingsSlice {
