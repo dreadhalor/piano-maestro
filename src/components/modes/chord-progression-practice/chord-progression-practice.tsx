@@ -1,5 +1,5 @@
 import { useChordProgressionPractice } from "@/hooks/modes/use-chord-progression-practice";
-import { ChordDisplay } from "../chord-practice/chord-display";
+// import { ChordDisplay } from "../chord-practice/chord-display";
 import { Feedback } from "@/components/feedback";
 import { MidiInput } from "@/components/midi-input";
 import { ProgressionDisplay } from "./progression-display";
@@ -23,7 +23,7 @@ export const ChordProgressionPractice = () => {
       />
 
       {/* Display the current chord */}
-      <ChordDisplay chord={currentChord} />
+      {/* <ChordDisplay chord={currentChord} /> */}
 
       {/* MIDI input and feedback */}
       <MidiInput />

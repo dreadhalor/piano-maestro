@@ -1,6 +1,6 @@
 import React from "react";
 import { ChordProgression } from "@/utils/chord-progressions";
-import { type Chord } from "@/utils/chords";
+import { Chord } from "@/utils/chord-utils";
 
 interface ProgressionDisplayProps {
   progression: ChordProgression;

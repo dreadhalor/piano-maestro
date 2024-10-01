@@ -10,7 +10,7 @@ const tabColors: Record<string, string> = {
   interval: "hover:bg-pink-100 text-pink-700 border-pink-300",
   chord: "hover:bg-blue-100 text-blue-700 border-blue-300",
   scale: "hover:bg-red-100 text-red-700 border-red-300",
-  progression: "hover:bg-yellow-100 text-yellow-700 border-yellow-300",
+  // progression: "hover:bg-yellow-100 text-yellow-700 border-yellow-300",
   "ear-training": "hover:bg-orange-100 text-orange-700 border-orange-300",
   "interval-recognition":
     "hover:bg-indigo-100 text-indigo-700 border-indigo-300",
@@ -47,8 +47,7 @@ export const PracticeSidebar = () => {
               className="sr-only" // Hide the actual radio button
             />
             {/* Capitalize first letter and replace hyphens with spaces */}
-            {value.charAt(0).toUpperCase() +
-              value.slice(1).replace("-", " ")}{" "}
+            {value.charAt(0).toUpperCase() + value.slice(1).replace("-", " ")}
           </Label>
         ))}
       </RadioGroup>

@@ -8,23 +8,46 @@ const generateChordNotes = (root: string, pattern: readonly number[]) => {
 
 // Typed definition of chord types for better TypeScript support
 export const CHORD_TYPES = {
-  major: { label: "Major", shorthand: "", intervals: [0, 4, 7] },
-  minor: { label: "Minor", shorthand: "m", intervals: [0, 3, 7] },
-  diminished: { label: "Diminished", shorthand: "dim", intervals: [0, 3, 6] },
-  augmented: { label: "Augmented", shorthand: "aug", intervals: [0, 4, 8] },
-  "major-7": { label: "Major 7", shorthand: "maj7", intervals: [0, 4, 7, 11] },
-  "minor-7": { label: "Minor 7", shorthand: "m7", intervals: [0, 3, 7, 10] },
+  major: { id: "major", label: "Major", shorthand: "", intervals: [0, 4, 7] },
+  minor: { id: "minor", label: "Minor", shorthand: "m", intervals: [0, 3, 7] },
+  diminished: {
+    id: "diminished",
+    label: "Diminished",
+    shorthand: "dim",
+    intervals: [0, 3, 6],
+  },
+  augmented: {
+    id: "augmented",
+    label: "Augmented",
+    shorthand: "aug",
+    intervals: [0, 4, 8],
+  },
+  "major-7": {
+    id: "major-7",
+    label: "Major 7",
+    shorthand: "maj7",
+    intervals: [0, 4, 7, 11],
+  },
+  "minor-7": {
+    id: "minor-7",
+    label: "Minor 7",
+    shorthand: "m7",
+    intervals: [0, 3, 7, 10],
+  },
   "dominant-7": {
+    id: "dominant-7",
     label: "Dominant 7",
     shorthand: "7",
     intervals: [0, 4, 7, 10],
   },
   "suspended-2": {
+    id: "suspended-2",
     label: "Suspended 2",
     shorthand: "sus2",
     intervals: [0, 2, 7],
   },
   "suspended-4": {
+    id: "suspended-4",
     label: "Suspended 4",
     shorthand: "sus4",
     intervals: [0, 5, 7],
