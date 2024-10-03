@@ -70,3 +70,13 @@ export const stepFromAbstractNote = (
     (direction === "ascending" ? index + steps : index - steps + 12) % 12;
   return NOTES[newIndex] satisfies AbstractNote;
 };
+
+export const checkNoteEquality = (
+  noteA: string,
+  noteB: AbstractNote,
+): boolean => {
+  // replace any # with s
+  const noteAWithoutSharp = noteA.replace("#", "s");
+  const noteBWithoutSharp = noteB.replace("#", "s");
+  return noteAWithoutSharp.toLowerCase() === noteBWithoutSharp.toLowerCase();
+};

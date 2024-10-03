@@ -25,7 +25,7 @@ export const IntervalDisplay: React.FC<KeyDisplayProps> = ({ interval }) => {
         </span>
       </h2>{" "}
       <p className="text-sm text-gray-600">
-        Notes: <span className="font-semibold">{displayNotes.join(", ")}</span>
+        Notes: <span className="font-semibold">{displayNotes.join(" ")}</span>
       </p>
     </div>
   );

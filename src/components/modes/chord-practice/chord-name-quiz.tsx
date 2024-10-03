@@ -45,7 +45,7 @@ export const ChordNameQuiz = () => {
             <>
               Chord notes: {/* Display chord letters in order */}
               <span className="text-blue-500">
-                {currentChord.baseNotes.slice().join(", ")}
+                {currentChord.baseNotes.slice().join(" ")}
               </span>
             </>
           )}

@@ -17,7 +17,7 @@ export const MidiInput = () => {
               .slice()
               .sort((a, b) => a - b)
               .map(midiToNoteName)
-              .join(", ")}
+              .join(" ")}
           </h3>
         </>
       ) : (

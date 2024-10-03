@@ -16,7 +16,7 @@ export const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
         Play this chord: <span className="text-blue-500">{chord.name}</span>
       </h2>
       <p className="text-sm text-gray-600">
-        Notes: <span className="font-semibold">{chord.notes.join(", ")}</span>
+        Notes: <span className="font-semibold">{chord.notes.join(" ")}</span>
       </p>
     </div>
   );

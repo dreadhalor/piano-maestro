@@ -2,6 +2,7 @@ import { CardBox, CardBoxTitle } from "@/components/card-box";
 import { Feedback } from "@/components/feedback";
 import { Input } from "@/components/ui/input";
 import { useChordPractice } from "@/hooks/modes/use-chord-practice";
+import { checkChordEquality } from "@/utils/chord-utils";
 import { FormEvent, useCallback, useState } from "react";
 
 export const ChordNoteQuiz = () => {
@@ -27,10 +28,7 @@ export const ChordNoteQuiz = () => {
         setFeedback("");
         return;
       }
-      if (
-        input.toLowerCase().trim() ===
-        currentChord?.notes.join(" ").toLowerCase()
-      ) {
+      if (checkChordEquality(input, currentChord)) {
         setFeedback("Correct!");
       } else {
         setFeedback(`Incorrect! Notes: ${currentChord?.notes.join(" ")}`);
