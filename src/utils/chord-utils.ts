@@ -242,7 +242,7 @@ export const checkChordEquality = (
   candidate: string,
   chord: AbstractChord,
 ): boolean => {
-  const candidateParts = candidate.split(" ");
+  const candidateParts = candidate.trim().split(" ");
   if (candidateParts.length !== chord.notes.length) return false;
   for (let i = 0; i < candidateParts.length; i++) {
     if (!checkNoteEquality(candidateParts[i], chord.notes[i])) return false;

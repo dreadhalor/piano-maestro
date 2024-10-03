@@ -3,7 +3,7 @@ import { Feedback } from "@/components/feedback";
 import { Input } from "@/components/ui/input";
 import { useChordPractice } from "@/hooks/modes/use-chord-practice";
 import { checkChordEquality } from "@/utils/chord-utils";
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 
 export const ChordNoteQuiz = () => {
   const { currentChord, skipChord } = useChordPractice();
@@ -12,31 +12,41 @@ export const ChordNoteQuiz = () => {
   const [wrong, setWrong] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
-  const handleAnswer = useCallback(
+  const handleAnswer = useCallback(() => {
+    if (feedback === "Correct!") {
+      skipChord();
+      setInput("");
+      setFeedback("");
+      return;
+    }
+    if (wrong) {
+      setWrong(false);
+      skipChord();
+      setInput("");
+      setFeedback("");
+      return;
+    }
+    if (checkChordEquality(input, currentChord)) {
+      setFeedback("Correct!");
+    } else {
+      setFeedback(`Incorrect! Notes: ${currentChord?.notes.join(" ")}`);
+      setWrong(true);
+    }
+  }, [currentChord, feedback, input, skipChord, wrong]);
+
+  const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
-      if (feedback === "Correct!") {
-        skipChord();
-        setInput("");
-        setFeedback("");
-        return;
-      }
-      if (wrong) {
-        setWrong(false);
-        skipChord();
-        setInput("");
-        setFeedback("");
-        return;
-      }
-      if (checkChordEquality(input, currentChord)) {
-        setFeedback("Correct!");
-      } else {
-        setFeedback(`Incorrect! Notes: ${currentChord?.notes.join(" ")}`);
-        setWrong(true);
-      }
+      handleAnswer();
     },
-    [currentChord, feedback, input, skipChord, wrong],
+    [handleAnswer],
   );
+
+  useEffect(() => {
+    if (checkChordEquality(input, currentChord)) {
+      handleAnswer();
+    }
+  }, [currentChord, input]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -51,7 +61,7 @@ export const ChordNoteQuiz = () => {
         </CardBoxTitle>
       </CardBox>
       <Feedback message={feedback} />
-      <form onSubmit={handleAnswer}>
+      <form onSubmit={handleSubmit}>
         <Input
           className="w-[300px]"
           placeholder={
