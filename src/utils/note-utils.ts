@@ -71,6 +71,33 @@ export const stepFromAbstractNote = (
   return NOTES[newIndex] satisfies AbstractNote;
 };
 
+const noteMap: { [key: string]: AbstractNote } = {
+  c: "C",
+  d: "D",
+  e: "E",
+  f: "F",
+  g: "G",
+  a: "A",
+  b: "B",
+} as const;
+const accidentalMap: { [key: string]: string } = {
+  "#": "#",
+  s: "#",
+  b: "b",
+} as const;
+export const mapStringToAbstractNote = (note: string): AbstractNote | null => {
+  // map c# to C#, cs to C#, bb to Bb, etc.
+  if (!note) return null;
+  if (note.length > 2) return null;
+  const noteName = note[0].toLowerCase();
+  const mappedNote = noteMap[noteName];
+  if (!mappedNote) return null;
+  const accidental = note.slice(1);
+  const mappedAccidental = accidentalMap[accidental] || "";
+  if (accidental && !mappedAccidental) return null;
+  return `${mappedNote}${mappedAccidental}` as AbstractNote;
+};
+
 export const checkNoteEquality = (
   noteA: string,
   noteB: AbstractNote,

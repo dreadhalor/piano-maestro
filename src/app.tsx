@@ -16,6 +16,7 @@ import { ResponsiveScalingDiv } from "@/components/responsive-scaling-div";
 import { getWhiteAndBlackKeys } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { ChordPracticeProvider } from "@/providers/chord-practice-provider";
+import { IntervalPracticeProvider } from "@/providers/interval-practice-provider";
 
 export const App = () => {
   const { mode } = useAppContext();
@@ -29,7 +30,11 @@ export const App = () => {
       case "note":
         return <NotePractice />;
       case "interval":
-        return <IntervalPractice />;
+        return (
+          <IntervalPracticeProvider>
+            <IntervalPractice />
+          </IntervalPracticeProvider>
+        );
       case "chord":
         return (
           <ChordPracticeProvider>

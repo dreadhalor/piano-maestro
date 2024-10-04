@@ -1,6 +1,8 @@
 import {
   AbstractNote,
   getRandomAbstractNote,
+  mapStringToAbstractNote,
+  NOTES,
   stepFromAbstractNote,
 } from "./note-utils";
 
@@ -169,4 +171,40 @@ export const getRandomAbstractInterval = ({
   } while (exactSameInterval);
 
   return result;
+};
+
+const calculateSteps = (
+  note1: AbstractNote,
+  note2: AbstractNote,
+  direction?: IntervalDirection,
+) => {
+  const index1 = NOTES.indexOf(note1);
+  const index2 = NOTES.indexOf(note2);
+  const steps = (index2 - index1 + 12) % 12;
+  return direction === "descending" ? 12 - steps : steps;
+};
+
+export const checkIntervalEquality = (
+  // input is a string like "C# Eb"
+  input: string,
+  interval: AbstractInterval,
+) => {
+  const inputNotes = input
+    .trim()
+    .split(/\s+/) // Split by one or more whitespace characters
+    .filter((note) => note.length > 0) // Remove empty strings, if any
+    .map((note) => mapStringToAbstractNote(note));
+
+  if (inputNotes.length !== 2) return false;
+
+  const [note1, note2] = inputNotes;
+  if (!note1 || !note2) return false;
+
+  const correctSteps = calculateSteps(note1, note2);
+  const correctNotes =
+    interval.notes.includes(note1) && interval.notes.includes(note2);
+
+  return (
+    correctSteps === INTERVAL_TYPES[interval.type].semitones && correctNotes
+  );
 };

@@ -1,38 +1,39 @@
 import { CardBox, CardBoxTitle } from "@/components/card-box";
 import { Feedback } from "@/components/feedback";
 import { Input } from "@/components/ui/input";
-import { useChordPractice } from "@/hooks/modes/use-chord-practice";
-import { checkChordEquality } from "@/utils/chord-utils";
+import { useIntervalPractice } from "@/hooks/modes/use-interval-practice";
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import { checkIntervalEquality } from "@/utils/interval-utils";
 
-export const ChordNoteQuiz = () => {
-  const { currentChord, skipChord } = useChordPractice();
-
+export const IntervalNoteQuiz = () => {
+  const { interval, skipInterval } = useIntervalPractice();
   const [input, setInput] = useState<string>("");
   const [wrong, setWrong] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
   const handleAnswer = useCallback(() => {
     if (feedback === "Correct!") {
-      skipChord();
+      skipInterval();
       setInput("");
       setFeedback("");
       return;
     }
     if (wrong) {
       setWrong(false);
-      skipChord();
+      skipInterval();
       setInput("");
       setFeedback("");
       return;
     }
-    if (checkChordEquality(input, currentChord)) {
+    if (checkIntervalEquality(input, interval)) {
       setFeedback("Correct!");
     } else {
-      setFeedback(`Incorrect! Notes: ${currentChord?.notes.join(" ")}`);
+      const notes = [...interval.notes];
+      if (interval.direction === "descending") notes.reverse();
+      setFeedback(`Incorrect! Notes: ${notes.join(" ")}`);
       setWrong(true);
     }
-  }, [currentChord, feedback, input, skipChord, wrong]);
+  }, [interval, feedback, input, skipInterval, wrong]);
 
   const handleSubmit = useCallback(
     (e: FormEvent) => {
@@ -43,19 +44,23 @@ export const ChordNoteQuiz = () => {
   );
 
   useEffect(() => {
-    if (checkChordEquality(input, currentChord)) {
+    if (checkIntervalEquality(input, interval)) {
       handleAnswer();
     }
-  }, [currentChord, input]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [interval, input]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex w-full flex-col items-center justify-center gap-2">
       <CardBox>
         <CardBoxTitle>
-          {currentChord && (
+          {interval && (
             <>
-              Chord name:&nbsp;
-              <span className="text-blue-500">{currentChord.name}</span>
+              Interval:&nbsp;
+              <span className="text-pink-600">
+                {interval.notes[0]}{" "}
+                {interval.direction === "ascending" ? "+" : "-"}{" "}
+                {interval.shorthand}
+              </span>
             </>
           )}
         </CardBoxTitle>
@@ -66,7 +71,7 @@ export const ChordNoteQuiz = () => {
           placeholder={
             wrong
               ? "Continue to next question..."
-              : "Enter space-separated chord notes here..."
+              : "Enter space-separated interval notes here..."
           }
           value={input}
           onChange={(e) => setInput(e.target.value)}
