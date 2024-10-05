@@ -41,6 +41,9 @@ export const midiToNoteName = (midiNumber: number): string => {
   const octave = Math.floor(midiNumber / 12) - 1; // MIDI note 0 is C-1
   return `${note}${octave}`;
 };
+export const midiToAbstractNoteIndex = (midiNumber: number) => {
+  return midiNumber % 12;
+};
 
 export const getRandomAbstractNote = (opts?: {
   currentNote?: AbstractNote;

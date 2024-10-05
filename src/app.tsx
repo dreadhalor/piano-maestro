@@ -17,6 +17,7 @@ import { getWhiteAndBlackKeys } from "@/lib/utils";
 import { useSettings } from "@/hooks/use-settings";
 import { ChordPracticeProvider } from "@/providers/chord-practice-provider";
 import { IntervalPracticeProvider } from "@/providers/interval-practice-provider";
+import { SingleNotePracticeProvider } from "@/providers/single-note-practice-provider";
 
 export const App = () => {
   const { mode } = useAppContext();
@@ -28,7 +29,11 @@ export const App = () => {
       case "playground":
         return <Playground />;
       case "note":
-        return <NotePractice />;
+        return (
+          <SingleNotePracticeProvider>
+            <NotePractice />
+          </SingleNotePracticeProvider>
+        );
       case "interval":
         return (
           <IntervalPracticeProvider>
