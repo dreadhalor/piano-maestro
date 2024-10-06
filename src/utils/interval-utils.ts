@@ -45,8 +45,9 @@ export interface Interval {
   name: string;
   notes: number[];
   type: IntervalKey;
-  shorthand?: string;
-  direction?: IntervalDirection;
+  steps: number;
+  shorthand: string;
+  direction: IntervalDirection;
 }
 export interface AbstractInterval extends Omit<Interval, "notes"> {
   notes: [AbstractNote, AbstractNote];
@@ -116,6 +117,7 @@ const getTrueRandomAbstractInterval = ({
     name: randomIntervalKey,
     notes,
     shorthand: interval.shorthand,
+    steps: interval.semitones,
     type: randomIntervalKey,
     direction: coercedDirection,
   } satisfies AbstractInterval;
@@ -173,7 +175,7 @@ export const getRandomAbstractInterval = ({
   return result;
 };
 
-const calculateSteps = (
+export const calculateSteps = (
   note1: AbstractNote,
   note2: AbstractNote,
   direction?: IntervalDirection,
@@ -207,4 +209,11 @@ export const checkIntervalEquality = (
   return (
     correctSteps === INTERVAL_TYPES[interval.type].semitones && correctNotes
   );
+};
+
+export const checkStepEquality = (
+  steps: string,
+  interval: Interval | AbstractInterval,
+) => {
+  return !Number.isNaN(steps) && Number.parseInt(steps) === interval.steps;
 };

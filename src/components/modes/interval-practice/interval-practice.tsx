@@ -7,6 +7,7 @@ import { useSettings } from "@/hooks/use-settings";
 import { useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { IntervalNoteQuiz } from "./interval-note-quiz";
+import { IntervalStepQuiz } from "./interval-step-quiz";
 
 export const IntervalPractice = () => {
   const { interval, skipInterval, feedback, tab, setTab } =
@@ -26,6 +27,7 @@ export const IntervalPractice = () => {
         <TabsList className="mx-auto flex justify-center">
           <TabsTrigger value="piano">Piano</TabsTrigger>
           <TabsTrigger value="notes-quiz">Notes</TabsTrigger>
+          <TabsTrigger value="steps-quiz">Steps</TabsTrigger>
         </TabsList>
         <TabsContent value="piano">
           <div className="flex w-full flex-col items-center justify-center gap-4">
@@ -38,6 +40,9 @@ export const IntervalPractice = () => {
         </TabsContent>
         <TabsContent value="notes-quiz">
           <IntervalNoteQuiz />
+        </TabsContent>
+        <TabsContent value="steps-quiz">
+          <IntervalStepQuiz />
         </TabsContent>
       </Tabs>
     </div>

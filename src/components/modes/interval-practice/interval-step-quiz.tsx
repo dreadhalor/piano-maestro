@@ -2,10 +2,10 @@ import { CardBox, CardBoxTitle } from "@/components/card-box";
 import { Feedback } from "@/components/feedback";
 import { Input } from "@/components/ui/input";
 import { useIntervalPractice } from "@/hooks/modes/use-interval-practice";
+import { checkStepEquality } from "@/utils/interval-utils";
 import { FormEvent, useCallback, useEffect, useState } from "react";
-import { checkNoteEquality } from "@/utils/note-utils";
 
-export const IntervalNoteQuiz = () => {
+export const IntervalStepQuiz = () => {
   const { interval, skipInterval } = useIntervalPractice();
   const [input, setInput] = useState<string>("");
   const [wrong, setWrong] = useState<boolean>(false);
@@ -25,10 +25,12 @@ export const IntervalNoteQuiz = () => {
       setFeedback("");
       return;
     }
-    if (checkNoteEquality(input.trim(), interval.notes[1])) {
+    if (checkStepEquality(input, interval)) {
       setFeedback("Correct!");
     } else {
-      setFeedback(`Incorrect! Note: ${interval.notes[1]}`);
+      const notes = [...interval.notes];
+      if (interval.direction === "descending") notes.reverse();
+      setFeedback(`Incorrect! Steps: ${interval.steps}`);
       setWrong(true);
     }
   }, [interval, feedback, input, skipInterval, wrong]);
@@ -42,7 +44,7 @@ export const IntervalNoteQuiz = () => {
   );
 
   useEffect(() => {
-    if (checkNoteEquality(input.trim(), interval.notes[1])) {
+    if (checkStepEquality(input, interval)) {
       handleAnswer();
     }
   }, [interval, input]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -56,8 +58,12 @@ export const IntervalNoteQuiz = () => {
               Interval:&nbsp;
               <span className="text-pink-600">
                 {interval.notes[0]}{" "}
-                {interval.direction === "ascending" ? "+" : "-"}{" "}
-                {interval.shorthand}
+                {interval.direction === "ascending" ? (
+                  <>&#8599;</>
+                ) : (
+                  <>&#8600;</>
+                )}{" "}
+                {interval.notes[1]}
               </span>
             </>
           )}
@@ -67,8 +73,9 @@ export const IntervalNoteQuiz = () => {
         <Input
           className="w-[300px]"
           placeholder={
-            wrong ? "Continue to next question..." : "Enter second note here..."
+            wrong ? "Continue to next question..." : "Enter # of steps here..."
           }
+          type="number"
           value={input}
           onChange={(e) => setInput(e.target.value)}
         />
