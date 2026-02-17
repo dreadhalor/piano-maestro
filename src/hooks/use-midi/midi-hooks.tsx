@@ -4,11 +4,12 @@ import { NoteMessageEvent } from "webmidi";
 
 export const useProcessedMIDI = () => {
   const context = useContext(MIDIContext);
+  const inputs = context?.inputs;
   const [pressedNotes, setPressedNotes] = useState<number[]>([]);
   const [allKeysReleased, setAllKeysReleased] = useState<boolean>(true);
 
   useEffect(() => {
-    if (!context) return;
+    if (!inputs?.length) return;
 
     const handleNoteOn = (event: NoteMessageEvent) => {
       setPressedNotes((prev) => {
@@ -30,18 +31,18 @@ export const useProcessedMIDI = () => {
       });
     };
 
-    context.inputs.forEach((input) => {
+    inputs.forEach((input) => {
       input.addListener("noteon", handleNoteOn);
       input.addListener("noteoff", handleNoteOff);
     });
 
     return () => {
-      context.inputs.forEach((input) => {
+      inputs.forEach((input) => {
         input.removeListener("noteon", handleNoteOn);
         input.removeListener("noteoff", handleNoteOff);
       });
     };
-  }, [context]);
+  }, [inputs]);
 
   return {
     pressedNotes,
@@ -52,28 +53,29 @@ export const useProcessedMIDI = () => {
 
 export const useRawMIDI = () => {
   const context = useContext(MIDIContext);
+  const inputs = context?.inputs;
 
   const onMIDIMessage = useCallback(
     (callback: (event: NoteMessageEvent) => void) => {
-      if (!context) return () => {};
+      if (!inputs?.length) return () => {};
 
       const handleMessage = (event: NoteMessageEvent) => {
         callback(event);
       };
 
-      context.inputs.forEach((input) => {
+      inputs.forEach((input) => {
         input.addListener("noteon", handleMessage);
         input.addListener("noteoff", handleMessage);
       });
 
       return () => {
-        context.inputs.forEach((input) => {
+        inputs.forEach((input) => {
           input.removeListener("noteon", handleMessage);
           input.removeListener("noteoff", handleMessage);
         });
       };
     },
-    [context],
+    [inputs],
   );
 
   return {
@@ -84,22 +86,23 @@ export const useRawMIDI = () => {
 
 export const useNotePressed = (callback: (note: number) => void) => {
   const context = useContext(MIDIContext);
+  const inputs = context?.inputs;
 
   useEffect(() => {
-    if (!context) return;
+    if (!inputs?.length) return;
 
     const handleNoteOn = (event: NoteMessageEvent) => {
       callback(event.note.number);
     };
 
-    context.inputs.forEach((input) => {
+    inputs.forEach((input) => {
       input.addListener("noteon", handleNoteOn);
     });
 
     return () => {
-      context.inputs.forEach((input) => {
+      inputs.forEach((input) => {
         input.removeListener("noteon", handleNoteOn);
       });
     };
-  }, [callback, context]);
+  }, [callback, inputs]);
 };

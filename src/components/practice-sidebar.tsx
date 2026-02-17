@@ -14,6 +14,8 @@ const tabColors: Record<string, string> = {
   "ear-training": "hover:bg-orange-100 text-orange-700 border-orange-300",
   "interval-recognition":
     "hover:bg-indigo-100 text-indigo-700 border-indigo-300",
+  "chord-recognition":
+    "hover:bg-teal-100 text-teal-700 border-teal-300",
 };
 
 export const PracticeSidebar = () => {

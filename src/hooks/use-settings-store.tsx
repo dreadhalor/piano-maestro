@@ -6,6 +6,7 @@ import { createIntervalSettingsSlice } from "@/store/slices/interval-settings";
 import { createChordSettingsSlice } from "@/store/slices/chord-settings";
 import { createScaleSettingsSlice } from "@/store/slices/scale-settings";
 import { createIntervalRecognitionSettingsSlice } from "@/store/slices/interval-recognition-settings";
+import { createChordRecognitionSettingsSlice } from "@/store/slices/chord-recognition-settings";
 import { StateCreator } from "zustand";
 import { NOTES } from "@/utils/note-utils";
 import { INTERVAL_NAMES } from "@/utils/interval-utils";
@@ -22,6 +23,7 @@ const combinedStore: MyStateCreator = (set, get, store) => ({
   ...createChordSettingsSlice(set, get, store),
   ...createScaleSettingsSlice(set, get, store),
   ...createIntervalRecognitionSettingsSlice(set, get, store),
+  ...createChordRecognitionSettingsSlice(set, get, store),
 });
 
 // Create the Zustand store with persistence
@@ -52,6 +54,12 @@ export const useSettingsStore = create<SettingsState>()(
         state.enabledIntervalRecognitionIntervals,
       ),
       intervalRecognitionDirection: state.intervalRecognitionDirection,
+      // chord recognition settings
+      enabledChordRecognitionTypes: Array.from(
+        state.enabledChordRecognitionTypes,
+      ),
+      chordRecognitionInversionsEnabled: state.chordRecognitionInversionsEnabled,
+      chordRecognitionPlaybackStyle: state.chordRecognitionPlaybackStyle,
     }),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     merge: (persistedState: any, currentState) => ({
@@ -73,6 +81,10 @@ export const useSettingsStore = create<SettingsState>()(
       enabledScales: new Set(persistedState.enabledScales || SCALE_TYPES),
       enabledIntervalRecognitionIntervals: new Set(
         persistedState.enabledIntervalRecognitionIntervals || INTERVAL_NAMES,
+      ),
+      enabledChordRecognitionTypes: new Set(
+        persistedState.enabledChordRecognitionTypes ||
+          Object.keys(CHORD_TYPES),
       ),
     }),
   }),

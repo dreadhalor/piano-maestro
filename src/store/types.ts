@@ -2,6 +2,7 @@ import { ChordTypeKey } from "@/utils/chords";
 import { ScaleTypeKey } from "@/utils/scale-utils";
 import { IntervalKey, IntervalDirections } from "@/utils/interval-utils";
 import { AbstractNote } from "@/utils/note-utils";
+import { ChordRecognitionPlaybackStyle } from "./slices/chord-recognition-settings";
 
 export interface KeyboardSettingsSlice {
   lowKey: number;
@@ -40,9 +41,21 @@ export interface IntervalRecognitionSettingsSlice {
   setIntervalRecognitionDirection: (direction: IntervalDirections) => void;
 }
 
+export interface ChordRecognitionSettingsSlice {
+  enabledChordRecognitionTypes: Set<ChordTypeKey>;
+  chordRecognitionInversionsEnabled: boolean;
+  chordRecognitionPlaybackStyle: ChordRecognitionPlaybackStyle;
+  toggleChordRecognitionType: (type: ChordTypeKey) => void;
+  setChordRecognitionInversionsEnabled: (enabled: boolean) => void;
+  setChordRecognitionPlaybackStyle: (
+    style: ChordRecognitionPlaybackStyle,
+  ) => void;
+}
+
 // Combined State Interface
 export type SettingsState = KeyboardSettingsSlice &
   IntervalSettingsSlice &
   ChordSettingsSlice &
   ScaleSettingsSlice &
-  IntervalRecognitionSettingsSlice;
+  IntervalRecognitionSettingsSlice &
+  ChordRecognitionSettingsSlice;

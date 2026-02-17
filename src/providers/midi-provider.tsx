@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useRef, useState } from "react";
 import { WebMidi, Input } from "webmidi";
 
 interface MIDIContextType {
@@ -13,6 +13,7 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [inputs, setInputs] = useState<Input[]>([]);
   const [isMIDIDeviceConnected, setIsMIDIDeviceConnected] = useState(false);
+  const prevInputsRef = useRef<Input[]>([]);
 
   useEffect(() => {
     const enableWebMidi = async () => {
@@ -21,8 +22,17 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
         console.log("WebMidi enabled!");
 
         const updateInputsAndConnectionStatus = () => {
-          setInputs(WebMidi.inputs);
-          setIsMIDIDeviceConnected(WebMidi.inputs.length > 0);
+          // Remove all user-facing listeners from previous inputs to prevent
+          // accumulation across reconnection cycles. The hooks will re-add
+          // their listeners when the new inputs trigger their effects.
+          prevInputsRef.current.forEach((input) => {
+            input.removeListener();
+          });
+
+          const currentInputs = [...WebMidi.inputs];
+          prevInputsRef.current = currentInputs;
+          setInputs(currentInputs);
+          setIsMIDIDeviceConnected(currentInputs.length > 0);
         };
 
         updateInputsAndConnectionStatus();
@@ -38,12 +48,21 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
     enableWebMidi();
 
     return () => {
+      prevInputsRef.current.forEach((input) => {
+        input.removeListener();
+      });
+      prevInputsRef.current = [];
       WebMidi.disable();
     };
   }, []);
 
+  const value = useMemo(
+    () => ({ inputs, isMIDIDeviceConnected }),
+    [inputs, isMIDIDeviceConnected],
+  );
+
   return (
-    <MIDIContext.Provider value={{ inputs, isMIDIDeviceConnected }}>
+    <MIDIContext.Provider value={value}>
       {children}
     </MIDIContext.Provider>
   );
