@@ -52,10 +52,16 @@ export interface ChordRecognitionSettingsSlice {
   ) => void;
 }
 
+export interface ProgressionSettingsSlice {
+  enabledProgressions: Set<string>;
+  toggleProgression: (name: string) => void;
+}
+
 // Combined State Interface
 export type SettingsState = KeyboardSettingsSlice &
   IntervalSettingsSlice &
   ChordSettingsSlice &
   ScaleSettingsSlice &
   IntervalRecognitionSettingsSlice &
-  ChordRecognitionSettingsSlice;
+  ChordRecognitionSettingsSlice &
+  ProgressionSettingsSlice;

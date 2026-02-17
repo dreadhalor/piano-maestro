@@ -7,11 +7,13 @@ import { createChordSettingsSlice } from "@/store/slices/chord-settings";
 import { createScaleSettingsSlice } from "@/store/slices/scale-settings";
 import { createIntervalRecognitionSettingsSlice } from "@/store/slices/interval-recognition-settings";
 import { createChordRecognitionSettingsSlice } from "@/store/slices/chord-recognition-settings";
+import { createProgressionSettingsSlice } from "@/store/slices/progression-settings";
 import { StateCreator } from "zustand";
 import { NOTES } from "@/utils/note-utils";
 import { INTERVAL_NAMES } from "@/utils/interval-utils";
 import { CHORD_TYPES } from "@/utils/chords";
 import { SCALE_TYPES } from "@/utils/scale-utils";
+import { PROGRESSION_TEMPLATES } from "@/utils/chord-progressions";
 
 // Helper type to simplify StateCreator typing
 type MyStateCreator = StateCreator<SettingsState, [], [], SettingsState>;
@@ -24,6 +26,7 @@ const combinedStore: MyStateCreator = (set, get, store) => ({
   ...createScaleSettingsSlice(set, get, store),
   ...createIntervalRecognitionSettingsSlice(set, get, store),
   ...createChordRecognitionSettingsSlice(set, get, store),
+  ...createProgressionSettingsSlice(set, get, store),
 });
 
 // Create the Zustand store with persistence
@@ -60,6 +63,8 @@ export const useSettingsStore = create<SettingsState>()(
       ),
       chordRecognitionInversionsEnabled: state.chordRecognitionInversionsEnabled,
       chordRecognitionPlaybackStyle: state.chordRecognitionPlaybackStyle,
+      // progression settings
+      enabledProgressions: Array.from(state.enabledProgressions),
     }),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     merge: (persistedState: any, currentState) => ({
@@ -85,6 +90,10 @@ export const useSettingsStore = create<SettingsState>()(
       enabledChordRecognitionTypes: new Set(
         persistedState.enabledChordRecognitionTypes ||
           Object.keys(CHORD_TYPES),
+      ),
+      enabledProgressions: new Set(
+        persistedState.enabledProgressions ||
+          PROGRESSION_TEMPLATES.map((t: { name: string }) => t.name),
       ),
     }),
   }),

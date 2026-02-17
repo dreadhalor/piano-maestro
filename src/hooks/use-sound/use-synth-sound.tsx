@@ -29,9 +29,6 @@ export const useSynthSound = () => {
           "F#4": "https://tonejs.github.io/audio/salamander/Fs4.mp3",
           A4: "https://tonejs.github.io/audio/salamander/A4.mp3",
         },
-        () => {
-          console.log("Sampler loaded!");
-        },
       ).connect(volumeNode.current);
 
       sampler.current.set({ release: 2 });

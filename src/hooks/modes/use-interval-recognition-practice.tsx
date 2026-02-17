@@ -8,8 +8,7 @@ import {
 } from "@/utils/interval-utils";
 import { midiToNoteName } from "@/utils/note-utils";
 
-// Extended Interface to store both notes of the interval
-interface Interval {
+interface RecognitionInterval {
   name: IntervalKey;
   semitones: number;
   direction: IntervalDirection;
@@ -29,11 +28,11 @@ export const useIntervalRecognitionPractice = () => {
   const { playNote } = useSound();
   const [state, setState] = useState<State>("initial");
 
-  const [currentInterval, setCurrentInterval] = useState<Interval | null>(null);
+  const [currentInterval, setCurrentInterval] = useState<RecognitionInterval | null>(null);
   const [feedback, setFeedback] = useState<string>("");
 
   // Function to generate a random interval based on settings and ensure notes are within range
-  const generateRandomInterval = useCallback((): Interval | null => {
+  const generateRandomInterval = useCallback((): RecognitionInterval | null => {
     const availableIntervals = Array.from(enabledIntervals)
       .map((key) => INTERVAL_TYPES[key])
       .filter(

@@ -19,7 +19,6 @@ export const MIDIProvider: React.FC<{ children: React.ReactNode }> = ({
     const enableWebMidi = async () => {
       try {
         await WebMidi.enable();
-        console.log("WebMidi enabled!");
 
         const updateInputsAndConnectionStatus = () => {
           // Remove all user-facing listeners from previous inputs to prevent

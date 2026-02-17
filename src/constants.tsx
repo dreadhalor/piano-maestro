@@ -4,6 +4,7 @@ import { ChordSettings } from "@/components/settings/chord-settings";
 import { ScaleSettings } from "@/components/settings/scale-settings";
 import { IntervalRecognitionSettings } from "@/components/settings/interval-recognition-settings";
 import { ChordRecognitionSettings } from "@/components/settings/chord-recognition-settings";
+import { ProgressionSettings } from "@/components/settings/progression-settings";
 
 export const SETTINGS_TABS = [
   {
@@ -47,6 +48,17 @@ export const SETTINGS_TABS = [
       </>
     ),
     component: <ChordRecognitionSettings />,
+  },
+  {
+    key: "progressions",
+    label: (
+      <>
+        Chord
+        <br />
+        progressions
+      </>
+    ),
+    component: <ProgressionSettings />,
   },
 ] as const;
 export type SettingsTab = (typeof SETTINGS_TABS)[number]["key"];
