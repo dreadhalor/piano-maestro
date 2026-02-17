@@ -38,7 +38,7 @@ export const PracticeSidebar = () => {
               tabColors[value], // Add color based on value
               mode === value
                 ? "border-current bg-white shadow-md"
-                : "bg-gray-50 hover:shadow-sm",
+                : "bg-gray-50 hover:shadow-xs",
             )}
           >
             <RadioGroupItem

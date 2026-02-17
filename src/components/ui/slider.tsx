@@ -22,7 +22,7 @@ const VerticalSlider = React.forwardRef<
       <SliderPrimitive.Range className="bg-primary absolute w-full" />{" "}
       {/* Adjust the width and position for vertical orientation */}
     </SliderPrimitive.Track>
-    <SliderPrimitive.Thumb className="border-primary/50 bg-background focus-visible:ring-ring block h-4 w-4 rounded-full border shadow transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
+    <SliderPrimitive.Thumb className="border-primary/50 bg-background focus-visible:ring-ring block h-4 w-4 rounded-full border shadow-sm transition-colors focus-visible:outline-hidden focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50" />
   </SliderPrimitive.Root>
 ));
 VerticalSlider.displayName = SliderPrimitive.Root.displayName;
