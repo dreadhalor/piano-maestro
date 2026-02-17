@@ -10,6 +10,8 @@ interface ChordPracticeContextType {
   currentChord: AbstractChord;
   feedback: string;
   skipChord: () => void;
+  correctCount: number;
+  incorrectCount: number;
 }
 
 export const ChordPracticeContext = createContext<
@@ -35,6 +37,8 @@ export const ChordPracticeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [feedback, setFeedback] = useState<string>("");
   const [isChordComplete, setIsChordComplete] = useState<boolean>(false);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
 
   const [tab, setTab] = useState<string>("piano");
 
@@ -82,8 +86,10 @@ export const ChordPracticeProvider: React.FC<{ children: React.ReactNode }> = ({
       if (playedCorrectly) {
         setFeedback("Correct!");
         setIsChordComplete(true);
+        setCorrectCount((prev) => prev + 1);
       } else {
         setFeedback("Try Again!");
+        setIncorrectCount((prev) => prev + 1);
       }
     }
   };
@@ -117,6 +123,8 @@ export const ChordPracticeProvider: React.FC<{ children: React.ReactNode }> = ({
     currentChord,
     feedback,
     skipChord: advanceChord,
+    correctCount,
+    incorrectCount,
   };
 
   return (

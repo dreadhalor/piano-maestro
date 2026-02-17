@@ -14,6 +14,8 @@ export const useEarTrainingPractice = () => {
   const [currentNote, setCurrentNote] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string>("");
   const [state, setState] = useState<State>("initial");
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
 
   // Function to generate a new random note
   const generateNewNote = useCallback(() => {
@@ -37,6 +39,12 @@ export const useEarTrainingPractice = () => {
     setState("playing");
   }, [generateNewNote]);
 
+  // Skip to next note without scoring correct
+  const skipNote = useCallback(() => {
+    generateNewNote();
+    setState("playing");
+  }, [generateNewNote]);
+
   // Handle user playing a note
   const handleUserNote = useCallback(
     (playedNote: number) => {
@@ -44,6 +52,7 @@ export const useEarTrainingPractice = () => {
 
       if (playedNote === currentNote) {
         setFeedback("Correct!");
+        setCorrectCount((prev) => prev + 1);
         setState("answered");
         setTimeout(() => {
           generateNewNote();
@@ -52,6 +61,7 @@ export const useEarTrainingPractice = () => {
         }, 1000); // Wait for 1 second before next note
       } else {
         setFeedback("Try Again!");
+        setIncorrectCount((prev) => prev + 1);
       }
     },
     [state, currentNote, generateNewNote],
@@ -73,5 +83,8 @@ export const useEarTrainingPractice = () => {
     feedback,
     currentNote,
     playCurrentNote,
+    skipNote,
+    correctCount,
+    incorrectCount,
   };
 };

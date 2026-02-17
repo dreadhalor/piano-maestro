@@ -9,6 +9,8 @@ interface SingleNotePracticeContextType {
   skipNote: () => void;
   tab: string;
   setTab: (tab: string) => void;
+  correctCount: number;
+  incorrectCount: number;
 }
 
 export const SingleNotePracticeContext = createContext<
@@ -25,6 +27,8 @@ export const SingleNotePracticeProvider: React.FC<{
   const [feedback, setFeedback] = useState<string>("");
   const [isNoteComplete, setIsNoteComplete] = useState<boolean>(false);
   const [tab, setTab] = useState<string>("piano");
+  const [correctCount, setCorrectCount] = useState(0);
+  const [incorrectCount, setIncorrectCount] = useState(0);
 
   const { pressedNotes, allKeysReleased } = useProcessedMIDI();
 
@@ -47,8 +51,10 @@ export const SingleNotePracticeProvider: React.FC<{
       if (playedNotes.includes(currentNote)) {
         setFeedback("Correct!");
         setIsNoteComplete(true);
+        setCorrectCount((prev) => prev + 1);
       } else {
         setFeedback("Try Again!");
+        setIncorrectCount((prev) => prev + 1);
       }
     }
   };
@@ -70,6 +76,8 @@ export const SingleNotePracticeProvider: React.FC<{
     skipNote,
     tab,
     setTab,
+    correctCount,
+    incorrectCount,
   };
 
   return (

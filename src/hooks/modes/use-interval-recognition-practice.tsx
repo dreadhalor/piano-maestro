@@ -159,17 +159,19 @@ export const useIntervalRecognitionPractice = () => {
     playInterval();
   }, [playInterval]);
 
-  // Function to submit user's answer
-  const submitAnswer = (selectedIntervalKey: IntervalKey) => {
+  // Function to submit user's answer (returns true if correct)
+  const submitAnswer = (selectedIntervalKey: IntervalKey): boolean => {
     if (!currentInterval) {
       setFeedback("Please play an interval first.");
-      return;
+      return false;
     }
 
-    if (selectedIntervalKey === currentInterval.name) setFeedback("Correct!");
+    const correct = selectedIntervalKey === currentInterval.name;
+    if (correct) setFeedback("Correct!");
     else setFeedback(`Incorrect :(`);
 
     setState("answered");
+    return correct;
   };
 
   const start = useCallback(() => {

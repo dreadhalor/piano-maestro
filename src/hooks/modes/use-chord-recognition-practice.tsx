@@ -114,19 +114,18 @@ export const useChordRecognitionPractice = () => {
     playInterval();
   }, [playInterval]);
 
-  const submitAnswer = (selectedType: ChordTypeKey) => {
+  const submitAnswer = (selectedType: ChordTypeKey): boolean => {
     if (!currentChord) {
       setFeedback("Please play a chord first.");
-      return;
+      return false;
     }
 
-    if (selectedType === currentChord.type) {
-      setFeedback("Correct!");
-    } else {
-      setFeedback("Incorrect :(");
-    }
+    const correct = selectedType === currentChord.type;
+    if (correct) setFeedback("Correct!");
+    else setFeedback("Incorrect :(");
 
     setState("answered");
+    return correct;
   };
 
   const start = useCallback(() => {
