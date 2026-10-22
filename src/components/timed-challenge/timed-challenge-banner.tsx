@@ -14,7 +14,7 @@ export const TimedChallengeBanner = ({
   const progress = duration > 0 ? (timeRemaining / duration) * 100 : 0;
 
   return (
-    <div className="flex w-full flex-col gap-2 rounded-lg bg-gray-800 p-3 text-white">
+    <div className="flex w-full flex-col gap-2 rounded-lg bg-gray-800 p-3 text-white dark:bg-gray-950">
       {/* Timer bar */}
       <div className="flex items-center gap-3">
         <span className="min-w-12 text-center text-lg font-bold tabular-nums">
@@ -30,12 +30,8 @@ export const TimedChallengeBanner = ({
 
       {/* Live score */}
       <div className="flex justify-center gap-6 text-sm font-medium">
-        <span className="text-green-400">
-          Correct: {score.correct}
-        </span>
-        <span className="text-red-400">
-          Incorrect: {score.incorrect}
-        </span>
+        <span className="text-green-400">Correct: {score.correct}</span>
+        <span className="text-red-400">Incorrect: {score.incorrect}</span>
       </div>
     </div>
   );

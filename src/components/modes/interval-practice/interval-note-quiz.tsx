@@ -54,7 +54,7 @@ export const IntervalNoteQuiz = () => {
           {interval && (
             <>
               Interval:&nbsp;
-              <span className="text-pink-600">
+              <span className="text-pink-600 dark:text-pink-400">
                 {interval.notes[0]}{" "}
                 {interval.direction === "ascending" ? "+" : "-"}{" "}
                 {interval.shorthand}

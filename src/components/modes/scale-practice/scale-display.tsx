@@ -18,21 +18,24 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
   isScaleComplete,
 }) => {
   return (
-    <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
-      <h2 className="mb-4 text-xl font-bold text-gray-800">
-        Scale: <span className="text-red-500">{scale.name}</span>
+    <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner dark:bg-gray-800">
+      <h2 className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">
+        Scale:{" "}
+        <span className="text-red-500 dark:text-red-400">{scale.name}</span>
       </h2>
       <div className="mt-4 text-center">
-        <h2 className="mb-4 text-xl font-bold text-gray-800">
+        <h2 className="mb-4 text-xl font-bold text-gray-800 dark:text-gray-100">
           {currentNote && !isScaleComplete ? (
             <>
               Press this key:{" "}
-              <span className="text-red-500">
+              <span className="text-red-500 dark:text-red-400">
                 {midiToNoteName(currentNote)}
               </span>
             </>
           ) : (
-            <span className="text-red-500">Scale complete!</span>
+            <span className="text-red-500 dark:text-red-400">
+              Scale complete!
+            </span>
           )}
         </h2>
         <div className="flex justify-center">
@@ -58,7 +61,7 @@ export const ScaleDisplay: React.FC<ScaleDisplayProps> = ({
 
                 <span
                   key={note}
-                  className="row-start-2 text-sm font-semibold text-gray-600"
+                  className="row-start-2 text-sm font-semibold text-gray-600 dark:text-gray-300"
                 >
                   {midiToNoteName(note)}
                 </span>

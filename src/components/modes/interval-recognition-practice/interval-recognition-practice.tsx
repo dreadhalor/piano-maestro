@@ -64,11 +64,11 @@ export const IntervalRecognitionPractice = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl font-bold text-indigo-600">
+      <h2 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
         Interval Practice Mode
       </h2>
 
-      <p className="text-lg text-gray-700">
+      <p className="text-lg text-gray-700 dark:text-gray-200">
         Practice identifying intervals by ear.
       </p>
 
@@ -95,8 +95,8 @@ export const IntervalRecognitionPractice = () => {
 
       {/* Timed: idle state — duration picker + start */}
       {isTimed && challengeState === "idle" && (
-        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-700">
+        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner dark:bg-gray-800">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Choose Duration
           </h3>
           <RadioGroup
@@ -144,8 +144,8 @@ export const IntervalRecognitionPractice = () => {
           {/* Question area */}
           {state !== "initial" && (
             <>
-              <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
-                <h3 className="text-lg font-semibold text-gray-700">
+              <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner dark:bg-gray-800">
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                   {currentInterval ? (
                     state === "answered" && !isActive ? (
                       <>
@@ -167,10 +167,7 @@ export const IntervalRecognitionPractice = () => {
               {/* Controls — hidden during timed challenge */}
               {!isActive && (
                 <div className="flex gap-4">
-                  <Button
-                    onClick={replayInterval}
-                    disabled={!currentInterval}
-                  >
+                  <Button onClick={replayInterval} disabled={!currentInterval}>
                     Replay Interval
                   </Button>
                   <Button onClick={nextInterval}>Next Interval</Button>

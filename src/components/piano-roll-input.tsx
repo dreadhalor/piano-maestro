@@ -23,7 +23,7 @@ const WhiteKey = ({ note, enabled, onClick }: KeyProps) => {
         "relative flex h-40 w-12 origin-top cursor-pointer items-end justify-center border border-gray-400 bg-white shadow-md transition-transform duration-200",
         isEnabled
           ? "scale-105 transform bg-white shadow-lg"
-          : "bg-gray-300 opacity-50 shadow-xs",
+          : "shadow-xs bg-gray-300 opacity-50",
       )}
       onClick={() => onClick(note)}
       aria-pressed={isEnabled}
@@ -56,7 +56,7 @@ const BlackKey = ({ note, enabled, onClick }: KeyProps) => {
         "pointer-events-auto absolute h-24 w-8 origin-top -translate-x-1/2 transform cursor-pointer bg-black shadow-lg transition-transform duration-200",
         isEnabled
           ? "scale-105 transform bg-black shadow-xl"
-          : "bg-gray-400 shadow-xs",
+          : "shadow-xs bg-gray-400",
       )}
       style={{
         left: `${((precedingWhiteIndex + 1) * 100) / WHITE_KEYS.length}%`, // Adjust positioning based on white keys
@@ -101,7 +101,7 @@ export const PianoRollInput = ({
   }, [enabledNotes]);
 
   return (
-    <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4 pt-6 shadow-md">
+    <div className="flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4 pt-6 shadow-md dark:bg-gray-800">
       <div className="relative flex pb-2">
         {/* White Keys */}
         <div className="flex space-x-0">
@@ -131,11 +131,11 @@ export const PianoRollInput = ({
         <div className="flex items-center space-x-2">
           <span className="inline-block h-6 w-6 border border-gray-400 bg-white shadow-md"></span>
           <span className="inline-block h-6 w-6 border border-gray-400 bg-black shadow-md"></span>
-          <span className="text-gray-700">Enabled</span>
+          <span className="text-gray-700 dark:text-gray-200">Enabled</span>
         </div>
         <div className="flex items-center space-x-2">
-          <span className="inline-block h-6 w-6 border border-gray-400 bg-gray-300 shadow-xs"></span>
-          <span className="text-gray-700">Disabled</span>
+          <span className="shadow-xs inline-block h-6 w-6 border border-gray-400 bg-gray-300"></span>
+          <span className="text-gray-700 dark:text-gray-200">Disabled</span>
         </div>
       </div>
     </div>

@@ -64,11 +64,11 @@ export const ChordRecognitionPractice = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl font-bold text-teal-600">
+      <h2 className="text-2xl font-bold text-teal-600 dark:text-teal-400">
         Chord Recognition Mode
       </h2>
 
-      <p className="text-lg text-gray-700">
+      <p className="text-lg text-gray-700 dark:text-gray-200">
         Listen to the chord and identify its type.
       </p>
 
@@ -95,8 +95,8 @@ export const ChordRecognitionPractice = () => {
 
       {/* Timed: idle state — duration picker + start */}
       {isTimed && challengeState === "idle" && (
-        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-700">
+        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner dark:bg-gray-800">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Choose Duration
           </h3>
           <RadioGroup
@@ -144,8 +144,8 @@ export const ChordRecognitionPractice = () => {
           {/* Question area */}
           {state !== "initial" && (
             <>
-              <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner">
-                <h3 className="text-lg font-semibold text-gray-700">
+              <div className="w-full rounded-lg bg-gray-100 p-4 text-center shadow-inner dark:bg-gray-800">
+                <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
                   {currentChord ? (
                     state === "answered" && !isActive ? (
                       currentChord.label
@@ -171,10 +171,7 @@ export const ChordRecognitionPractice = () => {
               )}
 
               <Separator />
-              <ChordRecognitionGrid
-                submitAnswer={handleSubmit}
-                state={state}
-              />
+              <ChordRecognitionGrid submitAnswer={handleSubmit} state={state} />
             </>
           )}
         </>

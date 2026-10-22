@@ -11,11 +11,12 @@ export const ChordDisplay: React.FC<ChordDisplayProps> = ({ chord }) => {
   }
 
   return (
-    <div className="flex w-full flex-col gap-2 rounded-lg bg-gray-100 p-4 text-center shadow-inner">
-      <h2 className="text-xl font-bold text-gray-800">
-        Play this chord: <span className="text-blue-500">{chord.name}</span>
+    <div className="flex w-full flex-col gap-2 rounded-lg bg-gray-100 p-4 text-center shadow-inner dark:bg-gray-800">
+      <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+        Play this chord:{" "}
+        <span className="text-blue-500 dark:text-blue-400">{chord.name}</span>
       </h2>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-gray-600 dark:text-gray-300">
         Notes: <span className="font-semibold">{chord.notes.join(" ")}</span>
       </p>
     </div>

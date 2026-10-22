@@ -64,7 +64,7 @@ export const IndexQuiz = () => {
           {currentNote && (
             <>
               Note:&nbsp;
-              <span className="text-green-500">
+              <span className="text-green-500 dark:text-green-400">
                 {midiToAbstractNoteName(currentNote)}
               </span>
             </>

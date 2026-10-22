@@ -51,7 +51,7 @@ export const GeneralSettings = () => {
       <div className="flex flex-col gap-1">
         {/* Keyboard Range Settings */}
         <h3 className="text-lg font-bold">Keyboard Range</h3>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
           Current Range: {midiToNoteName(lowKey)} to {midiToNoteName(highKey)}
         </p>
 

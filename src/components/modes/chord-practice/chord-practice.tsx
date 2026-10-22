@@ -79,7 +79,9 @@ export const ChordPractice = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl font-bold text-blue-600">Chord Practice Mode</h2>
+      <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+        Chord Practice Mode
+      </h2>
 
       {/* Practice / Timed toggle */}
       <div className="flex gap-2">
@@ -104,8 +106,8 @@ export const ChordPractice = () => {
 
       {/* Timed: idle state — duration picker + start */}
       {isTimed && challengeState === "idle" && (
-        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-700">
+        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner dark:bg-gray-800">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Choose Duration
           </h3>
           <RadioGroup
@@ -119,10 +121,7 @@ export const ChordPractice = () => {
                 htmlFor={`chord-prac-dur-${d}`}
                 className="flex items-center gap-1"
               >
-                <RadioGroupItem
-                  value={String(d)}
-                  id={`chord-prac-dur-${d}`}
-                />
+                <RadioGroupItem value={String(d)} id={`chord-prac-dur-${d}`} />
                 <span>{d}s</span>
               </Label>
             ))}

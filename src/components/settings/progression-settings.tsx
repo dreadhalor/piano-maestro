@@ -12,16 +12,13 @@ export const ProgressionSettings = () => {
 
       <div className="flex flex-col gap-4">
         <h3 className="text-lg font-bold">Enabled Progressions</h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Select which chord progressions to practice. At least one must be
           enabled.
         </p>
         <div className="grid grid-cols-2 gap-3">
           {PROGRESSION_TEMPLATES.map((template) => (
-            <div
-              className="flex items-center space-x-2"
-              key={template.name}
-            >
+            <div className="flex items-center space-x-2" key={template.name}>
               <Checkbox
                 id={`prog-${template.name}`}
                 checked={enabledProgressions.has(template.name)}

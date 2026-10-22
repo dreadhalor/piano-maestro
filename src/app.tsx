@@ -11,6 +11,8 @@ import { ChordRecognitionPractice } from "@/components/modes/chord-recognition-p
 import { IntervalPractice } from "@/components/modes/interval-practice/interval-practice";
 import { PianoRoll } from "@/components/piano-roll";
 import { FaGear } from "react-icons/fa6";
+import { Moon, Sun } from "lucide-react";
+import { useThemeStore } from "@/hooks/use-theme-store";
 import { SettingsDialog } from "@/components/settings/settings-dialog";
 import { Button } from "@ui/button";
 import { ResponsiveScalingDiv } from "@/components/responsive-scaling-div";
@@ -23,6 +25,7 @@ import { SingleNotePracticeProvider } from "@/providers/single-note-practice-pro
 export const App = () => {
   const { mode } = useAppContext();
   const { lowKey, highKey } = useSettings();
+  const { theme, toggleTheme } = useThemeStore();
 
   // Function to render the selected practice mode component
   const renderModeComponent = () => {
@@ -63,24 +66,42 @@ export const App = () => {
   };
 
   return (
-    <div className="flex min-h-screen gap-8 bg-gray-100 p-8">
+    <div className="flex min-h-screen gap-8 bg-gray-100 p-8 dark:bg-gray-950">
       <PracticeSidebar />
       <div className="my-auto flex min-w-0 flex-1 flex-col items-center justify-center">
         {/* Header */}
-        <h1 className="relative mb-6 flex w-full items-center justify-center text-center text-5xl font-extrabold text-blue-600">
+        <h1 className="relative mb-6 flex w-full items-center justify-center text-center text-5xl font-extrabold text-blue-600 dark:text-blue-400">
           PianoMaestro
-          <SettingsDialog>
+          <div className="absolute right-[20px] flex items-center gap-4">
             <Button
               variant="ghost"
-              className="absolute right-[20px] p-0 text-4xl text-gray-400 hover:bg-transparent hover:text-gray-600"
+              onClick={toggleTheme}
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              className="p-0 text-gray-400 hover:bg-transparent hover:text-gray-600 dark:hover:bg-transparent dark:hover:text-gray-200"
             >
-              <FaGear />
+              {theme === "dark" ? (
+                <Sun className="size-9" />
+              ) : (
+                <Moon className="size-9" />
+              )}
             </Button>
-          </SettingsDialog>
+            <SettingsDialog>
+              <Button
+                variant="ghost"
+                className="p-0 text-4xl text-gray-400 hover:bg-transparent hover:text-gray-600 dark:hover:bg-transparent dark:hover:text-gray-200"
+              >
+                <FaGear />
+              </Button>
+            </SettingsDialog>
+          </div>
         </h1>
 
         {/* Main Content Area with Distinct Background */}
-        <div className="my-auto flex w-full max-w-2xl flex-col items-center justify-center rounded-lg border border-gray-300 bg-gradient-to-b from-white to-gray-50 p-8 shadow-lg">
+        <div className="my-auto flex w-full max-w-2xl flex-col items-center justify-center rounded-lg border border-gray-300 bg-gradient-to-b from-white to-gray-50 p-8 shadow-lg dark:border-gray-700 dark:from-gray-900 dark:to-gray-900">
           {renderModeComponent()}
         </div>
 

@@ -128,4 +128,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Native controls (select dropdowns, scrollbars) follow the theme */
+  .dark {
+    color-scheme: dark;
+  }
 }

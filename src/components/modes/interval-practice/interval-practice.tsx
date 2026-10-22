@@ -20,7 +20,7 @@ export const IntervalPractice = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl font-bold text-pink-700">
+      <h2 className="text-2xl font-bold text-pink-700 dark:text-pink-400">
         Interval Practice Mode
       </h2>
       <Tabs className="flex w-full flex-col" value={tab} onValueChange={setTab}>

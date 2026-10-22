@@ -95,7 +95,7 @@ export const ChordProgressionPractice = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl font-bold text-yellow-600">
+      <h2 className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
         Chord Progression Practice
       </h2>
 
@@ -103,13 +103,15 @@ export const ChordProgressionPractice = () => {
       <div className="flex flex-wrap items-center justify-center gap-4">
         {/* Key selector */}
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600">Key:</span>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            Key:
+          </span>
           <select
             value={selectedKey}
             onChange={(e) =>
               setSelectedKey(e.target.value as AbstractNote | "random")
             }
-            className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm shadow-sm"
+            className="rounded-md border border-gray-300 bg-white px-2 py-1 text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800"
           >
             {NOTES.map((note) => (
               <option key={note} value={note}>
@@ -122,7 +124,9 @@ export const ChordProgressionPractice = () => {
 
         {/* Voicing mode */}
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-gray-600">Voicing:</span>
+          <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+            Voicing:
+          </span>
           <div className="flex gap-1">
             <Button
               variant={voicingMode === "smooth" ? "default" : "outline"}
@@ -165,8 +169,8 @@ export const ChordProgressionPractice = () => {
 
       {/* Timed: idle state */}
       {isTimed && challengeState === "idle" && (
-        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-700">
+        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner dark:bg-gray-800">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Choose Duration
           </h3>
           <RadioGroup
@@ -204,58 +208,60 @@ export const ChordProgressionPractice = () => {
       )}
 
       {/* Main practice area */}
-      {(!isTimed || challengeState === "active") && progression && currentChord && (
-        <>
-          <ProgressionDisplay
-            progression={progression}
-            currentChord={currentChord}
-            currentIndex={currentIndex}
-            voicingMode={voicingMode}
-            isAnchored={isAnchored}
-          />
+      {(!isTimed || challengeState === "active") &&
+        progression &&
+        currentChord && (
+          <>
+            <ProgressionDisplay
+              progression={progression}
+              currentChord={currentChord}
+              currentIndex={currentIndex}
+              voicingMode={voicingMode}
+              isAnchored={isAnchored}
+            />
 
-          {/* Listen controls */}
-          <div className="flex flex-col items-center gap-2">
-            <div className="flex gap-2">
-              <Button
-                variant="secondary"
-                onClick={playProgression}
-                disabled={isPlaying}
+            {/* Listen controls */}
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex gap-2">
+                <Button
+                  variant="secondary"
+                  onClick={playProgression}
+                  disabled={isPlaying}
+                >
+                  {isPlaying ? "Playing..." : "Listen to Progression"}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={playCurrentChord}
+                  disabled={isPlaying}
+                >
+                  Hear Current Chord
+                </Button>
+              </div>
+              <Label
+                htmlFor="auto-play-toggle"
+                className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300"
               >
-                {isPlaying ? "Playing..." : "Listen to Progression"}
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={playCurrentChord}
-                disabled={isPlaying}
-              >
-                Hear Current Chord
+                <Checkbox
+                  id="auto-play-toggle"
+                  checked={autoPlay}
+                  onCheckedChange={(checked) => setAutoPlay(checked === true)}
+                />
+                Auto-play new progressions
+              </Label>
+            </div>
+
+            <MidiInput />
+            <Feedback message={feedback} />
+
+            <div className="flex gap-4">
+              <Button onClick={handleSkipChord}>Skip Chord</Button>
+              <Button variant="outline" onClick={handleSkipProgression}>
+                New Progression
               </Button>
             </div>
-            <Label
-              htmlFor="auto-play-toggle"
-              className="flex items-center gap-2 text-sm text-gray-600"
-            >
-              <Checkbox
-                id="auto-play-toggle"
-                checked={autoPlay}
-                onCheckedChange={(checked) => setAutoPlay(checked === true)}
-              />
-              Auto-play new progressions
-            </Label>
-          </div>
-
-          <MidiInput />
-          <Feedback message={feedback} />
-
-          <div className="flex gap-4">
-            <Button onClick={handleSkipChord}>Skip Chord</Button>
-            <Button variant="outline" onClick={handleSkipProgression}>
-              New Progression
-            </Button>
-          </div>
-        </>
-      )}
+          </>
+        )}
     </div>
   );
 };

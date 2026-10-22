@@ -78,9 +78,11 @@ export const EarTrainingPractice = () => {
 
   return (
     <div className="flex w-full flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl font-bold text-orange-600">Ear Training Mode</h2>
+      <h2 className="text-2xl font-bold text-orange-600 dark:text-orange-400">
+        Ear Training Mode
+      </h2>
 
-      <p className="text-lg text-gray-700">
+      <p className="text-lg text-gray-700 dark:text-gray-200">
         Listen to the note and try to play it on your keyboard.
       </p>
 
@@ -107,8 +109,8 @@ export const EarTrainingPractice = () => {
 
       {/* Timed: idle state — duration picker + start */}
       {isTimed && challengeState === "idle" && (
-        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner">
-          <h3 className="text-lg font-semibold text-gray-700">
+        <div className="flex w-full flex-col items-center gap-4 rounded-lg bg-gray-100 p-4 shadow-inner dark:bg-gray-800">
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Choose Duration
           </h3>
           <RadioGroup

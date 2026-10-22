@@ -55,7 +55,9 @@ export const ChordNoteQuiz = () => {
           {currentChord && (
             <>
               Chord name:&nbsp;
-              <span className="text-blue-500">{currentChord.name}</span>
+              <span className="text-blue-500 dark:text-blue-400">
+                {currentChord.name}
+              </span>
             </>
           )}
         </CardBoxTitle>

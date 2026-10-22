@@ -48,10 +48,7 @@ export const ProgressionDisplay: React.FC<ProgressionDisplayProps> = ({
       return (
         <>
           {currentChord.name}
-          <span className="ml-1 italic">
-            {" "}
-            — play in any octave to start
-          </span>
+          <span className="ml-1 italic"> — play in any octave to start</span>
         </>
       );
     }
@@ -64,27 +61,34 @@ export const ProgressionDisplay: React.FC<ProgressionDisplayProps> = ({
   };
 
   return (
-    <div className="flex w-full flex-col gap-3 rounded-lg bg-gray-100 p-4 shadow-inner">
+    <div className="flex w-full flex-col gap-3 rounded-lg bg-gray-100 p-4 shadow-inner dark:bg-gray-800">
       {/* Progression name and key */}
-      <h2 className="text-center text-lg font-bold text-gray-800">
-        <span className="text-yellow-600">{progression.template.name}</span>
-        <span className="text-gray-500"> in </span>
-        <span className="text-yellow-600">{progression.key}</span>
+      <h2 className="text-center text-lg font-bold text-gray-800 dark:text-gray-100">
+        <span className="text-yellow-600 dark:text-yellow-400">
+          {progression.template.name}
+        </span>
+        <span className="text-gray-500 dark:text-gray-400"> in </span>
+        <span className="text-yellow-600 dark:text-yellow-400">
+          {progression.key}
+        </span>
       </h2>
 
       {/* Chord chips */}
       <div className="flex flex-wrap items-center justify-center gap-2">
         {progression.chords.map((chord, i) => (
           <React.Fragment key={i}>
-            {i > 0 && <span className="text-gray-400">→</span>}
+            {i > 0 && (
+              <span className="text-gray-400 dark:text-gray-500">→</span>
+            )}
             <span
               className={cn(
                 "rounded-md px-3 py-1 text-sm font-semibold transition-colors",
                 i < currentIndex &&
-                  "bg-green-100 text-green-700 line-through opacity-60",
+                  "bg-green-100 text-green-700 line-through opacity-60 dark:bg-green-900/40 dark:text-green-400",
                 i === currentIndex &&
-                  "bg-yellow-200 text-yellow-800 ring-2 ring-yellow-400",
-                i > currentIndex && "bg-gray-200 text-gray-500",
+                  "bg-yellow-200 text-yellow-800 ring-2 ring-yellow-400 dark:bg-yellow-900/50 dark:text-yellow-200 dark:ring-yellow-500",
+                i > currentIndex &&
+                  "bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400",
               )}
             >
               {chord.name}
@@ -95,13 +99,15 @@ export const ProgressionDisplay: React.FC<ProgressionDisplayProps> = ({
 
       {/* Current chord detail */}
       <div className="mt-1 flex flex-col items-center gap-1">
-        <p className="text-base font-semibold text-gray-700">
+        <p className="text-base font-semibold text-gray-700 dark:text-gray-200">
           Play:{" "}
-          <span className="font-bold text-yellow-700">
+          <span className="font-bold text-yellow-700 dark:text-yellow-400">
             {getDisplayNotes()}
           </span>
         </p>
-        <p className="text-xs text-gray-500">{getDetailText()}</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          {getDetailText()}
+        </p>
       </div>
     </div>
   );

@@ -8,10 +8,10 @@ export const MidiInput = () => {
     <div className="w-full text-center">
       {isMIDIDeviceConnected ? (
         <>
-          <p className="text-sm text-green-600">
+          <p className="text-sm text-green-600 dark:text-green-400">
             MIDI device connected! Start playing.
           </p>
-          <h3 className="mt-2 text-lg font-semibold text-gray-800">
+          <h3 className="mt-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
             Currently Pressed Notes:{" "}
             {pressedNotes
               .slice()
@@ -21,7 +21,7 @@ export const MidiInput = () => {
           </h3>
         </>
       ) : (
-        <p className="text-sm text-red-600">
+        <p className="text-sm text-red-600 dark:text-red-400">
           No MIDI device detected. Please connect a MIDI device.
         </p>
       )}

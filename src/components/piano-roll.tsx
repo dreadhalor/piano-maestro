@@ -23,7 +23,7 @@ export const PianoRoll = () => {
   return (
     <div className="mt-8 flex gap-4">
       <div className="flex flex-col items-center gap-1">
-        <FaVolumeHigh className="h-6 w-6 text-gray-700" />
+        <FaVolumeHigh className="h-6 w-6 text-gray-700 dark:text-gray-300" />
         <Label className="w-[30px] text-center">{volume}</Label>
         <VerticalSlider
           defaultValue={[volume]} // Use current volume as default
