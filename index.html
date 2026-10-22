@@ -5,8 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/piano-maestro/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PianoMaestro &nbsp;🎹</title>
-    <script type="module" crossorigin src="/piano-maestro/assets/index-FLPi4OIp.js"></script>
-    <link rel="stylesheet" crossorigin href="/piano-maestro/assets/index-BXDO3Oq1.css">
+    <script>
+      // Apply the saved theme before first paint so dark mode doesn't flash white
+      // (key matches THEME_STORAGE_KEY in src/hooks/use-theme-store.tsx)
+      try {
+        var saved = JSON.parse(localStorage.getItem("piano-maestro-theme"));
+        var theme =
+          (saved && saved.state && saved.state.theme) ||
+          (matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+        if (theme === "dark") document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="/piano-maestro/assets/index-cLkpxJH8.js"></script>
+    <link rel="stylesheet" crossorigin href="/piano-maestro/assets/index-C0JWPbtP.css">
   </head>
   <body>
     <div id="root"></div>
