@@ -1,3 +1,4 @@
+import { ChordDetector } from "@/components/chord-detector";
 import { MidiInput } from "@/components/midi-input";
 import { useSettings } from "@/hooks/use-settings";
 import { useEffect } from "react";
@@ -18,6 +19,7 @@ export const Playground = () => {
         Play freely on your MIDI keyboard!
       </p>
       <MidiInput />
+      <ChordDetector />
     </div>
   );
 };
